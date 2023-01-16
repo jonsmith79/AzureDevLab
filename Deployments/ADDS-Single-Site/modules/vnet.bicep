@@ -11,13 +11,13 @@ param GatewaySubnetName string = 'GatewaySubnet'
 param GatewaySubnetAddressPrefix string 
 
 @description('Subnet 1 Name')
-param Subnet1Name string = 'ServerSubnet'
+param Subnet1Name string
 
 @description('Subnet 1 Address Prefix')
 param Subnet1AddressPrefix string
 
 @description('Subnet 2 Name')
-param Subnet2Name string = 'ClientSubnet'
+param Subnet2Name string
 
 @description('Subnet 2 Address Prefix')
 param Subnet2AddressPrefix string
@@ -26,7 +26,7 @@ param Subnet2AddressPrefix string
 param BastionSubnetPrefix string
 
 @description('Resource Location')
-param Location string = resourceGroup().location
+param Location string
 
 resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' = {
   name: VirtualNetworkName
