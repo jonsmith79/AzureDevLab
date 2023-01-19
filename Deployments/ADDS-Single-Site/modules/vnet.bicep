@@ -22,6 +22,9 @@ param Subnet2Name string
 @description('Subnet 2 Address Prefix')
 param Subnet2AddressPrefix string
 
+@description('Bastion Subnet Name')
+param BastionSubnetName string
+
 @description('Bastion Subnet Prefix')
 param BastionSubnetPrefix string
 
@@ -57,7 +60,7 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2020-05-
         }
       }
       {
-        name: 'AzureBastionSubnet'
+        name: BastionSubnetName
         properties: {
           addressPrefix: BastionSubnetPrefix
         }
