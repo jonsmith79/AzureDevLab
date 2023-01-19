@@ -34,4 +34,17 @@ jobs:
           namingConvention="${{env.namingConvention}}"
           VNet1ID="${{env.VNet1ID}}"
 
+  deployment-variables: 
+    runs-on: ubuntu-latest
+    steps: 
+      # Run my variables...    
+    - name: echo-variables
+      run: |
+        echo ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
+        echo ${{ secrets.AZURE_ADL_RG }}
+        echo TimeZone: ${{env.TimeZone}}
+        echo Location: ${{env.Location}}
+        echo namingConvention: ${{env.namingConvention}}
+        echo VNet1ID: ${{env.VNet1ID}}
+        echo DeploymentName: ${{env.DeploymentName}}
 

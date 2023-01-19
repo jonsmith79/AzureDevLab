@@ -34,9 +34,3 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-
-      # Run my variables...    
-      - name: echo-variables
-        run: |
-          echo $GITHUB_WORKSPACE
-          echo ${{ secrets.AZURE_ADL_RG }}
