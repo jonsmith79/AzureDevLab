@@ -1,16 +1,15 @@
 # File: .github/workflows/ADDS-Single-Site.yml
-env:
-  TimeZone: "GMT Standard Time"
-  Location: "uksouth"
-  namingConvention: "adl"
-  VNet1ID: "10.0"
-  DeploymentName: "ADDS-Single-Site"
-
 on: [push]
 name: ADDS-Single-Site
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      TimeZone: "GMT Standard Time"
+      Location: "uksouth"
+      namingConvention: "adl"
+      VNet1ID: "10.0"
+      DeploymentName: "ADDS-Single-Site"
     steps:
       # Checkout code
     - name: Checkout
@@ -23,28 +22,15 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy Bicep file
-    - name: ADDS-Single-Site_Azure-ARM-Deploy
+    - name: ADDS Single Site - Azure ARM Deployment
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
         resourceGroupName: ${{ secrets.AZURE_ADL_RG }}
         template: ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
-        parameters: |
+        parameters:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
           VNet1ID="${{env.VNet1ID}}"
-
-  deployment-variables: 
-    runs-on: ubuntu-latest
-    steps: 
-      # Run my variables...    
-    - name: echo-variables
-      run: |
-        echo ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
-        echo ${{ secrets.AZURE_ADL_RG }}
-        echo TimeZone: ${{env.TimeZone}}
-        echo Location: ${{env.Location}}
-        echo namingConvention: ${{env.namingConvention}}
-        echo VNet1ID: ${{env.VNet1ID}}
-        echo DeploymentName: ${{env.DeploymentName}}
-
+    
+    - run: echo Deployment completed.
