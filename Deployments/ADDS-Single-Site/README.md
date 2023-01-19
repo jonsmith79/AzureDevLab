@@ -1,4 +1,4 @@
-[![ActiveDirectory-Single-Site](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/ADDS-Single-Site.yml)
+[![ADDS-Single-Site](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/ADDS-Single-Site.yml)
 
 # Active Directory Single-Site
 <img src="../xx_Images/ActiveDirectorySingleSite.png" alt="Active Directory" width="150">

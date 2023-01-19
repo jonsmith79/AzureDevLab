@@ -5,35 +5,32 @@ env:
   namingConvention: "adl"
   VNet1ID: "10.0"
   DeploymentName: "ADDS-Single-Site"
-  ResourceGroup: "adl-RG"
-  
-
 
 on: [push]
-
 name: ADDS-Single-Site
-
 jobs:
-
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # Checkout code
+    - name: Checkout
+      uses: actions/checkout@main
 
+      # Log into Azure
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Checkout
-      uses: actions/checkout@v1
-
+      # Deploy Bicep file
     - name: ADDS-Single-Site_Azure-ARM-Deploy
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
-        resourceGroupName: ${{ env.ResourceGroup }}
-        template: Deployments/${{env.DeploymentName}}/azuredeploy.bicep
+        resourceGroupName: ${{ secrets.AZURE_ADL_RG }}
+        template: ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
         parameters:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
           VNet1ID="${{env.VNet1ID}}"
+        failOnStdErr: false
