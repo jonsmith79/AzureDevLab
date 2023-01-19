@@ -28,7 +28,7 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
         resourceGroupName: ${{ secrets.AZURE_ADL_RG }}
-        template: $GITHUB_WORKSPACE/Deployments/${{env.DeploymentName}}/azuredeploy.bicep
+        template: ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
         parameters: |
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
