@@ -20,22 +20,24 @@ AD OU Structure:
         - --- Admin
         - --- Service
     - -- Groups
-    - --- End User
-- --- Admin
-- -- Servers
-- --- Servers2012R2
-- --- Serverrs2016
-- --- Servers2019
-- --- Servers2022
-- -- MaintenanceServers
-- -- MaintenanceWorkstations
-- -- Workstations
-- --- Windows11
-- --- Windows10
-- --- Windows7
+        - --- End User
+        - --- Admin
+    - -- Servers
+        - --- Servers2012R2
+        - --- Serverrs2016
+        - --- Servers2019
+        - --- Servers2022
+    - -- MaintenanceServers
+    - -- MaintenanceWorkstations
+    - -- Workstations
+        - --- Windows11
+        - --- Windows10
+        - --- Windows7
 
 Parameters that support changes
-- TimeZone1.  Select an appropriate Time Zone.
+| Parameter | Description |
+|-----------|-------------|
+| TimeZone1 | Select an appropriate Time Zone. |
 - AutoShutdownEnabled.  Yes = AutoShutdown Enabled, No = AutoShutdown Disabled.
 - AutoShutdownTime.  24-Hour Clock Time for Auto-Shutdown (Example: 1900 = 7PM)
 - AutoShutdownEmail.  Auto-Shutdown notification Email (Example:  user@domain.com)
