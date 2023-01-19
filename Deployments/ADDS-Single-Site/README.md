@@ -1,13 +1,14 @@
 [![ADDS-Single-Site](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml)
 
 # Active Directory Single-Site
+==============================
 <img src="../xx_Images/ActiveDirectorySingleSite.png" alt="Active Directory" width="150">
 
 This Templates deploys a Single Forest/Domain:
 
 - 1 - Active Directory Forest/Domain
-- 1 - Domain Controller
-- 1 - Domain Joined Windows Workstation (Windows 11/10/7)
+~~- 1 - Domain Controller~~
+~~- 1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
