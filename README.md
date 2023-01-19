@@ -6,6 +6,6 @@
 
 
 # Active Directory Single-Site
-[![ActiveDirectory-Single-Site](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/learn-github-actions.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/learn-github-actions.yml)
-<a href="./Deployments/ActiveDirectory-Single-Site"><img src="Deployments/x_Images/ActiveDirectorySingleSite.png" alt="Active Directory Single-Site" width="150"></a>
+[![ActiveDirectory-Single-Site](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/blob/main/.github/workflows/ADDS-Single-Site.yml)
+<a href="./Deployments/ADDS-Single-Site"><img src="Deployments/x_Images/ActiveDirectorySingleSite.png" alt="Active Directory Single-Site" width="150"></a>
 

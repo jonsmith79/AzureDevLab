@@ -3,7 +3,7 @@
 param namingConvention string = 'adl'
 
 @description('Location 1 for Resources')
-param location1 string = 'uksouth'
+param Location string = 'uksouth'
 
 @description('Virtual Network 1 Prefix')
 param VNet1ID string = '10.0'
@@ -34,6 +34,6 @@ module VNet1 'modules/vnet.bicep' = {
     Subnet2Name: VNet1Subnet2Name
     Subnet2AddressPrefix: VNet1Subnet2Prefix
     BastionSubnetPrefix: VNet1BastionSubnetPrefix
-    Location: location1
+    Location: Location
   }
 }
