@@ -28,15 +28,15 @@ var VNet1Name = '${namingConvention}-VNet1'
 var VNet1Prefix = '${VNet1ID}.0.0/16'
 var VNet1GatewaySubnetName = 'GatewaySubnet'
 var VNet1GatewaySubnetPrefix = '${VNet1ID}.0.0/24'
-var VNet1Subnet1Name = '${namingConvention}-VNet1-InfrastructureTier'
+var VNet1Subnet1Name = '${namingConvention}-VNet1-Subnet-Tier0Infra'
 var VNet1Subnet1Prefix = '${VNet1ID}.1.0/24'
-var VNet1Subnet2Name = '${namingConvention}-VNet1-DataTier'
+var VNet1Subnet2Name = '${namingConvention}-VNet1-Subnet-Tier1Data'
 var VNet1Subnet2Prefix = '${VNet1ID}.2.0/24'
-var VNet1Subnet3Name = '${namingConvention}-VNet1-ApplicationsTier'
+var VNet1Subnet3Name = '${namingConvention}-VNet1-Subnet-Tier2Apps'
 var VNet1Subnet3Prefix = '${VNet1ID}.3.0/24'
-var VNet1Subnet4Name = '${namingConvention}-VNet1-WebTier'
+var VNet1Subnet4Name = '${namingConvention}-VNet1-Subnet-Tier3Web'
 var VNet1Subnet4Prefix = '${VNet1ID}.4.0/24'
-var VNet1Subnet5Name = '${namingConvention}-VNet1-ClientTier'
+var VNet1Subnet5Name = '${namingConvention}-VNet1-Subnet-Tier4Client'
 var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
 var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
 var VNet1BastionSubnetName = 'AzureBastionSubnet'
@@ -75,9 +75,6 @@ module VNet1 'modules/vnet.bicep' = {
     BastionSubnetPrefix: VNet1BastionSubnetPrefix
     Location: Location
   }
-  dependsOn: [
-    newRG
-  ]
 }
 
 // Deploy Bastion Host 1 (BastionHost1)

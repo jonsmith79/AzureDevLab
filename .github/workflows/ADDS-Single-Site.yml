@@ -24,12 +24,12 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Create resource group with Azure CLI
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        scope: subscription
-        azcliversion: 2.44.1
-        inlineScript: az group create --name "${{env.namingConvention}}-RG2" --location ${{env.Location}}
+    #- name: Azure CLI script
+    #  uses: azure/CLI@v1
+    #  with:
+    #    scope: subscription
+    #    azcliversion: 2.44.1
+    #    inlineScript: az group create --name "${{env.namingConvention}}-RG2" --location ${{env.Location}}
 
       # Deploy Bicep file
     - name: ADDS Single Site - Azure ARM Deployment
