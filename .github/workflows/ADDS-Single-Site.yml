@@ -10,7 +10,6 @@ jobs:
       namingConvention: "adl"
       VNet1ID: "10.0"
       DeploymentName: "ADDS-Single-Site"
-      ResourceGroupName: "${{env.namingConvention}}-RG2-DELETE-ME"
 
     steps:
       # Checkout code
@@ -28,7 +27,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         azcliversion: 2.44.1
-        inlineScript: az group create --name ${{env.ResourceGroupName}} --location ${{env.Location}}
+        inlineScript: az group create --name "${{env.namingConvention}}-RG2-DELETE-ME" --location ${{env.Location}}
 
       # Deploy Bicep file
     - name: ADDS Single Site - Azure ARM Deployment
