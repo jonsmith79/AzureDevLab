@@ -5,7 +5,7 @@ param VirtualNetworkName string
 param VirtualNetworkAddressPrefix string
 
 @description('Gateway Subnet Name')
-param GatewaySubnetName string = 'GatewaySubnet'
+param GatewaySubnetName string
 
 @description('Gateway Subnet Address Prefix')
 param GatewaySubnetAddressPrefix string 
@@ -21,6 +21,24 @@ param Subnet2Name string
 
 @description('Subnet 2 Address Prefix')
 param Subnet2AddressPrefix string
+
+@description('Subnet 3 Name')
+param Subnet3Name string
+
+@description('Subnet 3 Address Prefix')
+param Subnet3AddressPrefix string
+
+@description('Subnet 4 Name')
+param Subnet4Name string
+
+@description('Subnet 4 Address Prefix')
+param Subnet4AddressPrefix string
+
+@description('Subnet 5 Name')
+param Subnet5Name string
+
+@description('Subnet 5 Address Prefix')
+param Subnet5AddressPrefix string
 
 @description('Bastion Subnet Name')
 param BastionSubnetName string
@@ -57,6 +75,24 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2020-05-
         name: Subnet2Name
         properties: {
           addressPrefix: Subnet2AddressPrefix
+        }
+      }
+      {
+        name: Subnet3Name
+        properties: {
+          addressPrefix: Subnet3AddressPrefix
+        }
+      }
+      {
+        name: Subnet4Name
+        properties: {
+          addressPrefix: Subnet4AddressPrefix
+        }
+      }
+      {
+        name: Subnet5Name
+        properties: {
+          addressPrefix: Subnet5AddressPrefix
         }
       }
       {
