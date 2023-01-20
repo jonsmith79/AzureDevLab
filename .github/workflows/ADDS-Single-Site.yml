@@ -20,6 +20,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
+        scope: subscription
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Create resource group with Azure CLI

@@ -1,4 +1,11 @@
+// Set target scope
+targetScope='subscription'
+
+
+// ===================
 // Paramaeters Section
+// ===================
+
 @description('Environment Naming Convention')
 param namingConvention string
 
@@ -8,7 +15,13 @@ param Location string
 @description('Virtual Network 1 Prefix')
 param VNet1ID string
 
+
+// =================
 // Variables Section
+// =================
+
+// Resource Group Variables
+var ResourceGroupName = '${namingConvention}-RG'
 
 //VNet1 Variables
 var VNet1Name = '${namingConvention}-VNet1'
@@ -28,11 +41,21 @@ var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
 var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
 var VNet1BastionSubnetName = 'AzureBastionSubnet'
 
+
+// =================
 // Resources Section
+// =================
+
+// Deploy new resource group
+resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+  name: ResourceGroupName
+  location: Location
+}
 
 // Deploy Virtual Network 1 (VNet1)
 module VNet1 'modules/vnet.bicep' = {
   name: 'VNet1'
+  scope: newRG
   params: {
     VirtualNetworkName: VNet1Name
     VirtualNetworkAddressPrefix: VNet1Prefix
@@ -52,11 +75,15 @@ module VNet1 'modules/vnet.bicep' = {
     BastionSubnetPrefix: VNet1BastionSubnetPrefix
     Location: Location
   }
+  dependsOn: [
+    newRG
+  ]
 }
 
 // Deploy Bastion Host 1 (BastionHost1)
 module BastionHost1 'modules/bastionhost.bicep' = {
   name: 'BastionHost1'
+  scope: newRG
   params: {
     PIPAddressName: '${namingConvention}PIP-BastionHost1'
     PIPAllocationMethod: 'Static'
