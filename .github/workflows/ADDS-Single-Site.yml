@@ -27,7 +27,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         azcliversion: 2.44.1
-        inlineScript: az group create --name "${{env.namingConvention}}-RG2-DELETE-ME" --location ${{env.Location}}
+        inlineScript: az group create --name "${{env.namingConvention}}-RG2" --location ${{env.Location}}
 
       # Deploy Bicep file
     - name: ADDS Single Site - Azure ARM Deployment
