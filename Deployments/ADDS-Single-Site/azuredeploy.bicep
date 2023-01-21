@@ -153,6 +153,9 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
     vmSize: vmDC1VMSize
     VNetName: VNet1Name
   }
+  dependsOn: [
+    BastionHost1
+  ]
 }
 
 
