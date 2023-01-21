@@ -130,6 +130,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
+/*
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG
