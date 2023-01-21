@@ -15,6 +15,35 @@ param Location string
 @description('Virtual Network 1 Prefix')
 param VNet1ID string
 
+@description('TimeZone for Virtual Machines')
+param TimeZone string
+
+@description('Enable Auto Shutdown')
+param AutoShutdownEnabled string
+
+@description('Auto Shutdown Time')
+param AutoShutdownTime string
+
+@description('Auto Shutdown Email')
+param AutoShutdownEmail string
+
+@description('The name of the Administrator of the new VM and Domain')
+param adminUsername string
+
+@description('The password for the Administrator account of the new VM and Domain')
+@secure()
+param adminPassword string
+
+@description('Windows Server OS License Type')
+param WindowsServerLicenseType string
+
+@description('Domain Controller1 OS Version')
+param vmDC1OSVersion string
+
+@description('Domain Controller1 VMSize')
+param vmDC1VMSize string
+
+
 
 // =================
 // Variables Section
@@ -23,7 +52,7 @@ param VNet1ID string
 // Resource Group Variables
 var ResourceGroupName = '${namingConvention}-RG'
 
-//VNet1 Variables
+// VNet1 Variables
 var VNet1Name = '${namingConvention}-VNet1'
 var VNet1Prefix = '${VNet1ID}.0.0/16'
 var VNet1GatewaySubnetName = 'GatewaySubnet'
@@ -40,6 +69,14 @@ var VNet1Subnet5Name = '${namingConvention}-VNet1-Subnet-Tier4Client'
 var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
 var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
 var VNet1BastionSubnetName = 'AzureBastionSubnet'
+
+// vmDC1 Variables
+var vmDC1DataDisk1Name = 'NTDS'
+var vmDC1Name = '${namingConvention}-DC-01'
+var vmDC1LastOctet = '4'
+var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
+
+
 
 
 // =================
@@ -93,3 +130,61 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
+// Deploy first domain controller
+module vmDC1_deploy 'modules/vmDCs.bicep' = {
+  scope: newRG
+  name: 'Deploy-vmDC1'
+  params: {
+    AutoShutdownEmail: AutoShutdownEmail
+    AutoShutdownEnabled: AutoShutdownEnabled
+    AutoShutdownTime: AutoShutdownTime
+    DataDisk1Name: vmDC1DataDisk1Name
+    LicenceType: WindowsServerLicenseType
+    Location: Location
+    Offer: 'WindowsServer'
+    OSVersion: vmDC1OSVersion
+    Publisher: 'MicrosoftWindowsServer'
+    SubnetName: VNet1Subnet1Name
+    TimeZone: TimeZone
+    vmAdminPwd: adminPassword
+    vmAdminUser: adminUsername
+    vmName: vmDC1Name
+    vmNICIP: vmDC1IP
+    vmSize: vmDC1VMSize
+    VNetName: VNet1Name
+  }
+}
+
+
+/*
+// Update DNS servers on subnets
+module VNet1DNSUpdate 'modules/vnetDNSUpdate.bicep' = {
+  scope: newRG
+  name: 'VNet1DNSUpdate'
+  params: {
+    BastionSubnetName: VNet1BastionSubnetName
+    BastionSubnetPrefix: VNet1BastionSubnetPrefix
+    DNSServerIP: [
+      vmDC1IP
+    ]
+    GatewaySubnetName: VNet1GatewaySubnetName
+    GatewaySubnetPrefix: VNet1GatewaySubnetPrefix
+    Location: Location
+    Subnet1Name: VNet1Subnet1Name
+    Subnet1Prefix: VNet1Subnet1Prefix
+    Subnet2Name: VNet1Subnet2Name
+    Subnet2Prefix: VNet1Subnet2Prefix
+    Subnet3Name: VNet1Subnet3Name
+    Subnet3Prefix: VNet1Subnet3Prefix
+    Subnet4Name: VNet1Subnet4Name
+    Subnet4Prefix: VNet1Subnet4Prefix
+    Subnet5Name: VNet1Subnet5Name
+    Subnet5Prefix: VNet1Subnet5Prefix
+    VNetName: VNet1Name
+    VNetPrefix: VNet1Prefix
+  }
+  dependsOn: [
+    vmDC1_deploy
+  ]
+}
+*/

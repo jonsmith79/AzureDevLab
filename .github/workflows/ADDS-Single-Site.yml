@@ -10,6 +10,14 @@ jobs:
       namingConvention: "adl"
       VNet1ID: "10.0"
       DeploymentName: "ADDS-Single-Site"
+      AutoShutdownEnabled: "Yes"
+      AutoShutdownTime: "2000"
+      AutoShutdownEmail: "someone@domain.com"
+      adminUsername: ${{ secrets.ADMIN_USERNAME }}
+      adminPassword: ${{ secrets.ADMIN_PASSWORD }}
+      WindowsServerLicenseType: "Windows_Server"
+      vmDC1OSVersion: "2022-Datacenter"
+      vmDC1VMSize: "Standard_D2s_v3"
 
     steps:
       # Checkout code
@@ -43,3 +51,12 @@ jobs:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
           VNet1ID="${{env.VNet1ID}}"
+          TimeZone="${{env.TimeZone}}"
+          AutoShutdownEnabled="${{env.AutoShutdownEnabled}}"
+          AutoShutdownTime="${{env.AutoShutdownTime}}"
+          AutoShutdownEmail="${{env.AutoShutdownEmail}}"
+          adminUsername="${{env.adminUsername}}"
+          adminPassword="${{env.adminPassword}}"
+          WindowsServerLicenseType="${{env.WindowsServerLicenseType}}"
+          vmDC1OSVersion="${{env.vmDC1OSVersion}}"
+          vmDC1VMSize="${{env.vmDC1VMSize}}"
