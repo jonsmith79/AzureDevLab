@@ -84,12 +84,14 @@ var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 // =================
 
 // Deploy new resource group
+@description('Create new resource group')
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: ResourceGroupName
   location: Location
 }
 
 // Deploy Virtual Network 1 (VNet1)
+@description('Deploy VNet1 to new resource group')
 module VNet1 'modules/vnet.bicep' = {
   name: 'VNet1'
   scope: newRG
@@ -115,6 +117,7 @@ module VNet1 'modules/vnet.bicep' = {
 }
 
 // Deploy Bastion Host 1 (BastionHost1)
+@description('Deploy Bastion Host to VNet1')
 module BastionHost1 'modules/bastionhost.bicep' = {
   name: 'BastionHost1'
   scope: newRG
@@ -130,7 +133,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
-/*
+
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG

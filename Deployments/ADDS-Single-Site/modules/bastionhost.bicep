@@ -42,4 +42,7 @@ resource VNetName_resource 'Microsoft.Network/bastionHosts@2022-07-01' = {
       }
     ]
   }
+  dependsOn: [
+    PIPAddressName_resource
+  ]
 }
