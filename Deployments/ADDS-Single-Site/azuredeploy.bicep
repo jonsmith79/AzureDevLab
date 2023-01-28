@@ -69,10 +69,11 @@ var VNet1Subnet5Name = '${namingConvention}-VNet1-Subnet-Tier4Client'
 var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
 var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
 var VNet1BastionSubnetName = 'AzureBastionSubnet'
+var nsgNameADDS = '${VNet1Subnet1Name}-NSG'
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
-var vmDC1Name = '${namingConvention}-DC-01'
+var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 
@@ -113,6 +114,7 @@ module VNet1 'modules/vnet.bicep' = {
     BastionSubnetName: VNet1BastionSubnetName
     BastionSubnetPrefix: VNet1BastionSubnetPrefix
     Location: Location
+    nsgNameADDS: nsgNameADDS
   }
 }
 
@@ -122,7 +124,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   name: 'BastionHost1'
   scope: newRG
   params: {
-    PIPAddressName: '${namingConvention}PIP-BastionHost1'
+    PIPAddressName: '${namingConvention}-PIP-BastionHost1'
     PIPAllocationMethod: 'Static'
     BastionVNetName: VNet1Name
     SubnetName: VNet1BastionSubnetName
