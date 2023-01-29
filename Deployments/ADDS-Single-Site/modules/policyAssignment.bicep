@@ -10,6 +10,5 @@ resource AzPolAssign_resource 'Microsoft.Authorization/policyAssignments@2022-06
   name: AzPolName
   properties: {
     policyDefinitionId: AzPolDef
-    policyType: 'BuiltIn'
   }
 }
