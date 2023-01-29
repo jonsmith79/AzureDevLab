@@ -148,7 +148,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
   }
 }
 
-/*
+
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG
