@@ -3,10 +3,22 @@
 # Active Directory Single-Site
 <img src="../xx_Images/ActiveDirectorySingleSite.png" alt="Active Directory" width="150">
 
-This Templates deploys a Single Forest/Domain:
+This templates deploys:
 
-- 1 - Active Directory Forest/Domain
-- ~~1 - Domain Controller~~
+- 1 - Resource Group
+- 1 - Virtual Network
+- 5 - Subnets
+    - Gateway Subnet
+    - Tier 0 (Infrastructure) Subnet
+    - Tier 1 (Data) Subnet
+    - Tier 2 (Apps) Subnet
+    - Tier 3 (Web) Subnet
+    - Tier 4 (Client) Subnet
+    - Bastion Subnet
+- 1 - NSG for ADDS traffic on Tier 0 subnet
+- 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
+- 1 - Domain Controller
+- ~~1 - Active Directory Forest/Domain~~
 - ~~1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
 
 The deployment leverages Desired State Configuration scripts to further customize the following:

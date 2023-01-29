@@ -58,6 +58,7 @@ param nsgNameADDS string
 //==================
 // Variables section
 //==================
+/*
 var SourceAddresses = [
   GatewaySubnetAddressPrefix
   Subnet1AddressPrefix
@@ -67,10 +68,14 @@ var SourceAddresses = [
   Subnet5AddressPrefix
   BastionSubnetPrefix
 ]
-
+*/
+var SourceAddress = 'VirtualNetwork'
+/*
 var SourcePortRanges = [
   '49152-65535'
 ]
+*/
+var SourcePortRange = '*'
 var DestinationPortRanges = '49152-65535'
 var DNSSourcePortRanges = [
   '53'
@@ -89,224 +94,237 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
   properties: {
     securityRules: [
       {
-        name: 'W32Time'
+        name: 'Inbound W32Time'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Udp'
-          priority: 301
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
+          priority: 300
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
           destinationAddressPrefix: Subnet1AddressPrefix
           destinationPortRange: '123'
         }
       }
       {
-        name: 'RPC Endpoint Mappper'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 302
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '135'
-        }
-      }
-      {
-        name: 'Kerberos password change (TCP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 303
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '464'
-        }
-      }
-      {
-        name: 'Kerberos password change (UDP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Udp'
-          priority: 304
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '464'
-        }
-      }
-      {
-        name: 'RPC for LSA, SAM, NetLogon'
+        name: 'Inbound RPC Endpoint Mappper'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Tcp'
           priority: 305
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
           destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: DestinationPortRanges
+          destinationPortRange: '135'
         }
       }
       {
-        name: 'LDAP (TCP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 306
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '389'
-        }
-      }
-      {
-        name: 'LDAP (UDP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Udp'
-          priority: 307
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '389'
-        }
-      }
-      {
-        name: 'LDAP SSL'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 308
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '636'
-        }
-      }
-      {
-        name: 'LDAP GC'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 309
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '3268'
-        }
-      }
-      {
-        name: 'LDAP GC SSL'
+        name: 'Inbound Kerberos password change (TCP)'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Tcp'
           priority: 310
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
           destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '3269'
+          destinationPortRange: '464'
         }
       }
       {
-        name: 'DNS (TCP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 311
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: DNSSourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '53'
-        }
-      }
-      {
-        name: 'DNS (UDP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Udp'
-          priority: 312
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: DNSSourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '53'
-        }
-      }
-      {
-        name: 'FRS RPC'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 313
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: DestinationPortRanges
-        }
-      }
-      {
-        name: 'Kerberos (TCP)'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          priority: 314
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
-          destinationPortRange: '88'
-        }
-      }
-      {
-        name: 'Kerberos (UDP)'
+        name: 'Inbound Kerberos password change (UDP)'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Udp'
           priority: 315
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '464'
+        }
+      }
+      {
+        name: 'Inbound RPC for LSA, SAM, NetLogon'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 320
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: DestinationPortRanges
+        }
+      }
+      {
+        name: 'Inbound LDAP (TCP)'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 325
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '389'
+        }
+      }
+      {
+        name: 'Inbound LDAP (UDP)'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Udp'
+          priority: 330
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '389'
+        }
+      }
+      {
+        name: 'Inbound LDAP SSL'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 335
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '636'
+        }
+      }
+      {
+        name: 'Inbound LDAP GC'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 340
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '3268'
+        }
+      }
+      {
+        name: 'Inbound LDAP GC SSL'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 345
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '3269'
+        }
+      }
+      {
+        name: 'Inbound DNS (TCP)'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 350
+          sourceAddressPrefix: SourceAddress
+          sourcePortRanges: DNSSourcePortRanges
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '53'
+        }
+      }
+      {
+        name: 'Inbound DNS (UDP)'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Udp'
+          priority: 355
+          sourceAddressPrefix: SourceAddress
+          sourcePortRanges: DNSSourcePortRanges
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '53'
+        }
+      }
+      {
+        name: 'Inbound FRS RPC'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 360
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: DestinationPortRanges
+        }
+      }
+      {
+        name: 'Inbound Kerberos (TCP)'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          priority: 365
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
           destinationAddressPrefix: Subnet1AddressPrefix
           destinationPortRange: '88'
         }
       }
       {
-        name: 'SMB'
+        name: 'Inbound Kerberos (UDP)'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Udp'
+          priority: 370
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: '88'
+        }
+      }
+      {
+        name: 'Inbound SMB'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Tcp'
-          priority: 316
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
+          priority: 375
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
           destinationAddressPrefix: Subnet1AddressPrefix
           destinationPortRange: '445'
         }
       }
       {
-        name: 'DFSR RCP'
+        name: 'Inbound DFSR RCP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Tcp'
-          priority: 317
-          sourceAddressPrefixes: SourceAddresses
-          sourcePortRanges: SourcePortRanges
+          priority: 380
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
           destinationAddressPrefix: Subnet1AddressPrefix
           destinationPortRange: DestinationPortRanges
+        }
+      }
+      {
+        name: 'Inbound ICMP'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Icmp'
+          priority: 385
+          sourceAddressPrefix: SourceAddress
+          sourcePortRange: SourcePortRange
+          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationPortRange: SourcePortRange
         }
       }
     ]

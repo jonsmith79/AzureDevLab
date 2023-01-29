@@ -77,7 +77,9 @@ var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 
-
+// Policy Assignment variables
+var AzPolName = 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
+var AzPolDef = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'
 
 
 // =================
@@ -90,6 +92,7 @@ resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: ResourceGroupName
   location: Location
 }
+output RGID string = newRG.id
 
 // Deploy Virtual Network 1 (VNet1)
 @description('Deploy VNet1 to new resource group')
@@ -135,7 +138,17 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
+@description('Assign Policy Initiative to the Resource Group')
+module AzPolAssign 'modules/policyAssignment.bicep' = {
+  name: 'Assign-to-${ResourceGroupName}'
+  scope: newRG
+  params: {
+    AzPolName: AzPolName
+    AzPolDef: AzPolDef
+  }
+}
 
+/*
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG
@@ -163,6 +176,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
     BastionHost1
   ]
 }
+
 
 
 /*
