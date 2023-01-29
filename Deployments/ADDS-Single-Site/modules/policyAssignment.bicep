@@ -1,3 +1,5 @@
+targetScope = 'resourceGroup'
+
 @description('Azure Policy Assignment Name')
 param AzPolName string
 
@@ -8,5 +10,6 @@ resource AzPolAssign_resource 'Microsoft.Authorization/policyAssignments@2022-06
   name: AzPolName
   properties: {
     policyDefinitionId: AzPolDef
+    policyType: 'BuiltIn'
   }
 }
