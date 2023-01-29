@@ -14,7 +14,7 @@ param Location string
 
 @description('Virtual Network 1 Prefix')
 param VNet1ID string
-/*
+
 @description('TimeZone for Virtual Machines')
 param TimeZone string
 
@@ -42,7 +42,7 @@ param vmDC1OSVersion string
 
 @description('Domain Controller1 VMSize')
 param vmDC1VMSize string
-*/
+
 
 
 // =================
@@ -70,13 +70,13 @@ var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
 var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
 var VNet1BastionSubnetName = 'AzureBastionSubnet'
 var nsgNameADDS = '${VNet1Subnet1Name}-NSG'
-/*
+
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
 var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
-*/
+
 // Policy Assignment variables
 var AzPolName = 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var AzPolDef = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'
@@ -148,7 +148,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
   }
 }
 
-/*
+
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG
