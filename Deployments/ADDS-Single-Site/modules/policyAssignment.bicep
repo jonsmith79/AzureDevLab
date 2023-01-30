@@ -1,4 +1,4 @@
-targetScope = 'resourceGroup'
+targetScope = 'subscription'
 
 @description('Azure Policy Assignment Name')
 param AzPolName string
@@ -7,8 +7,16 @@ param AzPolName string
 param AzPolDef string
 
 resource AzPolAssign_resource 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
-  name: AzPolName
+  name: AzPolName // Should be unique within your target scope
+  scope: subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)
   properties: {
-    policyDefinitionId: AzPolDef
+    policyDefinitionId: AzPolDef // Reference a policy specified in the same Bicep file
+    enforcementMode: 'Default'
+    displayName: 'Assign ${AzPolName}'
   }
+}
+
+resource AzPolSetAssign_resource 'Microsoft.Authorization/policySetDefinitions@2021-06-01' existing = {
+  name: AzPolName
+
 }

@@ -78,7 +78,7 @@ var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 
 // Policy Assignment variables
-var AzPolName = 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
+var AzPolName = '12794019-7a00-42cf-95c2-882eed337cc8' // 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var AzPolDef = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'
 
 
