@@ -15,8 +15,3 @@ resource AzPolAssign_resource 'Microsoft.Authorization/policyAssignments@2022-06
     displayName: 'Assign ${AzPolName}'
   }
 }
-
-resource AzPolSetAssign_resource 'Microsoft.Authorization/policySetDefinitions@2021-06-01' existing = {
-  name: AzPolName
-
-}
