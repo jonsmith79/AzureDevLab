@@ -77,9 +77,43 @@ var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 
-// Policy Assignment variables
-var AzPolName = '12794019-7a00-42cf-95c2-882eed337cc8' // 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
-var AzPolDef = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'
+// Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
+var assignmentName = 'Deploy VM prereqs for Guest Configuration'
+var assignmentDisplayName = 'Deploy VM prereqs for Guest Configuration'
+var assignmentDescription = 'Assignment of the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' initiative (policy set) to VMs'
+var assignmentEnforcementMode = 'Default'
+var assignmentPolicyID = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'
+var assignmentNonComplianceMessages = [
+  {
+    message: 'Non-compliance with \'adding managed identity on VMs with no ID\''
+    policyDefinitionReferenceId: 'Prerequisite_AddSystemIdentityWhenNone'
+  }
+  {
+    message: 'Non-compliance with \'adding managed identity on VMs with user assigned ID\''
+    policyDefinitionReferenceId: 'Prerequisite_AddSystemIdentityWhenUser'
+  }
+  {
+    message: 'Non-compliance with \'depoying guest config extension on Windows VMs\''
+    policyDefinitionReferenceId: 'Prerequisite_DeployExtensionWindows'
+  }
+  {
+    message: 'Non-compliance with \'depoying guest config extension on Linux VMs\''
+    policyDefinitionReferenceId: 'Prerequisite_DeployExtensionLinux'
+  }
+]
+var resourceSelectors = [
+  {
+    name: 'VM Selector'
+    selectors: [
+      {
+        in: [
+          'Microsoft.Compute/virtualMachines'
+        ]
+      }
+    ]
+  }
+]
+
 
 
 // =================
@@ -138,16 +172,25 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
+
+//================================================================================================================================================
 @description('Assign Policy Initiative to the Resource Group')
 module AzPolAssign 'modules/policyAssignment.bicep' = {
-  name: 'Assign-to-${ResourceGroupName}'
-  scope: newRG
+  name: assignmentName
+  scope: subscription()
   params: {
-    AzPolName: AzPolName
-    AzPolDef: AzPolDef
+    Location: Location
+    assignmentName: assignmentDisplayName
+    assignmentDisplayName: assignmentDisplayName
+    assignmentDescription: assignmentDescription
+    assignmentEnforcementMode: assignmentEnforcementMode
+    assignmentPolicyID: assignmentPolicyID
+    assignmentNonComplianceMessages: assignmentNonComplianceMessages
+    resourceSelectors: resourceSelectors
   }
 }
 
+//================================================================================================================================================
 
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
