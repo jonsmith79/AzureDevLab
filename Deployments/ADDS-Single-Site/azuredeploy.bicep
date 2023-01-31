@@ -78,7 +78,7 @@ var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
-var assignmentName = 'Deploy VM prereqs for Guest Configuration'
+var assignmentName = 'Deploy_VM_Prereqs'
 var assignmentDisplayName = 'Deploy VM prereqs for Guest Configuration'
 var assignmentDescription = 'Assignment of the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' initiative (policy set) to VMs'
 var assignmentEnforcementMode = 'Default'

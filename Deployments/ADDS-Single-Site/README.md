@@ -1,6 +1,9 @@
-[![ADDS-Single-Site](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml)
 
 # Active Directory Single-Site
+
+[![ADDS-Single-Site](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml)
+![Active Directory Single Site](../xx_Images/ActiveDirectorySingleSite.png "ADDS Single Site")
+
 <img src="../xx_Images/ActiveDirectorySingleSite.png" alt="Active Directory" width="150">
 
 This templates deploys:
@@ -8,13 +11,13 @@ This templates deploys:
 - 1 - Resource Group
 - 1 - Virtual Network
 - 5 - Subnets
-    - Gateway Subnet
-    - Tier 0 (Infrastructure) Subnet
-    - Tier 1 (Data) Subnet
-    - Tier 2 (Apps) Subnet
-    - Tier 3 (Web) Subnet
-    - Tier 4 (Client) Subnet
-    - Bastion Subnet
+  - Gateway Subnet
+  - Tier 0 (Infrastructure) Subnet
+  - Tier 1 (Data) Subnet
+  - Tier 2 (Apps) Subnet
+  - Tier 3 (Web) Subnet
+  - Tier 4 (Client) Subnet
+  - Bastion Subnet
 - 1 - NSG for ADDS traffic on Tier 0 subnet
 - 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 - 1 - Domain Controller
@@ -24,27 +27,28 @@ This templates deploys:
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
 AD OU Structure:
+
 - [domain.com]
-    - -- Accounts
-        - --- End User
-            - ---- Office 365
-            - ---- Non-Office 365
-        - --- Admin
-        - --- Service
-    - -- Groups
-        - --- End User
-        - --- Admin
-    - -- Servers
-        - --- Servers2012R2
-        - --- Serverrs2016
-        - --- Servers2019
-        - --- Servers2022
-    - -- MaintenanceServers
-    - -- MaintenanceWorkstations
-    - -- Workstations
-        - --- Windows11
-        - --- Windows10
-        - --- Windows7
+  - -- Accounts
+   - --- End User
+    - ---- Office 365
+    - ---- Non-Office 365
+   - --- Admin
+   - --- Service
+  - -- Groups
+   - --- End User
+   - --- Admin
+  - -- Servers
+   - --- Servers2012R2
+   - --- Serverrs2016
+   - --- Servers2019
+   - --- Servers2022
+  - -- MaintenanceServers
+  - -- MaintenanceWorkstations
+  - -- Workstations
+   - --- Windows11
+   - --- Windows10
+   - --- Windows7
 
 Parameters that support changes
 | Parameter | Description |
