@@ -4,8 +4,6 @@
 [![ADDS-Single-Site](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml/badge.svg)](https://github.com/jonsmith79/AzureDevLab/actions/workflows/ADDS-Single-Site.yml)
 ![Active Directory Single Site](../xx_Images/ActiveDirectorySingleSite.png "ADDS Single Site")
 
-<img src="../xx_Images/ActiveDirectorySingleSite.png" alt="Active Directory" width="150">
-
 This templates deploys:
 
 - 1 - Resource Group
@@ -29,26 +27,26 @@ The deployment leverages Desired State Configuration scripts to further customiz
 AD OU Structure:
 
 - [domain.com]
-  - -- Accounts
-   - --- End User
-    - ---- Office 365
-    - ---- Non-Office 365
-   - --- Admin
-   - --- Service
-  - -- Groups
-   - --- End User
-   - --- Admin
-  - -- Servers
-   - --- Servers2012R2
-   - --- Serverrs2016
-   - --- Servers2019
-   - --- Servers2022
-  - -- MaintenanceServers
-  - -- MaintenanceWorkstations
-  - -- Workstations
-   - --- Windows11
-   - --- Windows10
-   - --- Windows7
+    - -- Accounts
+        - --- End User
+            - ---- Office 365
+            - ---- Non-Office 365
+        - --- Admin
+        - --- Service
+    - -- Groups
+        - --- End User
+        - --- Admin
+    - -- Servers
+        - --- Servers2012R2
+        - --- Serverrs2016
+        - --- Servers2019
+        - --- Servers2022
+    - -- MaintenanceServers
+    - -- MaintenanceWorkstations
+    - -- Workstations
+        - --- Windows11
+        - --- Windows10
+        - --- Windows7
 
 Parameters that support changes
 | Parameter | Description |
@@ -74,4 +72,4 @@ Parameters that support changes
 | DC1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 | WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 
-[^1]: [Markdown Cheatsheet](https://www.markdown-cheatsheet.com/)
+>*[Markdown Cheatsheet](https://www.markdown-cheatsheet.com/)*
