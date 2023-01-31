@@ -79,7 +79,7 @@ var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'
-var assignmentDisplayName = 'Deploy VM prereqs for Guest Configuration'
+var assignmentDisplayName = '12794019-7a00-42cf-95c2-882eed337cc8'
 var assignmentDescription = 'Assignment of the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' initiative (policy set) to VMs'
 var assignmentEnforcementMode = 'Default'
 var assignmentPolicyID = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'

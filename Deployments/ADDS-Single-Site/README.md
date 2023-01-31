@@ -73,3 +73,5 @@ Parameters that support changes
 | WK1OSVersion | Select Windows-11, Windows-10 or Windows-7 Worksation 1 OS Version. |
 | DC1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 | WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
+
+[^1]: [Markdown Cheatsheet](https://www.markdown-cheatsheet.com/)
