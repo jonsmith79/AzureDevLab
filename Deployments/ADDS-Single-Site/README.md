@@ -70,6 +70,28 @@ AD OU Structure:
         * Windows10
         * Windows7
 
+| [domain.com] | | | |
+| | Accounts | | |
+| | | End User | |
+| | | | Office 365 |
+| | | | Non-Office 365 |
+| | | Admin | |
+| | | Service | |
+| | Groups | | |
+| | | End User | |
+| | | Admin | |
+| | Servers | | |
+| | | Servers2012R2 | |
+| | | Serverrs2016 | |
+| | | Servers2019 | |
+| | | Servers2022 | |
+| | MaintenanceServers | | |
+| | MaintenanceWorkstations | | |
+| | Workstations | | |
+| | | Windows11 | |
+| | | Windows10 | |
+| | | Windows7 | |
+
 Parameters that support changes
 | Parameter | Description |
 |-----------|-------------|
