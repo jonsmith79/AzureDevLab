@@ -213,6 +213,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
   }
   dependsOn: [
     BastionHost1
+    AzPolAssign
   ]
 }
 
