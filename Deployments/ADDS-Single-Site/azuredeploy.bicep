@@ -100,7 +100,7 @@ var assignmentNonComplianceMessages = [
     policyDefinitionReferenceId: 'Prerequisite_DeployExtensionLinux'
   }
 ]
-var resourceSelectors = [
+/*var resourceSelectors = [
   {
     name: 'VM Selector'
     selectors: [
@@ -112,7 +112,14 @@ var resourceSelectors = [
       }
     ]
   }
-]
+]*/
+
+// vmDC1 extension variables
+var vmExtensionName = 'AzurePolicyforWindows'
+var vmExtensionPublisher = 'Microsoft.GuestConfiguration'
+var vmExtensionType = 'ConfigurationforWindows'
+var vmExtensionTypeHandlerVersion = '1.1'
+var vmExtensionAutoUpgrade = true
 
 
 
@@ -184,11 +191,12 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     assignmentEnforcementMode: assignmentEnforcementMode
     assignmentPolicyID: assignmentPolicyID
     assignmentNonComplianceMessages: assignmentNonComplianceMessages
-    resourceSelectors: resourceSelectors
+    //resourceSelectors: resourceSelectors
   }
 }
 
 // Deploy first domain controller
+@description('Deploy first domain controller to VNet1')
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG
   name: 'Deploy-vmDC1'
@@ -217,7 +225,24 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
   ]
 }
 
-
+// Add extension to first domain controller
+@description('Add extension to first domain controller')
+module vmDC1Extension_add 'modules/vmExtension.bicep' = {
+  scope: newRG
+  name: vmExtensionName
+  params: {
+    vmExtensionName: vmExtensionName
+    vmExtensionPublisher: vmExtensionPublisher
+    vmExtensionType: vmExtensionType
+    vmExtensionTypeHandlerVersion: vmExtensionTypeHandlerVersion
+    vmExtensionAutoUpgrade: vmExtensionAutoUpgrade
+    vmName: vmDC1Name
+    //vmResourceGroup: ResourceGroupName
+  }
+  dependsOn: [
+    vmDC1_deploy
+  ]
+}
 
 /*
 // Update DNS servers on subnets
