@@ -237,6 +237,7 @@ module vmDC1Extension_add 'modules/vmExtension.bicep' = {
     vmExtensionTypeHandlerVersion: vmExtensionTypeHandlerVersion
     vmExtensionAutoUpgrade: vmExtensionAutoUpgrade
     vmName: vmDC1Name
+    Location: Location
     //vmResourceGroup: ResourceGroupName
   }
   dependsOn: [

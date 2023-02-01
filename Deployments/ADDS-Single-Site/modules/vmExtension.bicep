@@ -16,6 +16,12 @@ param vmExtensionAutoUpgrade bool
 @description('The name of the virtual machine.')
 param vmName string
 
+@description('The location of the virtual machine.')
+param Location string
+
+
+
+
 @description('The name of the virtual machine to which the extension will be added.')
 resource vmToDeploy_Extension 'Microsoft.Compute/virtualMachines@2022-08-01' existing = {
   name: vmName
@@ -24,6 +30,7 @@ resource vmToDeploy_Extension 'Microsoft.Compute/virtualMachines@2022-08-01' exi
 @description('The virtual machine extension to be added.')
 resource vmExtension_resource 'Microsoft.Compute/virtualMachines/extensions@2022-08-01' = {
   name: vmExtensionName
+  location: Location
   parent: vmToDeploy_Extension
   properties: {
     publisher: vmExtensionPublisher
