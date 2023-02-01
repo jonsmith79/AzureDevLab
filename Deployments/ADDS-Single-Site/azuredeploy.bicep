@@ -109,6 +109,7 @@ var resourceSelectors = [
         in: [
           'Microsoft.Compute/virtualMachines'
         ]
+        kind: 'resourceType'
       }
     ]
   }
