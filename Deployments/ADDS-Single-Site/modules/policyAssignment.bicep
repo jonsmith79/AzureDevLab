@@ -31,7 +31,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2022-06-01'
   location: Location
   identity: {
     type: 'SystemAssigned'
-    userAssignedIdentities: {}
+    //userAssignedIdentities: {}
   }
   properties: {
     description: assignmentDescription
