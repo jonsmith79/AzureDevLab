@@ -173,15 +173,15 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
-
-//===============================================================================================================================================
+// Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy initiative to the resource group
 @description('Assign Policy Initiative to the Resource Group')
 module AzPolAssign 'modules/policyAssignment.bicep' = {
   name: assignmentName
   scope: subscription()
   params: {
     Location: Location
-    assignmentName: assignmentDisplayName
+    ResourceGroupName: newRG.name
+    assignmentName: assignmentName
     assignmentDisplayName: assignmentDisplayName
     assignmentDescription: assignmentDescription
     assignmentEnforcementMode: assignmentEnforcementMode
@@ -190,8 +190,6 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     resourceSelectors: resourceSelectors
   }
 }
-
-//===============================================================================================================================================
 
 // Deploy first domain controller
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
