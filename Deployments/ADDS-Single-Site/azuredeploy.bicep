@@ -120,6 +120,8 @@ var vmExtensionPublisher = 'Microsoft.GuestConfiguration'
 var vmExtensionType = 'ConfigurationforWindows'
 var vmExtensionTypeHandlerVersion = '1.1'
 var vmExtensionAutoUpgrade = true
+var vmExtensionAutoUpgradeMinorVersion = true
+
 
 
 
@@ -236,6 +238,7 @@ module vmDC1Extension_add 'modules/vmExtension.bicep' = {
     vmExtensionType: vmExtensionType
     vmExtensionTypeHandlerVersion: vmExtensionTypeHandlerVersion
     vmExtensionAutoUpgrade: vmExtensionAutoUpgrade
+    vmExtensionAutoUpgradeMinorVersion: vmExtensionAutoUpgradeMinorVersion
     vmName: vmDC1Name
     Location: Location
     //vmResourceGroup: ResourceGroupName
