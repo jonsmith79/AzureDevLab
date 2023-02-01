@@ -27,28 +27,6 @@ The deployment leverages Desired State Configuration scripts to further customiz
 AD OU Structure:
 
 - [domain.com]
-    - -- Accounts
-        - --- End User
-            - ---- Office 365
-            - ---- Non-Office 365
-        - --- Admin
-        - --- Service
-    - -- Groups
-        - --- End User
-        - --- Admin
-    - -- Servers
-        - --- Servers2012R2
-        - --- Serverrs2016
-        - --- Servers2019
-        - --- Servers2022
-    - -- MaintenanceServers
-    - -- MaintenanceWorkstations
-    - -- Workstations
-        - --- Windows11
-        - --- Windows10
-        - --- Windows7
-
-- [domain.com]
     - Accounts
         * End User
             * Office 365
@@ -69,30 +47,6 @@ AD OU Structure:
         * Windows11
         * Windows10
         * Windows7
-
-|Level 1 | Level 2 | Level 3 | Level 4 |
-|--------|---------|---------|---------|
-| [domain.com] | | | |
-| | Accounts | | |
-| | | End User | |
-| | | | Office 365 |
-| | | | Non-Office 365 |
-| | | Admin | |
-| | | Service | |
-| | Groups | | |
-| | | End User | |
-| | | Admin | |
-| | Servers | | |
-| | | Servers2012R2 | |
-| | | Serverrs2016 | |
-| | | Servers2019 | |
-| | | Servers2022 | |
-| | MaintenanceServers | | |
-| | MaintenanceWorkstations | | |
-| | Workstations | | |
-| | | Windows11 | |
-| | | Windows10 | |
-| | | Windows7 | |
 
 Parameters that support changes
 | Parameter | Description |
