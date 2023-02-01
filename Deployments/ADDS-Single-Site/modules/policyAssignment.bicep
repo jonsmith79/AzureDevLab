@@ -7,10 +7,6 @@ param Location string
 @description('Assignment name')
 param assignmentName string 
 
-@maxLength(128)
-@description('Assignement display Name')
-param assignmentDisplayName string
-
 @description('Assignement description')
 param assignmentDescription string
 
@@ -26,7 +22,7 @@ param assignmentNonComplianceMessages array
 @description('Assignment Resource Selectors')
 param resourceSelectors array
 
-resource policyAssignment 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
+resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
   name: assignmentName
   location: Location
   identity: {
@@ -35,7 +31,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2022-06-01'
   }
   properties: {
     description: assignmentDescription
-    displayName: assignmentDisplayName
+    displayName: assignmentName
     enforcementMode: assignmentEnforcementMode
     nonComplianceMessages: assignmentNonComplianceMessages
     parameters: {}
