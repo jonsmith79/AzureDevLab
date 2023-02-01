@@ -70,6 +70,8 @@ AD OU Structure:
         * Windows10
         * Windows7
 
+|Level 1 | Level 2 | Level 3 | Level 4 |
+|--------|---------|---------|---------|
 | [domain.com] | | | |
 | | Accounts | | |
 | | | End User | |
