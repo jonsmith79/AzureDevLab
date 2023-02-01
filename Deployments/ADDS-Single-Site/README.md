@@ -74,5 +74,5 @@ Parameters that support changes
 | WK1OSVersion | Select Windows-11, Windows-10 or Windows-7 Worksation 1 OS Version. |
 | WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 
-[^1](Ensure the SPN has 'Owner' rights over the subscription and Azure AD Directory Read.All permissions)
+[^1]: (Ensure the SPN has 'Owner' rights over the subscription and Azure AD Directory Read.All permissions)
 >*[Markdown Cheatsheet](https://www.markdown-cheatsheet.com/)*

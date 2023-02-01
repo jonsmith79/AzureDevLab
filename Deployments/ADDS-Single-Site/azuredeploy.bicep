@@ -180,7 +180,6 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
   scope: subscription()
   params: {
     Location: Location
-    ResourceGroupName: newRG.name
     assignmentName: assignmentName
     assignmentDisplayName: assignmentDisplayName
     assignmentDescription: assignmentDescription

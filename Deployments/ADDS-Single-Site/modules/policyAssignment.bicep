@@ -3,9 +3,6 @@ targetScope = 'subscription'
 @description('Location for all resources.')
 param Location string
 
-@description('Name of the resource group to which the resources will be deployed.')
-param ResourceGroupName string
-
 @maxLength(64)
 @description('Assignment name')
 param assignmentName string 
