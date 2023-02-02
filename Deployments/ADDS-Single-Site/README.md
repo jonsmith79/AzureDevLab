@@ -75,6 +75,6 @@ Parameters that support changes
 | WK1OSVersion | Select Windows-11, Windows-10 or Windows-7 Worksation 1 OS Version. |
 | WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 
-[^1]: Ensure the SPN has 'Owner' rights over the subscription and Azure AD Directory Read.All permissions.
-[^2]: Ensure the 'Microsoft.GuestConfiguration' has been registered as a Resource Provider for the subscription.
+[^1]: Ensure the SPN has 'Owner' rights over the subscription and Azure AD Directory Read.All permissions. Further information available [here](https://techcommunity.microsoft.com/t5/azure-paas-blog/azure-policy-perform-policy-operations-through-azure-devops/ba-p/2045515#:~:text=By%20default%2C%20the%20SPN%20created%20by%20Azure%20DevOps,the%20Owner%20role%20assigned%20at%20the%20subscription%20level.).
+[^2]: Ensure the 'Microsoft.GuestConfiguration' has been registered as a Resource Provider for the subscription. Further information available [here](https://learn.microsoft.com/en-us/azure/governance/machine-configuration/overview#resource-provider).
 >*[Markdown Cheatsheet](https://www.markdown-cheatsheet.com/)*
