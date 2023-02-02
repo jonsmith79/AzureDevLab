@@ -17,8 +17,9 @@ This templates deploys:
   - Tier 4 (Client) Subnet
   - Bastion Subnet
 - 1 - NSG for ADDS traffic on Tier 0 subnet
-- 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1]
+- 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1] [^2]
 - 1 - Domain Controller
+- 1 - Guest Configuration Extension for the first Domain Controller
 - ~~1 - Active Directory Forest/Domain~~
 - ~~1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
 
@@ -75,4 +76,5 @@ Parameters that support changes
 | WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 
 [^1]: Ensure the SPN has 'Owner' rights over the subscription and Azure AD Directory Read.All permissions.
+[^2]: Ensure the 'Microsoft.GuestConfiguration' has been registered as a Resource Provider for the subscription.
 >*[Markdown Cheatsheet](https://www.markdown-cheatsheet.com/)*
