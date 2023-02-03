@@ -100,7 +100,7 @@ var assignmentNonComplianceMessages = [
     policyDefinitionReferenceId: 'Prerequisite_DeployExtensionLinux'
   }
 ]
-/*var resourceSelectors = [
+var resourceSelectors = [
   {
     name: 'VM Selector'
     selectors: [
@@ -112,7 +112,32 @@ var assignmentNonComplianceMessages = [
       }
     ]
   }
-]*/
+]
+
+// Policy Assignment variables for 'Configure virtual machines to be onboarded to Azure Automanage'
+var AzPolAutomanageName = 'Onboard_VMs_to_Automanage'
+var AzPolAutomanageDescription = 'Assignment of the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to VMs'
+var AzPolAutomanageEnforcementMode = 'Default'
+var AzPolAutomanagePolicyID = '/providers/Microsoft.Authorization/policyDefinitions/f889cab7-da27-4c41-a3b0-de1f6f87c550'
+var AzPolAutomanageNonComplianceMessages = [
+  {
+    message: 'Non-compliance with \'Configure virtual machines to be onboarded to Azure Automanage\''
+    policyDefinitionReferenceId: '/providers/Microsoft.Authorization/policyDefinitions/f889cab7-da27-4c41-a3b0-de1f6f87c550'
+  }
+]
+var AzPolAutomanageResourceSelectors = [
+  {
+    name: 'VM Selector'
+    selectors: [
+      {
+        in: [
+          'Microsoft.Compute/virtualMachines'
+        ]
+        kind: 'resourceType'
+      }
+    ]
+  }
+]
 
 // vmDC1 extension variables
 var vmExtensionName = 'AzurePolicyforWindows'
@@ -129,7 +154,7 @@ var vmExtensionAutoUpgradeMinorVersion = true
 // Resources Section
 // =================
 
-// Deploy new resource group
+// Deploy new resource group if it doesn't already exist
 @description('Create new resource group')
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: ResourceGroupName
@@ -182,7 +207,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
 }
 
 // Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy initiative to the resource group
-@description('Assign Policy Initiative to the Resource Group')
+@description('Assign the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' policy initiative to the resource group')
 module AzPolAssign 'modules/policyAssignment.bicep' = {
   name: assignmentName
   scope: subscription()
@@ -193,7 +218,24 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     assignmentEnforcementMode: assignmentEnforcementMode
     assignmentPolicyID: assignmentPolicyID
     assignmentNonComplianceMessages: assignmentNonComplianceMessages
-    //resourceSelectors: resourceSelectors
+    resourceSelectors: resourceSelectors
+  }
+}
+
+
+// Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
+@description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
+module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
+  name: AzPolAutomanageName
+  scope: subscription()
+  params: {
+    Location: Location
+    assignmentName: AzPolAutomanageName
+    assignmentDescription: AzPolAutomanageDescription
+    assignmentEnforcementMode: AzPolAutomanageEnforcementMode
+    assignmentPolicyID: AzPolAutomanagePolicyID
+    assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
+    resourceSelectors: AzPolAutomanageResourceSelectors
   }
 }
 
