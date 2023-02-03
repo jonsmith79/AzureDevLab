@@ -122,7 +122,7 @@ var AzPolAutomanagePolicyID = '/providers/Microsoft.Authorization/policyDefiniti
 var AzPolAutomanageNonComplianceMessages = [
   {
     message: 'Non-compliance with \'Configure virtual machines to be onboarded to Azure Automanage\''
-    policyDefinitionReferenceId: 'f889cab7-da27-4c41-a3b0-de1f6f87c550'
+    policyDefinitionReferenceId: ''
   }
 ]
 var AzPolAutomanageResourceSelectors = [
