@@ -84,6 +84,10 @@ var assignmentEnforcementMode = 'Default'
 var assignmentPolicyID = '/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8'
 var assignmentNonComplianceMessages = [
   {
+    message: 'Non-compliance with \'Deploy_VM_Prereqs\''
+    policyDefinitionReferenceId: ''
+  }
+  {
     message: 'Non-compliance with \'adding managed identity on VMs with no ID\''
     policyDefinitionReferenceId: 'Prerequisite_AddSystemIdentityWhenNone'
   }
@@ -100,7 +104,7 @@ var assignmentNonComplianceMessages = [
     policyDefinitionReferenceId: 'Prerequisite_DeployExtensionLinux'
   }
 ]
-var resourceSelectors = [
+/*var resourceSelectors = [
   {
     name: 'VM Selector'
     selectors: [
@@ -112,7 +116,7 @@ var resourceSelectors = [
       }
     ]
   }
-]
+]*/
 
 // Policy Assignment variables for 'Configure virtual machines to be onboarded to Azure Automanage'
 var AzPolAutomanageName = 'Onboard_VMs_to_Automanage'
@@ -125,7 +129,7 @@ var AzPolAutomanageNonComplianceMessages = [
     policyDefinitionReferenceId: ''
   }
 ]
-var AzPolAutomanageResourceSelectors = [
+/*var AzPolAutomanageResourceSelectors = [
   {
     name: 'VM Selector'
     selectors: [
@@ -137,7 +141,7 @@ var AzPolAutomanageResourceSelectors = [
       }
     ]
   }
-]
+]*/
 
 // vmDC1 extension variables
 var vmExtensionName = 'AzurePolicyforWindows'
@@ -218,7 +222,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     assignmentEnforcementMode: assignmentEnforcementMode
     assignmentPolicyID: assignmentPolicyID
     assignmentNonComplianceMessages: assignmentNonComplianceMessages
-    resourceSelectors: resourceSelectors
+    //resourceSelectors: resourceSelectors
   }
 }
 
@@ -235,7 +239,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
     assignmentEnforcementMode: AzPolAutomanageEnforcementMode
     assignmentPolicyID: AzPolAutomanagePolicyID
     assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
-    resourceSelectors: AzPolAutomanageResourceSelectors
+    //resourceSelectors: AzPolAutomanageResourceSelectors
   }
 }
 
