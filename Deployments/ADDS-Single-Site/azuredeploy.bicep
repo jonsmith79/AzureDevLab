@@ -78,7 +78,7 @@ var VNet1Subnets = [
   '${VNet1Name}-Subnet-Tier2Apps'
   '${VNet1Name}-Subnet-Tier3Web'
   '${VNet1Name}-Subnet-Tier4Client'
-  '${VNet1Name}-Subnet-AzureBastionSubnet'
+  'AzureBastionSubnet'
 ]
 //var nsgNameADDS = '${VNet1Subnets[1]}-NSG'
 
