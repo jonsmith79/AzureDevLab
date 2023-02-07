@@ -101,7 +101,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
   properties: {
     securityRules: [
       {
-        name: 'Inbound W32Time'
+        name: 'Inbound WinTime'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -339,7 +339,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
 }
 
 // Create the Virtual Network (VNet) and all associated subnets
-resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' = {
+resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: VirtualNetworkName
   location: Location
   properties: {
