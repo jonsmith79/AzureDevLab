@@ -100,7 +100,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
   location: Location
   properties: {
     securityRules: [
-      {
+      /*{
         name: 'Inbound W32Time'
         properties: {
           access: 'Allow'
@@ -112,7 +112,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '123'
         }
-      }
+      }*/
       {
         name: 'Inbound RPC Endpoint Mappper'
         properties: {
