@@ -54,39 +54,22 @@ var ResourceGroupName = '${namingConvention}-RG'
 
 // VNet1 Variables
 var VNet1Name = '${namingConvention}-VNet1'
-/*
-var VNet1Prefix = '${VNet1ID}.0.0/16'
-var VNet1GatewaySubnetName = 'GatewaySubnet'
-var VNet1GatewaySubnetPrefix = '${VNet1ID}.0.0/24'
-var VNet1Subnet1Name = '${namingConvention}-VNet1-Subnet-Tier0Infra'
-var VNet1Subnet1Prefix = '${VNet1ID}.1.0/24'
-var VNet1Subnet2Name = '${namingConvention}-VNet1-Subnet-Tier1Data'
-var VNet1Subnet2Prefix = '${VNet1ID}.2.0/24'
-var VNet1Subnet3Name = '${namingConvention}-VNet1-Subnet-Tier2Apps'
-var VNet1Subnet3Prefix = '${VNet1ID}.3.0/24'
-var VNet1Subnet4Name = '${namingConvention}-VNet1-Subnet-Tier3Web'
-var VNet1Subnet4Prefix = '${VNet1ID}.4.0/24'
-var VNet1Subnet5Name = '${namingConvention}-VNet1-Subnet-Tier4Client'
-var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
-var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
-var VNet1BastionSubnetName = 'AzureBastionSubnet'
-*/
 var VNet1Subnets = [
   'GatewaySubnet'
+  'AzureBastionSubnet'
   '${VNet1Name}-Subnet-Tier0Infra'
   '${VNet1Name}-Subnet-Tier1Data'
   '${VNet1Name}-Subnet-Tier2Apps'
   '${VNet1Name}-Subnet-Tier3Web'
   '${VNet1Name}-Subnet-Tier4Client'
-  'AzureBastionSubnet'
 ]
-//var nsgNameADDS = '${VNet1Subnets[1]}-NSG'
+var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
 var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
-var vmDC1IP = '${VNet1ID}.1.${vmDC1LastOctet}'
+var vmDC1IP = '${VNet1ID}.2.${vmDC1LastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'
@@ -154,6 +137,7 @@ var AzPolAutomanageNonComplianceMessages = [
   }
 ]*/
 
+/*
 // vmDC1 extension variables
 var vmExtensionName = 'AzurePolicyforWindows'
 var vmExtensionPublisher = 'Microsoft.GuestConfiguration'
@@ -161,7 +145,7 @@ var vmExtensionType = 'ConfigurationforWindows'
 var vmExtensionTypeHandlerVersion = '1.1'
 var vmExtensionAutoUpgrade = true
 var vmExtensionAutoUpgradeMinorVersion = true
-
+*/
 
 
 
@@ -185,25 +169,9 @@ module VNet1 'modules/vnet.bicep' = {
   params: {
     VirtualNetworkName: VNet1Name
     VirtualNetworkAddressPrefix: VNet1ID
-    /*
-    GatewaySubnetName: VNet1GatewaySubnetName
-    GatewaySubnetAddressPrefix: VNet1GatewaySubnetPrefix
-    Subnet1Name: VNet1Subnet1Name
-    Subnet1AddressPrefix: VNet1Subnet1Prefix
-    Subnet2Name: VNet1Subnet2Name
-    Subnet2AddressPrefix: VNet1Subnet2Prefix
-    Subnet3Name: VNet1Subnet3Name
-    Subnet3AddressPrefix: VNet1Subnet3Prefix
-    Subnet4Name: VNet1Subnet4Name
-    Subnet4AddressPrefix: VNet1Subnet4Prefix
-    Subnet5Name: VNet1Subnet5Name
-    Subnet5AddressPrefix: VNet1Subnet5Prefix
-    BastionSubnetName: VNet1BastionSubnetName
-    BastionSubnetPrefix: VNet1BastionSubnetPrefix
-    */
     Subnets: VNet1Subnets
     Location: Location
-    //nsgNameADDS: nsgNameADDS
+    nsgNameADDS: nsgNameADDS
   }
 }
 
@@ -216,7 +184,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
     PIPAddressName: '${namingConvention}-PIP-BastionHost1'
     PIPAllocationMethod: 'Static'
     BastionVNetName: VNet1Name
-    SubnetName: VNet1Subnets[6]
+    SubnetName: VNet1Subnets[1]
     Location: Location
   }
   dependsOn: [
@@ -272,7 +240,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
     Offer: 'WindowsServer'
     OSVersion: vmDC1OSVersion
     Publisher: 'MicrosoftWindowsServer'
-    SubnetName: VNet1Subnets[1]
+    SubnetName: VNet1Subnets[2]
     TimeZone: TimeZone
     vmAdminPwd: adminPassword
     vmAdminUser: adminUsername
@@ -287,6 +255,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
   ]
 }
 
+/*
 // Add extension to first domain controller
 @description('Add extension to first domain controller')
 module vmDC1Extension_add 'modules/vmExtension.bicep' = {
@@ -307,6 +276,7 @@ module vmDC1Extension_add 'modules/vmExtension.bicep' = {
     vmDC1_deploy
   ]
 }
+*/
 
 /*
 // Update DNS servers on subnets
