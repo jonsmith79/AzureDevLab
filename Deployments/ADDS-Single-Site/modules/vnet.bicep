@@ -310,9 +310,9 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-
       name: SubnetName
       properties: {
         addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
-        networkSecurityGroup: {
+        /*networkSecurityGroup: {
           id: (SubnetName == 'adl-VNet1-Subnet-Tier0Infra') ? nsgADDS_resource.id : null
-        }
+        }*/
       }
     }]
   }
