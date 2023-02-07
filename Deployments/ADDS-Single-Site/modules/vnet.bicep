@@ -58,7 +58,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
   properties: {
     securityRules: [
       {
-        name: 'Inbound W32Time'
+        name: 'Inbound_W32Time'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -71,7 +71,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound RPC Endpoint Mappper'
+        name: 'Inbound_RPC_Endpoint_Mappper'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -84,7 +84,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound Kerberos password change (TCP)'
+        name: 'Inbound_Kerberos_password_change_TCP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -97,7 +97,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound Kerberos password change (UDP)'
+        name: 'Inbound_Kerberos_password_change_UDP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -110,7 +110,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound RPC for LSA, SAM, NetLogon'
+        name: 'Inbound_RPC_for_LSA_SAM_NetLogon'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -123,7 +123,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound LDAP (TCP)'
+        name: 'Inbound_LDAP_TCP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -136,7 +136,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound LDAP (UDP)'
+        name: 'Inbound_LDAP_UDP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -149,7 +149,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound LDAP SSL'
+        name: 'Inbound_LDAP_SSL'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -162,7 +162,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound LDAP GC'
+        name: 'Inbound_LDAP_GC'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -175,7 +175,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound LDAP GC SSL'
+        name: 'Inbound_LDAP_GC_SSL'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -188,7 +188,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound DNS (TCP)'
+        name: 'Inbound_DNS_TCP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -201,7 +201,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound DNS (UDP)'
+        name: 'Inbound_DNS_UDP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -214,7 +214,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound FRS RPC'
+        name: 'Inbound_FRS_RPC'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -227,7 +227,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound Kerberos (TCP)'
+        name: 'Inbound_Kerberos_TCP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -240,7 +240,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound Kerberos (UDP)'
+        name: 'Inbound_Kerberos_UDP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -253,7 +253,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound SMB'
+        name: 'Inbound_SMB'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -266,7 +266,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound DFSR RCP'
+        name: 'Inbound_DFSR_RCP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -279,7 +279,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
         }
       }
       {
-        name: 'Inbound ICMP'
+        name: 'Inbound_ICMP'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
