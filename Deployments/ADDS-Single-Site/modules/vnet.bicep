@@ -101,7 +101,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
   properties: {
     securityRules: [
       {
-        name: 'Inbound WinTime'
+        name: 'Inbound W32Time'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
