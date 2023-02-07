@@ -57,8 +57,8 @@ param Subnets array
 @description('Resource Location')
 param Location string
 
-@description('NSG Name')
-param nsgNameADDS string
+//@description('NSG Name')
+//param nsgNameADDS string
 
 //==================
 // Variables section
@@ -75,12 +75,13 @@ var SourceAddresses = [
 ]
 */
 var VNetIPRange = '${VirtualNetworkAddressPrefix}.0.0/16'
-var SourceAddress = 'VirtualNetwork'
+//var SourceAddress = 'VirtualNetwork'
 /*
 var SourcePortRanges = [
   '49152-65535'
 ]
 */
+/*
 var SourcePortRange = '*'
 var DestinationPortRanges = '49152-65535'
 var DNSSourcePortRanges = [
@@ -88,19 +89,19 @@ var DNSSourcePortRanges = [
   DestinationPortRanges
 ]
 var DestinationAddressPrefix = '10.0.1.0/24'
-
+*/
 
 //==================
 // Resrouces section
 //==================
-
+/*
 // Create NSG for ADDS infrastructure subnet
 resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   name: nsgNameADDS
   location: Location
   properties: {
     securityRules: [
-      /*{
+      {
         name: 'Inbound W32Time'
         properties: {
           access: 'Allow'
@@ -112,7 +113,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '123'
         }
-      }*/
+      }
       {
         name: 'Inbound RPC Endpoint Mappper'
         properties: {
@@ -337,6 +338,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
     ]
   }
 }
+*/
 
 // Create the Virtual Network (VNet) and all associated subnets
 resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-01' = {
@@ -399,9 +401,9 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-
       name: SubnetName
       properties: {
         addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
-        networkSecurityGroup: {
+        /*networkSecurityGroup: {
           id: (SubnetName == 'adl-VNet1-Subnet-Tier0Infra') ? nsgADDS_resource.id : null
-        }
+        }*/
       }
     }]
   }

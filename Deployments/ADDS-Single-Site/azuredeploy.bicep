@@ -80,7 +80,7 @@ var VNet1Subnets = [
   '${VNet1Name}-Subnet-Tier4Client'
   '${VNet1Name}-Subnet-AzureBastionSubnet'
 ]
-var nsgNameADDS = '${VNet1Subnets[1]}-NSG'
+//var nsgNameADDS = '${VNet1Subnets[1]}-NSG'
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
@@ -203,7 +203,7 @@ module VNet1 'modules/vnet.bicep' = {
     */
     Subnets: VNet1Subnets
     Location: Location
-    nsgNameADDS: nsgNameADDS
+    //nsgNameADDS: nsgNameADDS
   }
 }
 
