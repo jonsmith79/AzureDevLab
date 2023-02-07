@@ -25,6 +25,13 @@ param Offer string
 @description('OS Version')
 param OSVersion string
 
+@allowed([
+  'Windows_Server'
+  'Windows_Client'
+  'RHEL_BYOS'
+  'SLES_BYOS'
+  'None'
+])
 @description('Licence Type (Windows_Server or None)')
 param LicenceType string
 
@@ -88,6 +95,12 @@ resource vmName_resource 'Microsoft.Compute/virtualMachines@2022-08-01' = {
       computerName: vmName
       adminUsername: vmAdminUser
       adminPassword: vmAdminPwd
+      allowExtensionOperations: true
+      windowsConfiguration: LicenceType == 'Windows_Server' ? {
+        enableAutomaticUpdates: true
+        provisionVMAgent: true
+        timeZone: TimeZone
+      } : null
     }
     storageProfile: {
       imageReference: {

@@ -7,6 +7,7 @@ param VirtualNetworkName string
 @description('Virtual Network Address Prefix') 
 param VirtualNetworkAddressPrefix string
 
+/*
 @description('Gateway Subnet Name')
 param GatewaySubnetName string
 
@@ -48,6 +49,10 @@ param BastionSubnetName string
 
 @description('Bastion Subnet Prefix')
 param BastionSubnetPrefix string
+*/
+
+@description('Virtual Network Subnets')
+param Subnets array
 
 @description('Resource Location')
 param Location string
@@ -69,6 +74,7 @@ var SourceAddresses = [
   BastionSubnetPrefix
 ]
 */
+var VNetIPRange = '${VirtualNetworkAddressPrefix}.0.0/16'
 var SourceAddress = 'VirtualNetwork'
 /*
 var SourcePortRanges = [
@@ -81,6 +87,7 @@ var DNSSourcePortRanges = [
   '53'
   DestinationPortRanges
 ]
+var DestinationAddressPrefix = '10.0.1.0/24'
 
 
 //==================
@@ -102,7 +109,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 300
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '123'
         }
       }
@@ -115,7 +122,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 305
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '135'
         }
       }
@@ -128,7 +135,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 310
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '464'
         }
       }
@@ -141,7 +148,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 315
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '464'
         }
       }
@@ -154,7 +161,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 320
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: DestinationPortRanges
         }
       }
@@ -167,7 +174,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 325
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '389'
         }
       }
@@ -180,7 +187,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 330
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '389'
         }
       }
@@ -193,7 +200,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 335
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '636'
         }
       }
@@ -206,7 +213,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 340
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '3268'
         }
       }
@@ -219,7 +226,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 345
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '3269'
         }
       }
@@ -232,7 +239,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 350
           sourceAddressPrefix: SourceAddress
           sourcePortRanges: DNSSourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '53'
         }
       }
@@ -245,7 +252,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 355
           sourceAddressPrefix: SourceAddress
           sourcePortRanges: DNSSourcePortRanges
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '53'
         }
       }
@@ -258,7 +265,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 360
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: DestinationPortRanges
         }
       }
@@ -271,7 +278,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 365
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '88'
         }
       }
@@ -284,7 +291,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 370
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '88'
         }
       }
@@ -297,7 +304,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 375
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: '445'
         }
       }
@@ -310,7 +317,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 380
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: DestinationPortRanges
         }
       }
@@ -323,7 +330,7 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
           priority: 385
           sourceAddressPrefix: SourceAddress
           sourcePortRange: SourcePortRange
-          destinationAddressPrefix: Subnet1AddressPrefix
+          destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: SourcePortRange
         }
       }
@@ -338,10 +345,10 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2020-05-
   properties: {
     addressSpace: {
       addressPrefixes: [
-        VirtualNetworkAddressPrefix
+        VNetIPRange
       ]
     }
-    subnets: [
+    /* subnets: [
       {
         name: GatewaySubnetName
         properties: {
@@ -387,7 +394,16 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2020-05-
           addressPrefix: BastionSubnetPrefix
         }
       }
-    ]
+    ] */
+    subnets: [for (SubnetName, i) in Subnets: {
+      name: SubnetName
+      properties: {
+        addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
+        networkSecurityGroup: {
+          id: (SubnetName == 'adl-VNet1-Subnet-Tier0Infra') ? nsgADDS_resource.id : null
+        }
+      }
+    }]
   }
 }
 

@@ -54,6 +54,7 @@ var ResourceGroupName = '${namingConvention}-RG'
 
 // VNet1 Variables
 var VNet1Name = '${namingConvention}-VNet1'
+/*
 var VNet1Prefix = '${VNet1ID}.0.0/16'
 var VNet1GatewaySubnetName = 'GatewaySubnet'
 var VNet1GatewaySubnetPrefix = '${VNet1ID}.0.0/24'
@@ -69,7 +70,17 @@ var VNet1Subnet5Name = '${namingConvention}-VNet1-Subnet-Tier4Client'
 var VNet1Subnet5Prefix = '${VNet1ID}.10.0/24'
 var VNet1BastionSubnetPrefix = '${VNet1ID}.253.0/24'
 var VNet1BastionSubnetName = 'AzureBastionSubnet'
-var nsgNameADDS = '${VNet1Subnet1Name}-NSG'
+*/
+var VNet1Subnets = [
+  'GatewaySubnet'
+  '${VNet1Name}-Subnet-Tier0Infra'
+  '${VNet1Name}-Subnet-Tier1Data'
+  '${VNet1Name}-Subnet-Tier2Apps'
+  '${VNet1Name}-Subnet-Tier3Web'
+  '${VNet1Name}-Subnet-Tier4Client'
+  '${VNet1Name}-Subnet-AzureBastionSubnet'
+]
+var nsgNameADDS = '${VNet1Subnets[1]}-NSG'
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
@@ -173,7 +184,8 @@ module VNet1 'modules/vnet.bicep' = {
   scope: newRG
   params: {
     VirtualNetworkName: VNet1Name
-    VirtualNetworkAddressPrefix: VNet1Prefix
+    VirtualNetworkAddressPrefix: VNet1ID
+    /*
     GatewaySubnetName: VNet1GatewaySubnetName
     GatewaySubnetAddressPrefix: VNet1GatewaySubnetPrefix
     Subnet1Name: VNet1Subnet1Name
@@ -188,6 +200,8 @@ module VNet1 'modules/vnet.bicep' = {
     Subnet5AddressPrefix: VNet1Subnet5Prefix
     BastionSubnetName: VNet1BastionSubnetName
     BastionSubnetPrefix: VNet1BastionSubnetPrefix
+    */
+    Subnets: VNet1Subnets
     Location: Location
     nsgNameADDS: nsgNameADDS
   }
@@ -202,7 +216,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
     PIPAddressName: '${namingConvention}-PIP-BastionHost1'
     PIPAllocationMethod: 'Static'
     BastionVNetName: VNet1Name
-    SubnetName: VNet1BastionSubnetName
+    SubnetName: VNet1Subnets[6]
     Location: Location
   }
   dependsOn: [
@@ -258,7 +272,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
     Offer: 'WindowsServer'
     OSVersion: vmDC1OSVersion
     Publisher: 'MicrosoftWindowsServer'
-    SubnetName: VNet1Subnet1Name
+    SubnetName: VNet1Subnets[1]
     TimeZone: TimeZone
     vmAdminPwd: adminPassword
     vmAdminUser: adminUsername
