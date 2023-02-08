@@ -198,7 +198,7 @@ module nsgADDS_attach 'modules/vnetNSGAttach.bicep' = {
   name: 'nsgADDS_attach_deploy'
   scope: newRG
   params: {
-    vnetName: VNet1Name
+    //vnetName: VNet1Name
     nsgName: nsgNameADDS
     subnetName: VNet1Subnets[2]
     /*properties: union(subnetADDS_get.properties, {
