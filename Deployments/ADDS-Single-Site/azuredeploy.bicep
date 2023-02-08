@@ -171,8 +171,54 @@ module VNet1 'modules/vnet.bicep' = {
     VirtualNetworkAddressPrefix: VNet1ID
     Subnets: VNet1Subnets
     Location: Location
-    nsgNameADDS: nsgNameADDS
   }
+}
+
+// Deploy ADDS NSG
+@description('Deploy ADDS NSG onto Tier0Infra Subnet')
+module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
+  name: 'nsgADDS_resource_deploy'
+  scope: newRG
+  params: {
+    nsgNameADDS: nsgNameADDS
+    Location: Location
+  }
+  dependsOn: [
+    VNet1
+  ]
+}
+
+// Attach ADDS NSG to Tier0Infra Subnet
+// Get NSG
+resource nsgADDS_get 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = {
+  name: nsgNameADDS
+  scope: newRG
+}
+// Get Subnet
+resource subnetADDS_get 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+  name: '${VNet1Name}/${VNet1Subnets[2]}'
+  scope: newRG
+}
+
+// Attach ADDS NSG to Tier0Infra Subnet
+@description('Attach ADDS NSG to Tier0Infra Subnet')
+module nsgADDS_attach 'modules/vnetNSGAttach.bicep' = {
+  name: 'nsgADDS_attach_deploy'
+  scope: newRG
+  params: {
+    vnetName: VNet1Name
+    subnetName: subnetADDS_get.name
+    properties: union(subnetADDS_get.properties, {
+      networkSecurityGroup: {
+        id: nsgADDS_get.id
+      }
+    })
+  }
+  dependsOn: [
+    nsgADDS_resource
+    nsgADDS_get
+    subnetADDS_get
+  ]
 }
 
 // Deploy Bastion Host 1 (BastionHost1)
