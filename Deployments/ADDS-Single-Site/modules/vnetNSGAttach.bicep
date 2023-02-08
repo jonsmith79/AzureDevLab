@@ -43,4 +43,8 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
       id: nsgADDS_get.id
     }
   })
+  dependsOn: [
+    subnetADDS_get
+    nsgADDS_get
+  ]
 }
