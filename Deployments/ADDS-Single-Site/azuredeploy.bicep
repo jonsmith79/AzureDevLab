@@ -174,6 +174,12 @@ module VNet1 'modules/vnet.bicep' = {
   }
 }
 
+// Get Tier0Infra Subnet
+resource subnetADDS_get 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+  name: '${VNet1Name}/${VNet1Subnets[2]}'
+  scope: newRG
+}
+
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
 module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
@@ -182,21 +188,16 @@ module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
   params: {
     nsgNameADDS: nsgNameADDS
     Location: Location
+    DestinationAddressPrefix: subnetADDS_get.properties.addressPrefix
   }
   dependsOn: [
     VNet1
   ]
 }
 
-// Attach ADDS NSG to Tier0Infra Subnet
-// Get NSG
+// Get ADDS NSG
 resource nsgADDS_get 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = {
   name: nsgNameADDS
-  scope: newRG
-}
-// Get Subnet
-resource subnetADDS_get 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
-  name: '${VNet1Name}/${VNet1Subnets[2]}'
   scope: newRG
 }
 

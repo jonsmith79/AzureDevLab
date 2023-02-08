@@ -8,6 +8,9 @@ param Location string
 @description('NSG Name')
 param nsgNameADDS string
 
+@description('Destination Subnet Address Prefix')
+param DestinationAddressPrefix string
+
 
 //==================
 // Variables section
@@ -15,7 +18,7 @@ param nsgNameADDS string
 var SourceAddress = 'VirtualNetwork'
 var SourcePortRange = '*'
 var DestinationPortRanges = '49152-65535'
-var DestinationAddressPrefix = '10.0.2.0/24'
+// var DestinationAddressPrefix = '10.0.2.0/24'
 
 
 //==================
