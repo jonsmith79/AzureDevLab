@@ -10,12 +10,12 @@ This templates deploys:
 - 1 - Virtual Network
 - 5 - Subnets
   - Gateway Subnet
+  - Bastion Subnet
   - Tier 0 (Infrastructure) Subnet
   - Tier 1 (Data) Subnet
   - Tier 2 (Apps) Subnet
   - Tier 3 (Web) Subnet
   - Tier 4 (Client) Subnet
-  - Bastion Subnet
 - 1 - NSG for ADDS traffic on Tier 0 subnet
 - 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1] [^2]
 - 1 - Domain Controller

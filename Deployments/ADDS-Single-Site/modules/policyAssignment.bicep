@@ -19,8 +19,8 @@ param assignmentPolicyID string
 @description('Assignment non-compliance messages')
 param assignmentNonComplianceMessages array 
 
-//@description('Assignment Resource Selectors')
-//param resourceSelectors array
+@description('Assignment Resource Selectors')
+param resourceSelectors array
 
 resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
   name: assignmentName
@@ -36,6 +36,6 @@ resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@20
     nonComplianceMessages: assignmentNonComplianceMessages
     parameters: {}
     policyDefinitionId: assignmentPolicyID
-    //resourceSelectors: resourceSelectors
+    resourceSelectors: resourceSelectors
   }
 }

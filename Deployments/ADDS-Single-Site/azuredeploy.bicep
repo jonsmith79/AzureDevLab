@@ -98,7 +98,7 @@ var assignmentNonComplianceMessages = [
     policyDefinitionReferenceId: 'Prerequisite_DeployExtensionLinux'
   }
 ]
-/*var resourceSelectors = [
+var resourceSelectors = [
   {
     name: 'VM Selector'
     selectors: [
@@ -110,7 +110,7 @@ var assignmentNonComplianceMessages = [
       }
     ]
   }
-]*/
+]
 
 // Policy Assignment variables for 'Configure virtual machines to be onboarded to Azure Automanage'
 var AzPolAutomanageName = 'Onboard_VMs_to_Automanage'
@@ -123,7 +123,7 @@ var AzPolAutomanageNonComplianceMessages = [
     policyDefinitionReferenceId: ''
   }
 ]
-/*var AzPolAutomanageResourceSelectors = [
+var AzPolAutomanageResourceSelectors = [
   {
     name: 'VM Selector'
     selectors: [
@@ -135,7 +135,7 @@ var AzPolAutomanageNonComplianceMessages = [
       }
     ]
   }
-]*/
+]
 
 /*
 // vmDC1 extension variables
@@ -206,7 +206,7 @@ module nsgADDS_attach 'modules/vnetNSGAttach.bicep' = {
   name: 'nsgADDS_attach_deploy'
   scope: newRG
   params: {
-    vnetName: VNet1Name
+    //vnetName: VNet1Name
     subnetName: subnetADDS_get.name
     properties: union(subnetADDS_get.properties, {
       networkSecurityGroup: {
@@ -250,10 +250,9 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     assignmentEnforcementMode: assignmentEnforcementMode
     assignmentPolicyID: assignmentPolicyID
     assignmentNonComplianceMessages: assignmentNonComplianceMessages
-    //resourceSelectors: resourceSelectors
+    resourceSelectors: resourceSelectors
   }
 }
-
 
 // Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
 @description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
@@ -267,7 +266,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
     assignmentEnforcementMode: AzPolAutomanageEnforcementMode
     assignmentPolicyID: AzPolAutomanagePolicyID
     assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
-    //resourceSelectors: AzPolAutomanageResourceSelectors
+    resourceSelectors: AzPolAutomanageResourceSelectors
   }
 }
 
