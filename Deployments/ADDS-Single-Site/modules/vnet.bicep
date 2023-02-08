@@ -38,13 +38,11 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-
       name: SubnetName
       properties: {
         addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
-        /*networkSecurityGroup: {
-          id: (SubnetName == 'adl-VNet1-Subnet-Tier0Infra') ? nsgADDS_resource.id : null
-        }*/
       }
     }]
   }
 }
+
 
 //=================
 // Output's section
@@ -52,4 +50,6 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-
 output DeployedSubnets array = [for i in range(0, length(Subnets)): {
   name: Subnets[i]
   id: VirtualNetworkName_resource.properties.subnets[i].id
+  addressPrefix: VirtualNetworkName_resource.properties.subnets[i].properties.addressPrefix
 }]
+output Tier0SubnetPrefix string = VirtualNetworkName_resource.properties.subnets[2].properties.addressPrefix

@@ -63,6 +63,8 @@ var VNet1Subnets = [
   '${VNet1Name}-Subnet-Tier3Web'
   '${VNet1Name}-Subnet-Tier4Client'
 ]
+
+// NSG Vaiables
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
 
 // vmDC1 Variables
@@ -174,12 +176,6 @@ module VNet1 'modules/vnet.bicep' = {
   }
 }
 
-// Get Tier0Infra Subnet
-resource subnetADDS_get 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
-  name: '${VNet1Name}/${VNet1Subnets[2]}'
-  scope: newRG
-}
-
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
 module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
@@ -188,18 +184,13 @@ module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
   params: {
     nsgNameADDS: nsgNameADDS
     Location: Location
-    DestinationAddressPrefix: subnetADDS_get.properties.addressPrefix
+    DestinationAddressPrefix: VNet1.outputs.DeployedSubnets[2].addressPrefix
   }
   dependsOn: [
     VNet1
   ]
 }
 
-// Get ADDS NSG
-resource nsgADDS_get 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = {
-  name: nsgNameADDS
-  scope: newRG
-}
 
 // Attach ADDS NSG to Tier0Infra Subnet
 @description('Attach ADDS NSG to Tier0Infra Subnet')
@@ -208,17 +199,16 @@ module nsgADDS_attach 'modules/vnetNSGAttach.bicep' = {
   scope: newRG
   params: {
     //vnetName: VNet1Name
-    subnetName: subnetADDS_get.name
-    properties: union(subnetADDS_get.properties, {
+    nsgName: nsgNameADDS
+    subnetName: VNet1Subnets[2]
+    /*properties: union(subnetADDS_get.properties, {
       networkSecurityGroup: {
         id: nsgADDS_get.id
       }
-    })
+    })*/
   }
   dependsOn: [
     nsgADDS_resource
-    nsgADDS_get
-    subnetADDS_get
   ]
 }
 
@@ -269,6 +259,9 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
     assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
     resourceSelectors: AzPolAutomanageResourceSelectors
   }
+  dependsOn: [
+    AzPolAssign
+  ]
 }
 
 // Deploy first domain controller
