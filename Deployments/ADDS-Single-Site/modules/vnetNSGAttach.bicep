@@ -51,7 +51,7 @@ var newProperties = union(getSubnet.properties, addPropertyNSG)
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
   name: '${getVNet.name}/${getSubnet.name}'
   properties: {
-    addressPrefix: getSubnet.properties.addressPrefix
+    //addressPrefix: getSubnet.properties.addressPrefix
     networkSecurityGroup: {
       id: getNSG.id
     }
