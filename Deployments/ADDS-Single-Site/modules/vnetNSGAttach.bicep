@@ -17,7 +17,7 @@ param nsgName string
 
 
 //==================
-// Resrouces section
+// Resources section
 //==================
 
 // Get VNet of the subnet
@@ -51,17 +51,33 @@ var newProperties = union(getSubnet.properties, addPropertyNSG)
 var subnetAddressPrefix = getSubnet.properties.addressPrefix
 
 // Re-deploy subnet with new NSG included onto existing properties
+module attachSubnetNSG 'vnetUpdateSubnet.bicep' = {
+  name: 'updateSubnet-${vnetName}-${subnetName}}'
+  params: {
+    vnetName: vnetName
+    subnetName: subnetName
+    properties: union(getSubnet.properties, {
+      networkSecurityGroup: {
+        id: getNSG.id
+      }
+    })
+  }
+}
+
+/*
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
   name: getSubnet.name
   parent: getVNet
   properties: {
+    addressPrefix: subnetAddressPrefix
     networkSecurityGroup: {
       id: getNSG.id
     }
-    addressPrefix: subnetAddressPrefix
+    
   }
   dependsOn: [
     getSubnet
     getNSG
   ]
 }
+*/
