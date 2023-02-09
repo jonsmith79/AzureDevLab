@@ -36,7 +36,7 @@ resource getNSG 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = 
 }
 
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
-  name: getSubnet.name
+  name: '${getVNet.name}/${getSubnet.name}'
   properties: union(getSubnet.properties, {
     networkSecurityGroup: {
       id: getNSG.id
