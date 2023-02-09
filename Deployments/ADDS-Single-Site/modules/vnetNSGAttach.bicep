@@ -3,13 +3,13 @@
 //===================
 
 @description('Name of the VNet the subnet is attached to.')
-param vnetName string = 'adl-VNet1'
+param vnetName string
 
 @description('Name of the Subnet to attach to.')
-param subnetName string = 'adl-VNet1-Subnet-Tier0Infra'
+param subnetName string
 
 @description('Name of the NSG to attach.')
-param nsgName string = 'adl-VNet1-Subnet-Tier0Infra-NSG'
+param nsgName string
 
 //==================
 // Variables section
@@ -35,13 +35,16 @@ resource getNSG 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = 
   name: nsgName
 }
 
+// Join the exiting and new properties
+var newProperties = union(getSubnet.properties, {
+  networkSecurityGroup: {
+    id: getNSG.id
+  }
+})
+
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
   name: '${getVNet.name}/${getSubnet.name}'
-  properties: union(getSubnet.properties, {
-    networkSecurityGroup: {
-      id: getNSG.id
-    }
-  })
+  properties: newProperties
   dependsOn: [
     getVNet
     getSubnet
