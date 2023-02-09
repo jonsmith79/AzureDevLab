@@ -52,7 +52,8 @@ var subnetAddressPrefix = getSubnet.properties.addressPrefix
 
 // Re-deploy subnet with new NSG included onto existing properties
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
-  name: '${getVNet.name}/${getSubnet.name}'
+  name: getSubnet.name
+  parent: getVNet
   properties: {
     addressPrefix: subnetAddressPrefix
     networkSecurityGroup: {
@@ -60,7 +61,6 @@ resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
     }
   }
   dependsOn: [
-    getVNet
     getSubnet
     getNSG
   ]
