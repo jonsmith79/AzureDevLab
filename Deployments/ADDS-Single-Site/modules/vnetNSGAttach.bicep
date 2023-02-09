@@ -3,13 +3,13 @@
 //===================
 
 @description('Name of the VNet the subnet is attached to.')
-param vnetName string
+param vnetName string = 'adl-VNet1'
 
 @description('Name of the Subnet to attach to.')
-param subnetName string
+param subnetName string = 'adl-VNet1-Subnet-Tier0Infra'
 
 @description('Name of the NSG to attach.')
-param nsgName string
+param nsgName string = 'adl-VNet1-Subnet-Tier0Infra-NSG'
 
 //==================
 // Variables section
