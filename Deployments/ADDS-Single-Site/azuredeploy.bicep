@@ -66,6 +66,7 @@ var VNet1Subnets = [
 
 // NSG Vaiables
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
+var nsgSubnet = VNet1Subnets[2]
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
@@ -201,12 +202,7 @@ module nsgADDS_attach 'modules/vnetNSGAttach.bicep' = {
     //rgName: ResourceGroupName
     vnetName: VNet1Name
     nsgName: nsgNameADDS
-    subnetName: VNet1Subnets[2]
-    /*properties: union(subnetADDS_get.properties, {
-      networkSecurityGroup: {
-        id: nsgADDS_get.id
-      }
-    })*/
+    subnetName: nsgSubnet
   }
   dependsOn: [
     nsgADDS_resource
