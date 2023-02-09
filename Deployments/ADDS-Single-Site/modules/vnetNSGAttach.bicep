@@ -2,14 +2,18 @@
 // Parameters section
 //===================
 
-@description('Name of the NSG to attach.')
-param nsgName string
+@description('Name of the resource group the resource belong.')
+param rgName string
 
 @description('Name of the VNet the subnet is attached to.')
 param vnetName string
 
 @description('Name of the Subnet to attach to.')
 param subnetName string
+
+@description('Name of the NSG to attach.')
+param nsgName string
+
 /*
 @description('Properties of the Subnet.')
 param properties object
@@ -49,6 +53,7 @@ resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
     }
   })
   dependsOn: [
+    getVNet
     getSubnet
     getNSG
   ]
