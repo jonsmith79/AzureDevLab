@@ -55,10 +55,10 @@ resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
   name: getSubnet.name
   parent: getVNet
   properties: {
-    addressPrefix: subnetAddressPrefix
     networkSecurityGroup: {
       id: getNSG.id
     }
+    addressPrefix: subnetAddressPrefix
   }
   dependsOn: [
     getSubnet
