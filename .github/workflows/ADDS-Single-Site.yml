@@ -46,7 +46,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
         region: ${{env.Location}}
         # template: ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
-        template: ./Deployments/${{env.DeploymentName}}/vnetNSGAttach.bicep
+        template: ./Deployments/${{env.DeploymentName}}/modules/vnetNSGAttach.bicep
         parameters:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
