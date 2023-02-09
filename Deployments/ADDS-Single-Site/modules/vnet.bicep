@@ -19,7 +19,6 @@ param Location string
 //==================
 var VNetIPRange = '${VirtualNetworkAddressPrefix}.0.0/16'
 
-
 //==================
 // Resrouces section
 //==================
@@ -36,9 +35,17 @@ resource VirtualNetworkName_resource 'Microsoft.Network/virtualNetworks@2022-07-
     }
     subnets: [for (SubnetName, i) in Subnets: {
       name: SubnetName
+      /* properties: (SubnetName == '${VirtualNetworkName}-Subnet-Tier0Infra' ? {
+        addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
+        networkSecurityGroups: {
+          id: nsgName
+        }
+      } : {
+        addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
+      })*/
       properties: {
         addressPrefix: '${VirtualNetworkAddressPrefix}.${i}.0/24'
-      }
+      } 
     }]
   }
 }

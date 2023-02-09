@@ -35,6 +35,7 @@ resource getNSG 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = 
   name: nsgName
 }
 
+/*
 // Variable to add new NSG to subnet
 var addPropertyNSG = {
   networkSecurityGroup: {
@@ -44,11 +45,17 @@ var addPropertyNSG = {
 
 // Join the exiting and new properties
 var newProperties = union(getSubnet.properties, addPropertyNSG)
+*/
 
 // Re-deploy subnet with new NSG included onto existing properties
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
   name: '${getVNet.name}/${getSubnet.name}'
-  properties: newProperties
+  properties: {
+    addressPrefix: getSubnet.properties.addressPrefix
+    networkSecurityGroup: {
+      id: getNSG.id
+    }
+  }
   dependsOn: [
     getVNet
     getSubnet
