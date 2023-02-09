@@ -18,6 +18,7 @@ This templates deploys:
   - Tier 4 (Client) Subnet
 - 1 - NSG for ADDS traffic on Tier 0 subnet
 - 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1] [^2]
+- 1 - Azure Policy Initiative assignment of 'Configure virtual machines to be onboarded to Azure Automanage'
 - 1 - Domain Controller
 - 1 - Guest Configuration Extension for the first Domain Controller
 - ~~1 - Active Directory Forest/Domain~~

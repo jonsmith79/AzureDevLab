@@ -47,11 +47,14 @@ var addPropertyNSG = {
 var newProperties = union(getSubnet.properties, addPropertyNSG)
 */
 
+// Get the existing subnet address prefix
+var subnetAddressPrefix = getSubnet.properties.addressPrefix
+
 // Re-deploy subnet with new NSG included onto existing properties
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
   name: '${getVNet.name}/${getSubnet.name}'
   properties: {
-    //addressPrefix: getSubnet.properties.addressPrefix
+    addressPrefix: subnetAddressPrefix
     networkSecurityGroup: {
       id: getNSG.id
     }
