@@ -2,8 +2,8 @@
 // Parameters section
 //===================
 
-@description('Name of the resource group the resource belong.')
-param rgName string
+//@description('Name of the resource group the resource belong.')
+//param rgName string
 
 @description('Name of the VNet the subnet is attached to.')
 param vnetName string
