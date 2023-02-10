@@ -38,6 +38,6 @@ jobs:
         region: ${{env.Location}}
         template: ./Deployments/${{env.DeploymentName}}/main.bicep
         parameters:
-          Location="${{env.Location}}"
+          location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
           VNet1ID="${{env.VNet1ID}}"
