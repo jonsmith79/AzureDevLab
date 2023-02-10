@@ -21,9 +21,11 @@ param nsgName string
 //==================
 
 // Get VNet of the subnet
+/*
 resource getVNet 'Microsoft.Network/virtualNetworks@2021-02-01' existing ={
   name: vnetName
 }
+*/
 
 // Get Tier0Infra Subnet
 resource getSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
@@ -48,11 +50,11 @@ var newProperties = union(getSubnet.properties, addPropertyNSG)
 */
 
 // Get the existing subnet address prefix
-var subnetAddressPrefix = getSubnet.properties.addressPrefix
+//var subnetAddressPrefix = getSubnet.properties.addressPrefix
 
 // Re-deploy subnet with new NSG included onto existing properties
 module attachSubnetNSG 'vnetUpdateSubnet.bicep' = {
-  name: 'updateSubnet-${vnetName}-${subnetName}}'
+  name: 'updateSubnet-${subnetName}}'
   params: {
     vnetName: vnetName
     subnetName: subnetName
