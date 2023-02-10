@@ -50,5 +50,8 @@ module newNSG 'modules/nsg.bicep' = {
     nsgName: nsgName
     tags: tags
   }
+  dependsOn: [
+    newVNet
+  ]
 }
 
