@@ -12,7 +12,7 @@ var tags = {
 }
 var rgName = '${namingConvention}-RG'
 var vnetName = '${namingConvention}-VNet'
-var subnets = [
+/*var subnets = [
   'GatewaySubnet'
   'AzureBastionSubnet'
   '${vnetName}-Subnet-Tier0Infra'
@@ -20,8 +20,9 @@ var subnets = [
   '${vnetName}-Subnet-Tier2Apps'
   '${vnetName}-Subnet-Tier3Web'
   '${vnetName}-Subnet-Tier4Client'
-]
-var nsgName = '${subnets[2]}-NSG'
+]*/
+//var nsgName = '${subnets[2]}-NSG'
+var nsgName = '${vnetName}-Subnet-Tier0Infra-NSG'
 //var nsgSubnet = subnets[2]
 
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -37,7 +38,7 @@ module newVNet 'modules/vnet.bicep' = {
     location: location
     vnetName: vnetName
     VNetID: VNetID
-    subnets: subnets
+    //subnets: subnets
     tags: tags
   }
 }

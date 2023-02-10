@@ -8,7 +8,7 @@ jobs:
       Location: "uksouth"
       namingConvention: "tst"
       VNetID: "10.1"
-      DeploymentName: "Testing"
+      DeploymentDir: "Testing"
 
     steps:
       # Checkout code
@@ -36,7 +36,7 @@ jobs:
         scope: subscription
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
         region: ${{env.Location}}
-        template: ./Deployments/${{env.DeploymentName}}/main.bicep
+        template: ./Deployments/${{env.DeploymentDir}}/main.bicep
         parameters:
           location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
