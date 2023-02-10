@@ -8,7 +8,7 @@ param tags object
 var vnetIPRange = '${VNetID}.0.0/16'
 
 
-resource newVNet 'Microsoft.Network/virtualNetworks@2018-08-01' = {
+resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: vnetName
   location: location
   properties: {
