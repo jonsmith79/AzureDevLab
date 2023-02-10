@@ -6,9 +6,9 @@ param VNetID string
 param timeStamp string = utcNow('yyyy-MM-dd-HH:mm')
 
 var tags = {
-  'Environment': 'Dev'
-  'Owner': 'Jon Smith'
-  'DateCreated': timeStamp
+  Environment: 'Dev'
+  Owner: 'Jon Smith'
+  DateCreated: timeStamp
 }
 var rgName = '${namingConvention}-RG'
 var vnetName = '${namingConvention}-VNet'
@@ -22,7 +22,7 @@ var subnets = [
   '${vnetName}-Subnet-Tier4Client'
 ]
 var nsgName = '${subnets[2]}-NSG'
-var nsgSubnet = subnets[2]
+//var nsgSubnet = subnets[2]
 
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: rgName

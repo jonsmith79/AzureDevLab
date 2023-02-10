@@ -1,4 +1,4 @@
-# File: .github/workflows/ADDS-Single-Site.yml
+# File: .github/workflows/Testing.yml
 on: [push]
 name: Testing
 jobs:
@@ -8,7 +8,7 @@ jobs:
       Location: "uksouth"
       namingConvention: "tst"
       VNet1ID: "10.1"
-      DeploymentName: "TST"
+      DeploymentName: "Testing"
 
     steps:
       # Checkout code
