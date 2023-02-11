@@ -117,7 +117,7 @@ var resourceSelectors = [
   }
 ]
 var assignmentParameters = {}
-/*
+
 // Policy Assignment variables for 'Configure virtual machines to be onboarded to Azure Automanage'
 var AzPolAutomanageName = 'Onboard_VMs_to_Automanage'
 var AzPolAutomanageDescription = 'Assignment of the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to VMs'
@@ -143,15 +143,17 @@ var AzPolAutomanageResourceSelectors = [
   }
 ]
  var AzPolAutomanageParameters = {
-  configurationProfile: {
+  configurationProfileAssignment: {
+    name: 'configurationProfileAssignment'
     value: [
       '/providers/Microsoft.Automanage/bestPractices/azurebestpracticesdevtest'
     ]}
   effect: {
+    name: 'Effect'
     value: 'DeployIfNotExists'
   }
 }
-*/
+
 /*
 // vmDC1 extension variables
 var vmExtensionName = 'AzurePolicyforWindows'
@@ -191,7 +193,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     assignmentParameters: assignmentParameters
   }
 }
-/*
+
 // Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
 @description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
 module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
@@ -211,7 +213,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
     AzPolAssign
   ]
 }
-*/
+
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
 module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
