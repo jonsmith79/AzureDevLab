@@ -154,7 +154,6 @@ var vmExtensionAutoUpgradeMinorVersion = true
 */
 
 
-
 // =================
 // Resources Section
 // =================
@@ -217,9 +216,10 @@ module BastionHost1 'modules/bastionhost.bicep' = {
 @description('Assign the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' policy initiative to the resource group')
 module AzPolAssign 'modules/policyAssignment.bicep' = {
   name: 'assign_${assignmentName}'
-  scope: subscription()
+  scope: newRG
   params: {
     Location: Location
+    rgName: ResourceGroupName
     assignmentName: assignmentName
     assignmentDescription: assignmentDescription
     assignmentEnforcementMode: assignmentEnforcementMode
@@ -233,9 +233,10 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
 @description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
 module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
   name: 'assign_${AzPolAutomanageName}'
-  scope: subscription()
+  scope: newRG
   params: {
     Location: Location
+    rgName: ResourceGroupName
     assignmentName: AzPolAutomanageName
     assignmentDescription: AzPolAutomanageDescription
     assignmentEnforcementMode: AzPolAutomanageEnforcementMode
@@ -283,7 +284,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
 @description('Add extension to first domain controller')
 module vmDC1Extension_add 'modules/vmExtension.bicep' = {
   scope: newRG
-  name: vmExtensionName
+  name: 'addExtension_${vmExtensionName}'
   params: {
     vmExtensionName: vmExtensionName
     vmExtensionPublisher: vmExtensionPublisher
@@ -300,7 +301,6 @@ module vmDC1Extension_add 'modules/vmExtension.bicep' = {
   ]
 }
 */
-
 /*
 // Update DNS servers on subnets
 module VNet1DNSUpdate 'modules/vnetDNSUpdate.bicep' = {

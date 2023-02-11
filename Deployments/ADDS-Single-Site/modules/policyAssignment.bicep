@@ -1,7 +1,10 @@
-targetScope = 'subscription'
+//targetScope = 'subscription'
 
 @description('Location for all resources.')
 param Location string
+
+@description('Assignment Resource Groups')
+param rgName string
 
 @maxLength(64)
 @description('Assignment name')
@@ -21,6 +24,12 @@ param assignmentNonComplianceMessages array
 
 @description('Assignment Resource Selectors')
 param resourceSelectors array
+
+/*
+resource existingRG 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: rgName
+}
+*/
 
 resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
   name: assignmentName
