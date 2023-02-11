@@ -7,7 +7,7 @@ param tags object
 
 var vnetIPRange = '${VNetID}.0.0/16'
 var subnetArray = [for (subnet, index) in subnets: {
-  name: subnet
+  name: '${subnet}'
   prefix: '${VNetID}.${index}.0/24'
 }]
 
@@ -20,10 +20,10 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
         vnetIPRange
       ]
     }
-    subnets: [for subnet in subnetArray: {
-      name: subnet.name
+    subnets: [for sn in subnetArray: {
+      name: sn.name
       properties: {
-        addressPrefix: subnet.prefix
+        addressPrefix: sn.prefix
       }
     }]
   }
