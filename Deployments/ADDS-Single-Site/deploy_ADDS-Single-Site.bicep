@@ -143,9 +143,14 @@ var AzPolAutomanageResourceSelectors = [
   }
 ]
  var AzPolAutomanageParameters = {
-  configurationProfile: '/providers/Microsoft.Automanage/bestPractices/azurebestpracticesdevtest'
-  effect: 'DeployIfNotExists'
- }
+  configurationProfile: {
+    value: [
+      '/providers/Microsoft.Automanage/bestPractices/azurebestpracticesdevtest'
+    ]}
+  effect: {
+    value: 'DeployIfNotExists'
+  }
+}
 
 /*
 // vmDC1 extension variables
