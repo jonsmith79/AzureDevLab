@@ -20,7 +20,7 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
         vnetIPRange
       ]
     }
-    subnets: [for (subnet, index) in subnetArray: {
+    subnets: [for subnet in subnetArray: {
       name: subnet.name
       properties: {
         addressPrefix: subnet.prefix
