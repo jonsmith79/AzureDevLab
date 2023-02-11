@@ -58,3 +58,16 @@ module newNSG 'modules/nsg.bicep' = {
   ]
 }
 
+module attachNSG 'modules/nsgAttach.bicep' = {
+  name: 'attachNSG'
+  scope: newRG
+  params: {
+    VNet: vnetName
+    nsg: nsgName
+    subnet: subnets[2]
+  }
+  dependsOn: [
+    newNSG
+  ]
+}
+
