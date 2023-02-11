@@ -219,7 +219,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
   scope: newRG
   params: {
     Location: Location
-    rgName: ResourceGroupName
+    //rgName: ResourceGroupName
     assignmentName: assignmentName
     assignmentDescription: assignmentDescription
     assignmentEnforcementMode: assignmentEnforcementMode
@@ -236,7 +236,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
   scope: newRG
   params: {
     Location: Location
-    rgName: ResourceGroupName
+    //rgName: ResourceGroupName
     assignmentName: AzPolAutomanageName
     assignmentDescription: AzPolAutomanageDescription
     assignmentEnforcementMode: AzPolAutomanageEnforcementMode

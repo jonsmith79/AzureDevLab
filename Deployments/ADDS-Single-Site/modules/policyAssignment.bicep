@@ -3,8 +3,8 @@
 @description('Location for all resources.')
 param Location string
 
-@description('Assignment Resource Groups')
-param rgName string
+//@description('Assignment Resource Groups')
+//param rgName string
 
 @maxLength(64)
 @description('Assignment name')
