@@ -15,15 +15,4 @@ resource existingNSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' existi
   name: nsg
 }
 
-resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
-  name: existingSubnet.name
-  parent: existingVNet
-  properties: {
-    addressPrefix: existingSubnet.properties.addressPrefix
 
-  }
-  dependsOn: [
-    existingSubnet
-    existingNSG
-  ]
-}
