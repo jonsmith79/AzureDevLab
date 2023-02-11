@@ -21,7 +21,7 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
       name: subnet.name
       properties: {
         addressPrefix: subnet.prefix
-        networkSecurityGroup: (subnet.name == '${vnetName}-Subnet-Tier0Infra') ? {
+        networkSecurityGroup: (subnet.name == subnets[2].name) ? {
           id: nsgID
         } : null
       }

@@ -25,11 +25,8 @@ var subnetArray = [for (subnet, index) in subnets: {
   name: subnet
   prefix: '${VNetID}.${index}.0/24'
 }]
+var nsgName = '${subnets[2]}-NSG'
 
-
-//var nsgName = '${subnets[2].name}-NSG'
-var nsgName = '${vnetName}-Subnet-T0-Infra-NSG'
-//var nsgSubnet = subnets[2]
 
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: rgName
@@ -62,18 +59,3 @@ module newVNet 'modules/vnet.bicep' = {
     newNSG
   ]
 }
-
-/*
-module attachNSG 'modules/nsgAttach.bicep' = {
-  name: 'attachNSG'
-  scope: newRG
-  params: {
-    VNet: vnetName
-    nsg: nsgName
-    subnet: subnets[2]
-  }
-  dependsOn: [
-    newNSG
-  ]
-}
-*/
