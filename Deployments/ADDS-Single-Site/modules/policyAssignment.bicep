@@ -44,7 +44,7 @@ resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@20
     displayName: assignmentName
     enforcementMode: assignmentEnforcementMode
     nonComplianceMessages: assignmentNonComplianceMessages
-    parameters: (!empty(assignmentParameters)) ? assignmentParameters : null
+    parameters: (!empty(assignmentParameters)) ? assignmentParameters : {}
     policyDefinitionId: assignmentPolicyID
     resourceSelectors: resourceSelectors
   }
