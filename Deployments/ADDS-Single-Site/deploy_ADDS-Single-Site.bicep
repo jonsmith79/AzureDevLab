@@ -2,9 +2,9 @@
 targetScope='subscription'
 
 
-// ===================
-// Paramaeters Section
-// ===================
+/*-------------------------------------------------------------------------------------------
+  Parameters section
+-------------------------------------------------------------------------------------------*/
 
 @description('Environment Naming Convention')
 param namingConvention string
@@ -45,9 +45,9 @@ param vmDC1VMSize string
 
 
 
-// =================
-// Variables Section
-// =================
+/*-------------------------------------------------------------------------------------------
+  Variables section
+-------------------------------------------------------------------------------------------*/
 
 // Resource Group Variables
 var ResourceGroupName = '${namingConvention}-RG'
@@ -154,9 +154,9 @@ var vmExtensionAutoUpgradeMinorVersion = true
 */
 
 
-// =================
-// Resources Section
-// =================
+/*-------------------------------------------------------------------------------------------
+  Resource section
+-------------------------------------------------------------------------------------------*/
 
 // Deploy new resource group if it doesn't already exist
 @description('Create new resource group')
@@ -165,6 +165,41 @@ resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: Location
 }
 output RGID string = newRG.id
+
+// Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy initiative to the resource group
+@description('Assign the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' policy initiative to the resource group')
+module AzPolAssign 'modules/policyAssignment.bicep' = {
+  name: 'assign_${assignmentName}'
+  scope: newRG
+  params: {
+    Location: Location
+    assignmentName: assignmentName
+    assignmentDescription: assignmentDescription
+    assignmentEnforcementMode: assignmentEnforcementMode
+    assignmentPolicyID: assignmentPolicyID
+    assignmentNonComplianceMessages: assignmentNonComplianceMessages
+    resourceSelectors: resourceSelectors
+  }
+}
+
+// Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
+@description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
+module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
+  name: 'assign_${AzPolAutomanageName}'
+  scope: newRG
+  params: {
+    Location: Location
+    assignmentName: AzPolAutomanageName
+    assignmentDescription: AzPolAutomanageDescription
+    assignmentEnforcementMode: AzPolAutomanageEnforcementMode
+    assignmentPolicyID: AzPolAutomanagePolicyID
+    assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
+    resourceSelectors: AzPolAutomanageResourceSelectors
+  }
+  dependsOn: [
+    AzPolAssign
+  ]
+}
 
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
@@ -176,6 +211,9 @@ module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
     Location: Location
     DestinationAddressPrefix: VNet1SubnetArray[2].prefix
   }
+  dependsOn: [
+    AzPolAutomanageAssign
+  ]
 }
 
 // Deploy Virtual Network 1 (VNet1)
@@ -212,43 +250,6 @@ module BastionHost1 'modules/bastionhost.bicep' = {
   ]
 }
 
-// Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy initiative to the resource group
-@description('Assign the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' policy initiative to the resource group')
-module AzPolAssign 'modules/policyAssignment.bicep' = {
-  name: 'assign_${assignmentName}'
-  scope: newRG
-  params: {
-    Location: Location
-    //rgName: ResourceGroupName
-    assignmentName: assignmentName
-    assignmentDescription: assignmentDescription
-    assignmentEnforcementMode: assignmentEnforcementMode
-    assignmentPolicyID: assignmentPolicyID
-    assignmentNonComplianceMessages: assignmentNonComplianceMessages
-    resourceSelectors: resourceSelectors
-  }
-}
-
-// Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
-@description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
-module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
-  name: 'assign_${AzPolAutomanageName}'
-  scope: newRG
-  params: {
-    Location: Location
-    //rgName: ResourceGroupName
-    assignmentName: AzPolAutomanageName
-    assignmentDescription: AzPolAutomanageDescription
-    assignmentEnforcementMode: AzPolAutomanageEnforcementMode
-    assignmentPolicyID: AzPolAutomanagePolicyID
-    assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
-    resourceSelectors: AzPolAutomanageResourceSelectors
-  }
-  dependsOn: [
-    AzPolAssign
-  ]
-}
-
 // Deploy first domain controller
 @description('Deploy first domain controller to VNet1')
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
@@ -275,7 +276,6 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
   }
   dependsOn: [
     BastionHost1
-    AzPolAssign
   ]
 }
 
