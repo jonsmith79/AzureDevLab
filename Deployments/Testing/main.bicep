@@ -15,11 +15,11 @@ var vnetName = '${namingConvention}-VNet'
 var subnets = [
   'GatewaySubnet'
   'AzureBastionSubnet'
-  '${vnetName}-Subnet-Tier0Infra'
-  '${vnetName}-Subnet-Tier1Data'
-  '${vnetName}-Subnet-Tier2Apps'
-  '${vnetName}-Subnet-Tier3Web'
-  '${vnetName}-Subnet-Tier4Client'
+  '${vnetName}-Subnet-T0-Infra'
+  '${vnetName}-Subnet-T1-Data'
+  '${vnetName}-Subnet-T2-Apps'
+  '${vnetName}-Subnet-T3-Web'
+  '${vnetName}-Subnet-T4-Client'
 ]
 var subnetArray = [for (subnet, index) in subnets: {
   name: subnet

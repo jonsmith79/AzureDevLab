@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       Location: "uksouth"
-      namingConvention: "tst"
+      namingConvention: "test"
       VNetID: "10.1"
       DeploymentDir: "Testing"
 
