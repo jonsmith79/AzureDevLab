@@ -3,13 +3,10 @@ param location string
 param vnetName string
 param VNetID string
 param subnets array
+param nsgID string
 param tags object
 
 var vnetIPRange = '${VNetID}.0.0/16'
-var subnetArray = [for (subnet, index) in subnets: {
-  name: '${subnet}'
-  prefix: '${VNetID}.${index}.0/24'
-}]
 
 resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: vnetName
@@ -20,10 +17,13 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
         vnetIPRange
       ]
     }
-    subnets: [for sn in subnetArray: {
-      name: sn.name
+    subnets: [for subnet in subnets: {
+      name: subnet.name
       properties: {
-        addressPrefix: sn.prefix
+        addressPrefix: subnet.prefix
+        networkSecurityGroup: (subnet.name == '${vnetName}-Subnet-Tier0Infra') ? {
+          id: nsgID
+        } : null
       }
     }]
   }

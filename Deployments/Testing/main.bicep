@@ -6,7 +6,7 @@ param VNetID string
 param timeStamp string = utcNow('yyyy-MM-dd-HH:mm')
 
 var tags = {
-  Environment: 'Dev'
+  Environment: 'Test'
   Owner: 'Jon Smith'
   DateCreated: timeStamp
 }
@@ -21,6 +21,10 @@ var subnets = [
   '${vnetName}-Subnet-Tier3Web'
   '${vnetName}-Subnet-Tier4Client'
 ]
+var subnetArray = [for (subnet, index) in subnets: {
+  name: subnet
+  prefix: '${VNetID}.${index}.0/24'
+}]
 
 
 //var nsgName = '${subnets[2].name}-NSG'
@@ -33,18 +37,6 @@ resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   tags: tags
 }
 
-module newVNet 'modules/vnet.bicep' = {
-  name: 'newVNet-${vnetName}'
-  scope: newRG
-  params: {
-    location: location
-    vnetName: vnetName
-    VNetID: VNetID
-    subnets: subnets
-    tags: tags
-  }
-}
-
 module newNSG 'modules/nsg.bicep' = {
   name: 'newNSG'
   scope: newRG
@@ -53,11 +45,25 @@ module newNSG 'modules/nsg.bicep' = {
     nsgName: nsgName
     tags: tags
   }
+}
+
+module newVNet 'modules/vnet.bicep' = {
+  name: 'newVNet-${vnetName}'
+  scope: newRG
+  params: {
+    location: location
+    vnetName: vnetName
+    VNetID: VNetID
+    subnets: subnetArray
+    nsgID: newNSG.outputs.nsgID
+    tags: tags
+  }
   dependsOn: [
-    newVNet
+    newNSG
   ]
 }
 
+/*
 module attachNSG 'modules/nsgAttach.bicep' = {
   name: 'attachNSG'
   scope: newRG
@@ -70,4 +76,4 @@ module attachNSG 'modules/nsgAttach.bicep' = {
     newNSG
   ]
 }
-
+*/
