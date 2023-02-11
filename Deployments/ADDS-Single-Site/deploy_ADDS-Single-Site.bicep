@@ -143,7 +143,8 @@ var AzPolAutomanageResourceSelectors = [
   }
 ]
  var AzPolAutomanageParameters = {
-  'Configuration profile': '/providers/Microsoft.Automanage/bestPractices/azurebestpracticesdevtest'
+  configurationProfile: '/providers/Microsoft.Automanage/bestPractices/azurebestpracticesdevtest'
+  effect: 'DeployIfNotExists'
  }
 
 /*
