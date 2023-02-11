@@ -3,11 +3,11 @@ targetScope = 'subscription'
 param location string
 param namingConvention string
 param VNetID string
-param timeStamp string = utcNow('yyyy-MM-dd-HH:mm')
+param timeStamp string = utcNow() // can format if required 'dd/MM/yyyy HH:mm'
 
 var tags = {
   Environment: 'Test'
-  Owner: 'Jon Smith'
+  Deployment: 'GitHub Workflows'
   DateCreated: timeStamp
 }
 var rgName = '${namingConvention}-RG'
@@ -26,7 +26,6 @@ var subnetArray = [for (subnet, index) in subnets: {
   prefix: '${VNetID}.${index}.0/24'
 }]
 var nsgName = '${subnets[2]}-NSG'
-
 
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: rgName

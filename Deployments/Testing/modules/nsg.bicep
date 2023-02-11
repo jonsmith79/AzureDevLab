@@ -1,12 +1,12 @@
 
 param location string
 param nsgName string
+param DestinationAddress string = 'VirtualNetwork'
 param tags object
 
 var SourceAddress = 'VirtualNetwork'
 var SourcePortRange = '*'
 var DestinationPortRanges = '49152-65535'
-var DestinationAddress = 'VirtualNetwork'
 
 resource newNSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   name: nsgName
