@@ -1,7 +1,6 @@
 // Set target scope
 targetScope='subscription'
 
-
 /*-------------------------------------------------------------------------------------------
   Parameters section
 -------------------------------------------------------------------------------------------*/
@@ -117,6 +116,7 @@ var resourceSelectors = [
     ]
   }
 ]
+var assignmentParameters = {}
 
 // Policy Assignment variables for 'Configure virtual machines to be onboarded to Azure Automanage'
 var AzPolAutomanageName = 'Onboard_VMs_to_Automanage'
@@ -142,6 +142,9 @@ var AzPolAutomanageResourceSelectors = [
     ]
   }
 ]
+ var AzPolAutomanageParameters = {
+  'Configuration profile': '/providers/Microsoft.Automanage/bestPractices/azurebestpracticesdevtest'
+ }
 
 /*
 // vmDC1 extension variables
@@ -179,6 +182,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
     assignmentPolicyID: assignmentPolicyID
     assignmentNonComplianceMessages: assignmentNonComplianceMessages
     resourceSelectors: resourceSelectors
+    assignmentParameters: assignmentParameters
   }
 }
 
@@ -195,6 +199,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
     assignmentPolicyID: AzPolAutomanagePolicyID
     assignmentNonComplianceMessages: AzPolAutomanageNonComplianceMessages
     resourceSelectors: AzPolAutomanageResourceSelectors
+    assignmentParameters: AzPolAutomanageParameters
   }
   dependsOn: [
     AzPolAssign

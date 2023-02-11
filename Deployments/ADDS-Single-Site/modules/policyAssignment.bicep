@@ -23,6 +23,10 @@ param assignmentNonComplianceMessages array
 @description('Assignment Resource Selectors')
 param resourceSelectors array
 
+@description('Assignment Paramters')
+param assignmentParameters object
+
+
 
 /*-------------------------------------------------------------------------------------------
  Resource section
@@ -40,7 +44,7 @@ resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@20
     displayName: assignmentName
     enforcementMode: assignmentEnforcementMode
     nonComplianceMessages: assignmentNonComplianceMessages
-    parameters: {}
+    parameters: (!empty(assignmentParameters)) ? assignmentParameters : null
     policyDefinitionId: assignmentPolicyID
     resourceSelectors: resourceSelectors
   }
