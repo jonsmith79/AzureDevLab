@@ -9,7 +9,7 @@ jobs:
       Location: "uksouth"
       namingConvention: "adl"
       VNet1ID: "10.0"
-      DeploymentName: "ADDS-Single-Site"
+      DeploymentDir: "ADDS-Single-Site"
       AutoShutdownEnabled: "Yes"
       AutoShutdownTime: "2000"
       AutoShutdownEmail: "someone@domain.com"
@@ -45,7 +45,7 @@ jobs:
         scope: subscription
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
         region: ${{env.Location}}
-        template: ./Deployments/${{env.DeploymentName}}/azuredeploy.bicep
+        template: ./Deployments/${{env.DeploymentDir}}/deploy_ADDS-Single-Site.bicep
         parameters:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"

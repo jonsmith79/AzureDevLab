@@ -57,16 +57,19 @@ var VNet1Name = '${namingConvention}-VNet1'
 var VNet1Subnets = [
   'GatewaySubnet'
   'AzureBastionSubnet'
-  '${VNet1Name}-Subnet-Tier0Infra'
-  '${VNet1Name}-Subnet-Tier1Data'
-  '${VNet1Name}-Subnet-Tier2Apps'
-  '${VNet1Name}-Subnet-Tier3Web'
-  '${VNet1Name}-Subnet-Tier4Client'
+  '${VNet1Name}-Subnet-T0-Infra'
+  '${VNet1Name}-Subnet-T1-Data'
+  '${VNet1Name}-Subnet-T2-Apps'
+  '${VNet1Name}-Subnet-T3-Web'
+  '${VNet1Name}-Subnet-T4-Client'
 ]
+var VNet1SubnetArray = [for (subnet, i) in VNet1Subnets: {
+  name: subnet
+  prefix: '${VNet1ID}.${i}.0/24'
+}]
 
 // NSG Vaiables
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
-var nsgSubnet = VNet1Subnets[2]
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
@@ -164,45 +167,29 @@ resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 }
 output RGID string = newRG.id
 
-// Deploy Virtual Network 1 (VNet1)
-@description('Deploy VNet1 to new resource group')
-module VNet1 'modules/vnet.bicep' = {
-  name: 'VNet1'
-  scope: newRG
-  params: {
-    VirtualNetworkName: VNet1Name
-    VirtualNetworkAddressPrefix: VNet1ID
-    Subnets: VNet1Subnets
-    Location: Location
-  }
-}
-
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
 module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
-  name: 'nsgADDS_resource_deploy'
+  name: 'deploy-${nsgNameADDS}'
   scope: newRG
   params: {
     nsgNameADDS: nsgNameADDS
     Location: Location
-    DestinationAddressPrefix: VNet1.outputs.DeployedSubnets[2].addressPrefix
+    DestinationAddressPrefix: VNet1SubnetArray[2].prefix
   }
-  dependsOn: [
-    VNet1
-  ]
 }
 
-
-// Attach ADDS NSG to Tier0Infra Subnet
-@description('Attach ADDS NSG to Tier0Infra Subnet')
-module nsgADDS_attach 'modules/vnetNSGAttach.bicep' = {
-  name: 'nsgADDS_attach_deploy'
+// Deploy Virtual Network 1 (VNet1)
+@description('Deploy VNet1 to new resource group')
+module VNet1 'modules/vnet.bicep' = {
+  name: 'deploy-${VNet1Name}'
   scope: newRG
   params: {
-    //rgName: ResourceGroupName
-    vnetName: VNet1Name
-    nsgName: nsgNameADDS
-    subnetName: nsgSubnet
+    VirtualNetworkName: VNet1Name
+    VirtualNetworkAddressPrefix: VNet1ID
+    Subnets: VNet1SubnetArray
+    nsgID: nsgADDS_resource.outputs.nsgID
+    Location: Location
   }
   dependsOn: [
     nsgADDS_resource

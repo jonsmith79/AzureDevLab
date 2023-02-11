@@ -9,7 +9,7 @@ param Location string
 param nsgNameADDS string
 
 @description('Destination Subnet Address Prefix')
-param DestinationAddressPrefix string
+param DestinationAddressPrefix string = 'VirtualNetwork'
 
 
 //==================
@@ -18,7 +18,6 @@ param DestinationAddressPrefix string
 var SourceAddress = 'VirtualNetwork'
 var SourcePortRange = '*'
 var DestinationPortRanges = '49152-65535'
-// var DestinationAddressPrefix = '10.0.2.0/24'
 
 
 //==================
@@ -26,7 +25,7 @@ var DestinationPortRanges = '49152-65535'
 //==================
 
 // Create NSG for ADDS infrastructure subnet
-resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+resource newNSGADDS 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   name: nsgNameADDS
   location: Location
   properties: {
@@ -272,4 +271,4 @@ resource nsgADDS_resource 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
 //=================
 // Output's section
 //=================
-output nsgID string = nsgADDS_resource.id
+output nsgID string = newNSGADDS.id
