@@ -16,3 +16,7 @@ resource existingNSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' existi
 }
 
 
+
+output vnetName string = existingVNet.name
+output subnetName string = existingSubnet.name
+output nsgName string = existingNSG.name
