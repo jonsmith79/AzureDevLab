@@ -199,7 +199,7 @@ module VNet1 'modules/vnet.bicep' = {
 // Deploy Bastion Host 1 (BastionHost1)
 @description('Deploy Bastion Host to VNet1')
 module BastionHost1 'modules/bastionhost.bicep' = {
-  name: 'BastionHost1'
+  name: 'deploy_BastionHost1'
   scope: newRG
   params: {
     PIPAddressName: '${namingConvention}-PIP-BastionHost1'
@@ -216,7 +216,7 @@ module BastionHost1 'modules/bastionhost.bicep' = {
 // Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy initiative to the resource group
 @description('Assign the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' policy initiative to the resource group')
 module AzPolAssign 'modules/policyAssignment.bicep' = {
-  name: assignmentName
+  name: 'assign_${assignmentName}'
   scope: subscription()
   params: {
     Location: Location
@@ -232,7 +232,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
 // Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
 @description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
 module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
-  name: AzPolAutomanageName
+  name: 'assign_${AzPolAutomanageName}'
   scope: subscription()
   params: {
     Location: Location
@@ -252,7 +252,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
 @description('Deploy first domain controller to VNet1')
 module vmDC1_deploy 'modules/vmDCs.bicep' = {
   scope: newRG
-  name: 'Deploy-vmDC1'
+  name: 'deploy_${vmDC1Name}'
   params: {
     AutoShutdownEmail: AutoShutdownEmail
     AutoShutdownEnabled: AutoShutdownEnabled
