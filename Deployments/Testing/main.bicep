@@ -21,8 +21,39 @@ var vnetName = '${namingConvention}-VNet'
   '${vnetName}-Subnet-Tier3Web'
   '${vnetName}-Subnet-Tier4Client'
 ]*/
-//var nsgName = '${subnets[2]}-NSG'
-var nsgName = '${vnetName}-Subnet-Tier0Infra-NSG'
+
+var subnets = [
+  {
+    name: 'GatewaySubnet'
+    addressPrefix: '${VNetID}.0.0/24'
+  }
+  {
+    name: 'AzureBastionSubnet'
+    addressPrefix: '${VNetID}.1.0/24'
+  }
+  {
+    name: '${vnetName}-Subnet-T0-Infra'
+    addressPrefix: '${VNetID}.2.0/24'
+  }
+  {
+    name: '${vnetName}-Subnet-T1-Data'
+    addressPrefix: '${VNetID}.3.0/24'
+  }
+  {
+    name: '${vnetName}-Subnet-T2-Apps'
+    addressPrefix: '${VNetID}.4.0/24'
+  }
+  {
+    name: '${vnetName}-Subnet-T3-Web'
+    addressPrefix: '${VNetID}.5.0/24'
+  }
+  {
+    name: '${vnetName}-Subnet-T4-Client'
+    addressPrefix: '${VNetID}.6.0/24'
+  }
+]
+//var nsgName = '${subnets[2].name}-NSG'
+var nsgName = '${vnetName}-Subnet-T0-Infra-NSG'
 //var nsgSubnet = subnets[2]
 
 resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -38,7 +69,7 @@ module newVNet 'modules/vnet.bicep' = {
     location: location
     vnetName: vnetName
     VNetID: VNetID
-    //subnets: subnets
+    subnets: subnets
     tags: tags
   }
 }
