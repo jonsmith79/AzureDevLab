@@ -61,7 +61,7 @@ var VNet1Subnets = [
   '${VNet1Name}-Subnet-T2-Apps'
   '${VNet1Name}-Subnet-T3-Web'
   '${VNet1Name}-Subnet-T4-Client'
-]
+] // always have [2] slot in the array where ADDS should be installed
 var VNet1SubnetArray = [for (subnet, i) in VNet1Subnets: {
   name: subnet
   prefix: '${VNet1ID}.${i}.0/24'
