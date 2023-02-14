@@ -51,21 +51,13 @@ resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@20
 }
 
 output identityID string = policyAssignment_resource.identity.principalId
+output policyID string = policyAssignment_resource.id
 
-resource roleAssignmentContributor_resource 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(policyAssignment_resource.id, 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  properties: {
-    //description: 'Contributor role assignment for policy assignment'
-    principalId: policyAssignment_resource.identity.principalId
-    roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
-  }
-}
-
-resource roleAssignmentResourcePolicyContributor_resource 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(policyAssignment_resource.id, '36243c78-bf99-498c-9df9-86d9f8d28608')
-  properties: {
-    //description: 'Resource Policy Contributor role assignment for policy assignment'
-    principalId: policyAssignment_resource.identity.principalId
-    roleDefinitionId: '36243c78-bf99-498c-9df9-86d9f8d28608'
+module roleAssignment_resource 'roleAssignment.bicep' = {
+  name: 'roleAssignment_resource'
+  scope: subscription()
+  params: {
+    policyID: policyAssignment_resource.id
+    identityID: policyAssignment_resource.identity.principalId
   }
 }
