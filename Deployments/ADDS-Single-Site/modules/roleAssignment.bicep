@@ -14,7 +14,8 @@ param identityID string
   Variables section
 -------------------------------------------------------------------------------------------*/
 
-
+var roleContributor = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+var roleResourcePolicyContributor = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/36243c78-bf99-498c-9df9-86d9f8d28608'
 
 
 /*-------------------------------------------------------------------------------------------
@@ -27,7 +28,7 @@ resource roleAssignmentContributor_resource 'Microsoft.Authorization/roleAssignm
   properties: {
     description: 'Contributor role assignment for policy assignment ID'
     principalId: identityID
-    roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+    roleDefinitionId: roleContributor
   }
 }
 
@@ -38,7 +39,7 @@ resource roleAssignmentResourcePolicyContributor_resource 'Microsoft.Authorizati
   properties: {
     description: 'Resource Policy Contributor role assignment for policy assignment'
     principalId: identityID
-    roleDefinitionId: '36243c78-bf99-498c-9df9-86d9f8d28608'
+    roleDefinitionId: roleResourcePolicyContributor
   }
 }
 
