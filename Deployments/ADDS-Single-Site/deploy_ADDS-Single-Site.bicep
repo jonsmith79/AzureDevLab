@@ -211,6 +211,27 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
   ]
 }
 
+// Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy system identity subscription roles
+module AzPolAssign_permissions 'modules/roleAssignment.bicep' = {
+  name: 'roleAssignment_${AzPolAssign.name}'
+  scope: subscription()
+  params: {
+    policyID: AzPolAssign.outputs.policyID
+    identityID: AzPolAssign.outputs.identityID
+  }
+}
+
+// Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy system identity subscription roles
+module AzPolAutomanageAssign_permissions 'modules/roleAssignment.bicep' = {
+  name: 'roleAssignment_${AzPolAutomanageAssign.name}'
+  scope: subscription()
+  params: {
+    policyID: AzPolAutomanageAssign.outputs.policyID
+    identityID: AzPolAutomanageAssign.outputs.identityID
+  }
+}
+
+
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
 module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {

@@ -10,7 +10,6 @@ param policyID string
 param identityID string
 
 
-
 /*-------------------------------------------------------------------------------------------
   Variables section
 -------------------------------------------------------------------------------------------*/
@@ -32,6 +31,7 @@ resource roleAssignmentContributor_resource 'Microsoft.Authorization/roleAssignm
   }
 }
 
+// Resource Policy Contributor role assignment for policy assignment ID
 resource roleAssignmentResourcePolicyContributor_resource 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(policyID, '36243c78-bf99-498c-9df9-86d9f8d28608')
   scope: subscription()

@@ -27,6 +27,14 @@ param resourceSelectors array
 param assignmentParameters object
 
 
+/*-------------------------------------------------------------------------------------------
+  Variables section
+-------------------------------------------------------------------------------------------*/
+
+
+
+
+
 
 /*-------------------------------------------------------------------------------------------
  Resource section
@@ -50,14 +58,10 @@ resource policyAssignment_resource 'Microsoft.Authorization/policyAssignments@20
   }
 }
 
+
+/*-------------------------------------------------------------------------------------------
+  Outputs section
+-------------------------------------------------------------------------------------------*/
+
 output identityID string = policyAssignment_resource.identity.principalId
 output policyID string = policyAssignment_resource.id
-
-module roleAssignment_resource 'roleAssignment.bicep' = {
-  name: 'roleAssignment_resource'
-  scope: subscription()
-  params: {
-    policyID: policyAssignment_resource.id
-    identityID: policyAssignment_resource.identity.principalId
-  }
-}
