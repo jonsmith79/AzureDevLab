@@ -80,7 +80,7 @@ var vmDC1IP = '${VNet1ID}.2.${vmDC1LastOctet}'
 var vmDC2DataDisk1Name = 'NTDS'
 var vmDC2Name = '${namingConvention}-DC02'
 var vmDC2LastOctet = '5'
-var vmDC2IP = '${VNet1ID}.2.${vmDC1LastOctet}'
+var vmDC2IP = '${VNet1ID}.2.${vmDC2LastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'
