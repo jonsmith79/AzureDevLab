@@ -42,7 +42,17 @@ param vmDC1OSVersion string
 @description('Domain Controller1 VMSize')
 param vmDC1VMSize string
 
+@description('NetBios Domain Name')
+param NetBiosDomain string
 
+@description('Internal Domain Name')
+param InternalDomainName string
+
+@description('Artifacts Location')
+param artifactsLocation string
+
+@description('Artifacts Location Sas Token')
+param artifactsLocationSasToken string
 
 /*-------------------------------------------------------------------------------------------
   Variables section
@@ -157,15 +167,7 @@ var AzPolAutomanageResourceSelectors = [
   }
 }
 
-/*
-// vmDC1 extension variables
-var vmExtensionName = 'AzurePolicyforWindows'
-var vmExtensionPublisher = 'Microsoft.GuestConfiguration'
-var vmExtensionType = 'ConfigurationforWindows'
-var vmExtensionTypeHandlerVersion = '1.1'
-var vmExtensionAutoUpgrade = true
-var vmExtensionAutoUpgradeMinorVersion = true
-*/
+
 
 
 
@@ -296,7 +298,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
   name: 'deploy_${vmDC1Name}'
   params: {
     AutoShutdownEmail: AutoShutdownEmail
-    AutoShutdownEnabled: AutoShutdownEnabled
+    AutoShutdownEnabled: 'No'
     AutoShutdownTime: AutoShutdownTime
     DataDisk1Name: vmDC1DataDisk1Name
     LicenceType: WindowsServerLicenseType
@@ -315,6 +317,27 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
   }
   dependsOn: [
     BastionHost1
+  ]
+}
+
+//Promote first domain controller to domain controller
+@description('Promote first domain controller to domain controller')
+module promotedc1 'modules/firstdc.bicep' = {
+  scope: newRG
+  name: 'PromoteDC1'
+  params: {
+    computerName: vmDC1Name
+    TimeZone: TimeZone
+    NetBiosDomain: NetBiosDomain
+    domainName: InternalDomainName
+    adminUsername: adminUsername
+    adminPassword: adminPassword
+    location: Location          
+    artifactsLocation:  artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
+  }
+  dependsOn: [
+    vmDC1_deploy
   ]
 }
 
@@ -347,28 +370,9 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
   ]
 }
 
-/*
-// Add extension to first domain controller
-@description('Add extension to first domain controller')
-module vmDC1Extension_add 'modules/vmExtension.bicep' = {
-  scope: newRG
-  name: 'addExtension_${vmExtensionName}'
-  params: {
-    vmExtensionName: vmExtensionName
-    vmExtensionPublisher: vmExtensionPublisher
-    vmExtensionType: vmExtensionType
-    vmExtensionTypeHandlerVersion: vmExtensionTypeHandlerVersion
-    vmExtensionAutoUpgrade: vmExtensionAutoUpgrade
-    vmExtensionAutoUpgradeMinorVersion: vmExtensionAutoUpgradeMinorVersion
-    vmName: vmDC1Name
-    Location: Location
-    //vmResourceGroup: ResourceGroupName
-  }
-  dependsOn: [
-    vmDC1_deploy
-  ]
-}
-*/
+
+
+
 /*
 // Update DNS servers on subnets
 module VNet1DNSUpdate 'modules/vnetDNSUpdate.bicep' = {

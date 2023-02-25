@@ -18,6 +18,10 @@ jobs:
       WindowsServerLicenseType: "Windows_Server"
       vmDC1OSVersion: "2022-Datacenter"
       vmDC1VMSize: "Standard_D2s_v3"
+      NetBiosDomain: "E2D"
+      InternalDomainName: "adds.e2d.co.uk"
+      artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
+      artifactsLocationSasToken: ""
 
     steps:
       # Checkout code
@@ -59,3 +63,7 @@ jobs:
           WindowsServerLicenseType="${{env.WindowsServerLicenseType}}"
           vmDC1OSVersion="${{env.vmDC1OSVersion}}"
           vmDC1VMSize="${{env.vmDC1VMSize}}"
+          NetBiosDomain="${{env.NetBiosDomain}}"
+          InternalDomainName="${{env.InternalDomainName}}"
+          artifactsLocation="${{env.artifactsLocation}}"
+          artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"

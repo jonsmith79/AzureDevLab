@@ -1,3 +1,7 @@
+/*-------------------------------------------------------------------------------------------
+  Parameters section
+-------------------------------------------------------------------------------------------*/
+
 @description('The name of the virtual machine extension.')
 param vmExtensionName string
 
@@ -23,6 +27,19 @@ param Location string
 param vmExtensionAutoUpgradeMinorVersion bool
 
 
+
+
+/*-------------------------------------------------------------------------------------------
+  Variables section
+-------------------------------------------------------------------------------------------*/
+
+
+
+
+/*-------------------------------------------------------------------------------------------
+  Resources section
+-------------------------------------------------------------------------------------------*/
+
 @description('The name of the virtual machine to which the extension will be added.')
 resource vmToDeploy_Extension 'Microsoft.Compute/virtualMachines@2022-08-01' existing = {
   name: vmName
@@ -42,3 +59,7 @@ resource vmExtension_resource 'Microsoft.Compute/virtualMachines/extensions@2022
     settings: {}
   }
 }
+
+/*-------------------------------------------------------------------------------------------
+  Outputs section
+-------------------------------------------------------------------------------------------*/
