@@ -35,7 +35,7 @@ param artifactsLocationSasToken string
   Variables section
 -------------------------------------------------------------------------------------------*/
 
-var ModulesURL = uri('${artifactsLocation}', 'DSC/FIRSTDC.zip${artifactsLocationSasToken}')
+var ModulesURL = uri('${artifactsLocation}', 'DSC/FIRSTDC.zip?raw=true${artifactsLocationSasToken}')
 var ConfigurationFunction = 'FIRSTDC.ps1\\FIRSTDC'
 
 /*-------------------------------------------------------------------------------------------
