@@ -269,9 +269,9 @@ resource newNSGADDS 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
         properties: {
           access: 'Allow'
           direction: 'Inbound'
-          protocol: 'Any'
+          protocol: '*'
           priority: 999
-          sourceAddressPrefix: SourceAddress
+          sourceAddressPrefix: '*'
           sourcePortRange: SourcePortRange
           destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: SourcePortRange
