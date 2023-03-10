@@ -265,7 +265,7 @@ resource newNSGADDS 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
         }
       }
       {
-        name: 'Inbound_SMB'
+        name: 'Inbound_Anything'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
