@@ -20,7 +20,7 @@ jobs:
       vmDC1VMSize: "Standard_D2s_v3"
       NetBiosDomain: "E2D"
       InternalDomainName: "adds.e2d.co.uk"
-      artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
+      artifactsLocation: "https://github.com/jonsmith79/AzureDevLab/blob/main/Deployments/ADDS-Single-Site/"
       artifactsLocationSasToken: ""
 
     steps:
