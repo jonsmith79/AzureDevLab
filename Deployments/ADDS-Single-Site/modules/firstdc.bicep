@@ -48,7 +48,7 @@ resource computerName_Microsoft_Powershell_DSC 'Microsoft.Compute/virtualMachine
   properties: {
     publisher: 'Microsoft.Powershell'
     type: 'DSC'
-    typeHandlerVersion: '2.83.5'
+    typeHandlerVersion: '2.83'
     autoUpgradeMinorVersion: true
     settings: {
       ModulesUrl: ModulesURL
