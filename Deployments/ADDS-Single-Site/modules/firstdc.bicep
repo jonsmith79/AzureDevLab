@@ -74,3 +74,4 @@ resource computerName_Microsoft_Powershell_DSC 'Microsoft.Compute/virtualMachine
 /*-------------------------------------------------------------------------------------------
   Outputs section
 -------------------------------------------------------------------------------------------*/
+output vmDCPromoted bool = true

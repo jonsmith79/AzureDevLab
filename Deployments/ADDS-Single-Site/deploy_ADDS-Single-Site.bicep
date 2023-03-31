@@ -391,7 +391,7 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
 */
 
 // Get existing VNet
-resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' existing = {
+resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' existing = if (promoteDC1.outputs.vmDCPromoted == true) {
   name: VNet1Name
   scope: newRG
 }
@@ -414,6 +414,7 @@ module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
   ]
 }
 
+// Restart first domain controller
 module vmDC1_restart 'modules/vmRestart.bicep' = {
   scope: newRG
   name: 'restart_${vmDC1Name}'
