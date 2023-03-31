@@ -264,7 +264,7 @@ resource newNSGADDS 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
           destinationPortRange: SourcePortRange
         }
       }
-      {
+      /*{
         name: 'Inbound_Anything'
         properties: {
           access: 'Allow'
@@ -276,7 +276,7 @@ resource newNSGADDS 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
           destinationAddressPrefix: DestinationAddressPrefix
           destinationPortRange: SourcePortRange
         }
-      }
+      }*/
     ]
   }
 }

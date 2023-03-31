@@ -341,6 +341,7 @@ module promotedc1 'modules/firstdc.bicep' = {
   ]
 }
 
+/*
 // Deploy second domain controller
 @description('Deploy second domain controller to VNet1')
 module vmDC2_deploy 'modules/vmDCs.bicep' = {
@@ -370,7 +371,7 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
   ]
 }
 
-
+*/
 
 
 /*

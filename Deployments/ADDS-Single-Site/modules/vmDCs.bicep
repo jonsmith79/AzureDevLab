@@ -107,7 +107,7 @@ resource vmName_resource 'Microsoft.Compute/virtualMachines@2022-08-01' = {
         publisher: Publisher
         offer: Offer
         sku: OSVersion
-        version: 'latest'
+        version: 'Latest'
       }
       osDisk: {
         name: '${vmName}_OSDisk'
