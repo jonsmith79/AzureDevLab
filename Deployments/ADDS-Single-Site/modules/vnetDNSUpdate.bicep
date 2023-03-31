@@ -11,6 +11,9 @@ param DNSServerIPs array
 @description('Region of Resources')
 param Location string
 
+@description('The properties of the existing VNet (from getVNet)')
+param Properties object
+
 /*
 @description('VNet prefix')
 param VNetPrefix string
@@ -32,16 +35,13 @@ param nsgID string
   Resources section
 -------------------------------------------------------------------------------------------*/
 
-// Get existing VNet
-resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' existing = {
-  name: VNetName
-}
+
 
 // Update the Virtual Network (VNet) and all associated DNS entries
 resource updateVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
-  name: getVNet.name
+  name: VNetName
   location: Location
-  properties: union(getVNet.properties, { 
+  properties: union(Properties, { 
     dhcpOptions: {
       dnsServers: DNSServerIPs
     }
