@@ -395,11 +395,11 @@ module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
   scope: newRG
   params: {
     VNetName: VNet1Name
-    VNetPrefix: VNet1ID
-    nsgID: nsgADDS_resource.outputs.nsgID
     Location: Location
-    Subnets: VNet1Subnets
     DNSServerIPs: VNet1DNSServers
+    //Subnets: VNet1Subnets
+    //VNetPrefix: VNet1ID
+    //nsgID: nsgADDS_resource.outputs.nsgID
   }
   dependsOn: [
     promoteDC1
