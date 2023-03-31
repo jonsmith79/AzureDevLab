@@ -1,114 +1,61 @@
+/*-------------------------------------------------------------------------------------------
+  Parameters section
+-------------------------------------------------------------------------------------------*/
+
 @description('VNet name')
 param VNetName string
 
 @description('VNet prefix')
 param VNetPrefix string
 
-@description('Gateway Subnet Name')
-param GatewaySubnetName string
-
-@description('Gateway Subnet Prefix')
-param GatewaySubnetPrefix string
-
-@description('Subnet 1 Name')
-param Subnet1Name string
-
-@description('Subnet 1 Prefix')
-param Subnet1Prefix string
-
-@description('Subnet 2 Name')
-param Subnet2Name string
-
-@description('Subnet 2 Prefix')
-param Subnet2Prefix string
-
-@description('Subnet 3 Name')
-param Subnet3Name string
-
-@description('Subnet 3 Prefix')
-param Subnet3Prefix string
-
-@description('Subnet 4 Name')
-param Subnet4Name string
-
-@description('Subnet 4 Prefix')
-param Subnet4Prefix string
-
-@description('Subnet 5 Name')
-param Subnet5Name string
-
-@description('Subnet 5 Prefix')
-param Subnet5Prefix string
-
-@description('Bastion Subnet Name')
-param BastionSubnetName string
-
-@description('Bastion Subnet Prefix')
-param BastionSubnetPrefix string
+@description('NSG ID')
+param nsgID string
 
 @description('The DNS address(es) of the DNS Server(s) used by the VNET')
-param DNSServerIP array
+param DNSServerIPs array
 
 @description('Region of Resources')
 param Location string
 
-resource VNetName_resource 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+@description('Virtual Network Subnets')
+param Subnets array
+
+/*-------------------------------------------------------------------------------------------
+  Variables section
+-------------------------------------------------------------------------------------------*/
+
+var VNetIPRange = '${VNetPrefix}.0.0/16'
+
+/*-------------------------------------------------------------------------------------------
+  Resources section
+-------------------------------------------------------------------------------------------*/
+
+// Create the Virtual Network (VNet) and all associated subnets
+resource updateVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: VNetName
   location: Location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        VNetPrefix
+        VNetIPRange
       ]
     }
     dhcpOptions: {
-      dnsServers: DNSServerIP
+      dnsServers: DNSServerIPs
     }
-    subnets: [
-      {
-        name: GatewaySubnetName
-        properties: {
-          addressPrefix: GatewaySubnetPrefix
-        }
-      }
-      {
-        name: Subnet1Name
-        properties: {
-          addressPrefix: Subnet1Prefix
-        }
-      }
-      {
-        name: Subnet2Name
-        properties: {
-          addressPrefix: Subnet2Prefix
-        }
-      }
-      {
-        name: Subnet3Name
-        properties: {
-          addressPrefix: Subnet3Prefix
-        }
-      }
-      {
-        name: Subnet4Name
-        properties: {
-          addressPrefix: Subnet4Prefix
-        }
-      }
-      {
-        name: Subnet5Name
-        properties: {
-          addressPrefix: Subnet5Prefix
-        }
-      }
-      {
-        name: BastionSubnetName
-        properties: {
-          addressPrefix: BastionSubnetPrefix
-        }
-      }
-    ]
+    subnets: [for (subnet, i) in Subnets: {
+      name: subnet.name
+      properties: {
+        addressPrefix: subnet.prefix
+        networkSecurityGroup: (subnet.name == Subnets[2].name) ? {
+          id: nsgID
+        } : null
+      } 
+    }]
   }
 }
 
-output VNetName string = VNetName
+/*-------------------------------------------------------------------------------------------
+  Outputs section
+-------------------------------------------------------------------------------------------*/
+output VNetID string = updateVNet.id

@@ -22,7 +22,7 @@ param nsgID string
 var VNetIPRange = '${VirtualNetworkAddressPrefix}.0.0/16'
 
 //==================
-// Resrouces section
+// Resources section
 //==================
 
 // Create the Virtual Network (VNet) and all associated subnets

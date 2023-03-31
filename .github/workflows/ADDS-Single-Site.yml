@@ -16,10 +16,13 @@ jobs:
       adminUsername: ${{ secrets.ADMIN_USERNAME }}
       adminPassword: ${{ secrets.ADMIN_PASSWORD }}
       WindowsServerLicenseType: "Windows_Server"
-      vmDC1OSVersion: "2022-Datacenter-azure-edition-core-smalldisk"
+      vmDC1OSVersion: "2022-Datacenter-azure-edition"
       vmDC1VMSize: "Standard_D2s_v3"
       NetBiosDomain: "E2D"
-      InternalDomainName: "adds.e2d.co.uk"
+      SubDNSDomain: "adds"
+      #SubDNSBaseDN: "DC=ADDS,"
+      InternalDomainName: "E2D"
+      InternalTLD: "co.uk"
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
 
@@ -64,6 +67,8 @@ jobs:
           vmDC1OSVersion="${{env.vmDC1OSVersion}}"
           vmDC1VMSize="${{env.vmDC1VMSize}}"
           NetBiosDomain="${{env.NetBiosDomain}}"
+          SubDNSDomain="${{env.SubDNSDomain}}"
           InternalDomainName="${{env.InternalDomainName}}"
+          InternalTLD="${{env.InternalTLD}}"
           artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
           artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"

@@ -19,9 +19,9 @@ This templates deploys:
 - 1 - NSG for ADDS traffic on Tier 0 subnet
 - 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1] [^2]
 - 1 - Azure Policy Initiative assignment of 'Configure virtual machines to be onboarded to Azure Automanage'
-- 1 - Domain Controller
-- 1 - Guest Configuration Extension for the first Domain Controller
-- ~~1 - Active Directory Forest/Domain~~
+- 2 - Domain Controller(s)
+- 1 - Guest Configuration Extension for the Domain Controller(s)
+- 1 - Active Directory Forest/Domain
 - ~~1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
@@ -67,14 +67,14 @@ Parameters that support changes
 | vmDC1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
 | --- | --- |
 | WindowsClientLicenseType | Choose Windows Client License Type (Example:  Windows_Client or None). |
-| Sub DNS Domain | OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT ). |
-| Sub DNS BaseDN | OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA ). |
-| Net Bios Domain | Enter a valid Net Bios Domain Name (Example:  killerhomelab). |
-| Internal Domain | Enter a valid Internal Domain (Exmaple:  killerhomelab). |
-| InternalTLD | Select a valid Top-Level Domain using the Pull-Down Menu. |
-| Reverse Lookup1 | Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10). |
-| WK1OSVersion | Select Windows-11, Windows-10 or Windows-7 Worksation 1 OS Version. |
-| WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |
+| Sub DNS Domain | OPTIONALLY, enter a valid DNS Sub Domain. (Example:  'sub1' or 'sub1.sub2'). |
+~~| Sub DNS BaseDN | OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  'DC=sub1,' or 'DC=sub1,DC=sub2,'    This entry must end with a COMMA ). |~~
+| Net Bios Domain | Enter a valid Net Bios Domain Name (Example:  'Contoso'). |
+| Internal Domain | Enter a valid Internal Domain (Exmaple:  'Contoso'). |
+| InternalTLD | Select a valid Top-Level Domain (Example: 'co.uk' or 'com'). |
+~~| Reverse Lookup1 | Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10). |~~
+~~| WK1OSVersion | Select Windows-11, Windows-10 or Windows-7 Worksation 1 OS Version. |~~
+~~| WK1VMSize | Enter a Valid VM Size based on which Region the VM is deployed. |~~
 
 [^1]: Ensure the SPN has 'Owner' rights over the subscription and Azure AD Directory Read.All permissions. Further information available [here](https://techcommunity.microsoft.com/t5/azure-paas-blog/azure-policy-perform-policy-operations-through-azure-devops/ba-p/2045515#:~:text=By%20default%2C%20the%20SPN%20created%20by%20Azure%20DevOps,the%20Owner%20role%20assigned%20at%20the%20subscription%20level.).
 [^2]: Ensure the 'Microsoft.GuestConfiguration' has been registered as a Resource Provider for the subscription. Further information available [here](https://learn.microsoft.com/en-us/azure/governance/machine-configuration/overview#resource-provider).

@@ -162,3 +162,6 @@ resource vmShutdown_resource 'Microsoft.DevTestLab/schedules@2018-09-15' = if (A
     vmName_resource
   ]
 }
+
+// Output the VM IP Address
+output vmIP string = vmNICName_resource.properties.ipConfigurations[0].properties.privateIPAddress

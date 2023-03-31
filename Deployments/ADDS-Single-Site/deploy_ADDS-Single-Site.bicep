@@ -45,8 +45,14 @@ param vmDC1VMSize string
 @description('NetBios Domain Name')
 param NetBiosDomain string
 
+@description('Sub DNS Domain Name')
+param SubDNSDomain string
+
 @description('Internal Domain Name')
 param InternalDomainName string
+
+@description('Internal DNS Top Level Domain Name')
+param InternalTLD string
 
 @description('Artifacts Location')
 param artifactsLocation string
@@ -72,6 +78,7 @@ var VNet1Subnets = [
   '${VNet1Name}-Subnet-T3-Web'
   '${VNet1Name}-Subnet-T4-Client'
 ] // always have [2] slot in the array where ADDS should be installed
+
 var VNet1SubnetArray = [for (subnet, i) in VNet1Subnets: {
   name: subnet
   prefix: '${VNet1ID}.${i}.0/24'
@@ -79,6 +86,9 @@ var VNet1SubnetArray = [for (subnet, i) in VNet1Subnets: {
 
 // NSG Vaiables
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
+
+// Domain Variables
+var ADDSDomainName = (empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}.${InternalTLD}' : '${InternalDomainName}.${InternalTLD}'
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
@@ -91,6 +101,13 @@ var vmDC2DataDisk1Name = 'NTDS'
 var vmDC2Name = '${namingConvention}-DC02'
 var vmDC2LastOctet = '5'
 var vmDC2IP = '${VNet1ID}.2.${vmDC2LastOctet}'
+
+
+// VNet1 DNS IPs
+var VNet1DNSServers = [
+  vmDC1IP
+  vmDC2IP
+]
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'
@@ -322,14 +339,14 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
 
 //Promote first domain controller to domain controller
 @description('Promote first domain controller to domain controller')
-module promotedc1 'modules/firstdc.bicep' = {
+module promoteDC1 'modules/firstdc.bicep' = {
   scope: newRG
   name: 'PromoteDC1'
   params: {
     computerName: vmDC1Name
     TimeZone: TimeZone
     NetBiosDomain: NetBiosDomain
-    domainName: InternalDomainName
+    domainName: ADDSDomainName
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: Location          
@@ -341,7 +358,7 @@ module promotedc1 'modules/firstdc.bicep' = {
   ]
 }
 
-/*
+
 // Deploy second domain controller
 @description('Deploy second domain controller to VNet1')
 module vmDC2_deploy 'modules/vmDCs.bicep' = {
@@ -371,7 +388,26 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
   ]
 }
 
-*/
+// Update vNet DNS Servers
+@description('Update vNet DNS Servers')
+module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
+  name: 'update-${VNet1Name}-DNS'
+  scope: newRG
+  params: {
+    VNetName: VNet1Name
+    VNetPrefix: VNet1ID
+    nsgID: nsgADDS_resource.outputs.nsgID
+    Location: Location
+    Subnets: VNet1Subnets
+    DNSServerIPs: VNet1DNSServers
+  }
+  dependsOn: [
+    promoteDC1
+    //promoteDC2
+  ]
+}
+
+
 
 
 /*
