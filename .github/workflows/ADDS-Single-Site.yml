@@ -10,7 +10,7 @@ jobs:
       namingConvention: "adl"
       VNet1ID: "10.0"
       DeploymentDir: "ADDS-Single-Site"
-      AutoShutdownEnabled: "Yes"
+      #AutoShutdownEnabled: "Yes"
       AutoShutdownTime: "2000"
       AutoShutdownEmail: "someone@domain.com"
       adminUsername: ${{ secrets.ADMIN_USERNAME }}
@@ -58,7 +58,6 @@ jobs:
           namingConvention="${{env.namingConvention}}"
           VNet1ID="${{env.VNet1ID}}"
           TimeZone="${{env.TimeZone}}"
-          AutoShutdownEnabled="${{env.AutoShutdownEnabled}}"
           AutoShutdownTime="${{env.AutoShutdownTime}}"
           AutoShutdownEmail="${{env.AutoShutdownEmail}}"
           adminUsername="${{env.adminUsername}}"
@@ -72,3 +71,4 @@ jobs:
           InternalTLD="${{env.InternalTLD}}"
           artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
           artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
+          #AutoShutdownEnabled="${{env.AutoShutdownEnabled}}"

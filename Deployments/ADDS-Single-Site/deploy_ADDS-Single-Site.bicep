@@ -16,10 +16,10 @@ param VNet1ID string
 
 @description('TimeZone for Virtual Machines')
 param TimeZone string
-
+/*
 @description('Enable Auto Shutdown')
 param AutoShutdownEnabled string
-
+*/
 @description('Auto Shutdown Time')
 param AutoShutdownTime string
 
@@ -88,7 +88,7 @@ var VNet1SubnetArray = [for (subnet, i) in VNet1Subnets: {
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
 
 // Domain Variables
-var ADDSDomainName = (empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}.${InternalTLD}' : '${InternalDomainName}.${InternalTLD}'
+var ADDSDomainName = (!empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}.${InternalTLD}' : '${InternalDomainName}.${InternalTLD}'
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
@@ -96,17 +96,18 @@ var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
 var vmDC1IP = '${VNet1ID}.2.${vmDC1LastOctet}'
 
+/*
 // vmDC2 Variables
 var vmDC2DataDisk1Name = 'NTDS'
 var vmDC2Name = '${namingConvention}-DC02'
 var vmDC2LastOctet = '5'
 var vmDC2IP = '${VNet1ID}.2.${vmDC2LastOctet}'
-
+*/
 
 // VNet1 DNS IPs
 var VNet1DNSServers = [
   vmDC1IP
-  vmDC2IP
+  //vmDC2IP
 ]
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
@@ -358,7 +359,7 @@ module promoteDC1 'modules/firstdc.bicep' = {
   ]
 }
 
-
+/*
 // Deploy second domain controller
 @description('Deploy second domain controller to VNet1')
 module vmDC2_deploy 'modules/vmDCs.bicep' = {
@@ -387,6 +388,7 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
     BastionHost1
   ]
 }
+*/
 
 // Get existing VNet
 resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' existing = {
@@ -404,9 +406,6 @@ module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
     Location: Location
     DNSServerIPs: VNet1DNSServers
     Properties: getVNet.properties
-    //Subnets: VNet1Subnets
-    //VNetPrefix: VNet1ID
-    //nsgID: nsgADDS_resource.outputs.nsgID
   }
   dependsOn: [
     getVNet
@@ -415,38 +414,18 @@ module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
   ]
 }
 
-
-
-
-/*
-// Update DNS servers on subnets
-module VNet1DNSUpdate 'modules/vnetDNSUpdate.bicep' = {
+module vmDC1_restart 'modules/vmRestart.bicep' = {
   scope: newRG
-  name: 'VNet1DNSUpdate'
+  name: 'restart_${vmDC1Name}'
   params: {
-    BastionSubnetName: VNet1BastionSubnetName
-    BastionSubnetPrefix: VNet1BastionSubnetPrefix
-    DNSServerIP: [
-      vmDC1IP
-    ]
-    GatewaySubnetName: VNet1GatewaySubnetName
-    GatewaySubnetPrefix: VNet1GatewaySubnetPrefix
+    vmName: vmDC1Name
     Location: Location
-    Subnet1Name: VNet1Subnet1Name
-    Subnet1Prefix: VNet1Subnet1Prefix
-    Subnet2Name: VNet1Subnet2Name
-    Subnet2Prefix: VNet1Subnet2Prefix
-    Subnet3Name: VNet1Subnet3Name
-    Subnet3Prefix: VNet1Subnet3Prefix
-    Subnet4Name: VNet1Subnet4Name
-    Subnet4Prefix: VNet1Subnet4Prefix
-    Subnet5Name: VNet1Subnet5Name
-    Subnet5Prefix: VNet1Subnet5Prefix
-    VNetName: VNet1Name
-    VNetPrefix: VNet1Prefix
+    artifactsLocation:  artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
-    vmDC1_deploy
+    VNet1DNS
   ]
 }
-*/
+
+

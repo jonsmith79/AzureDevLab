@@ -2,39 +2,45 @@
   Parameters section
 -------------------------------------------------------------------------------------------*/
 
-@description('VNet name')
-param VNetName string
+@description('VM Name')
+param vmName string
 
-@description('The DNS address(es) of the DNS Server(s) used by the VNET')
-param DNSServerIPs array
-
-@description('Region of Resources')
+@description('Location of VM')
 param Location string
 
-@description('The properties of the existing VNet (from getVNet)')
-param Properties object
+@description('Artifacts location')
+param artifactsLocation string
+
+@description('Artifacts location SaS Token')
+@secure()
+param artifactsLocationSasToken string
 
 /*-------------------------------------------------------------------------------------------
   Variables section
 -------------------------------------------------------------------------------------------*/
 
+var ModulesURL = uri(artifactsLocation, 'DSC/RESTARTVM.zip${artifactsLocationSasToken}')
+var ConfigurationFunction = 'RESTARTVM.ps1\\RESTARTVM'
 
 /*-------------------------------------------------------------------------------------------
   Resources section
 -------------------------------------------------------------------------------------------*/
 
-// Update the Virtual Network (VNet) and all associated DNS entries
-resource updateVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
-  name: VNetName
+resource vmName_Microsoft_PowerShell_DSC 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
+  name: '${vmName}/Microsoft.PowerShell.DSC'
   location: Location
-  properties: union(Properties, { 
-    dhcpOptions: {
-      dnsServers: DNSServerIPs
+  properties: {
+    publisher: 'Microsoft.Powershell'
+    type: 'DSC'
+    typeHandlerVersion: '2.83'
+    autoUpgradeMinorVersion: true
+    settings: {
+      modulesUrl: ModulesURL
+      configurationFunction: ConfigurationFunction
     }
-  })    
+  }
 }
 
 /*-------------------------------------------------------------------------------------------
   Outputs section
 -------------------------------------------------------------------------------------------*/
-output updateVNetID string = updateVNet.id
