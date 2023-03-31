@@ -33,9 +33,8 @@ param nsgID string
 -------------------------------------------------------------------------------------------*/
 
 // Get existing VNet
-resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' existing = {
   name: VNetName
-  location: Location
 }
 
 // Update the Virtual Network (VNet) and all associated DNS entries
