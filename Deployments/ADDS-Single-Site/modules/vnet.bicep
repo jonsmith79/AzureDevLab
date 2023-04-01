@@ -26,7 +26,7 @@ var VNetIPRange = '${VirtualNetworkAddressPrefix}.0.0/16'
 //==================
 
 // Create the Virtual Network (VNet) and all associated subnets
-resource newNVet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: VirtualNetworkName
   location: Location
   properties: {
@@ -51,4 +51,5 @@ resource newNVet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 //=================
 // Output's section
 //=================
-output VNetID string = newNVet.id
+output VNetID string = newVNet.id
+output VNetObject object = newVNet

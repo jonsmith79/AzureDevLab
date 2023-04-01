@@ -399,6 +399,7 @@ module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
     VNetName: VNet1Name
     Location: Location
     DNSServerIPs: VNet1DNSServers
+    VNetProperties: VNet1.outputs.VNetObject.properties
   }
   dependsOn: [
     promoteDC1
