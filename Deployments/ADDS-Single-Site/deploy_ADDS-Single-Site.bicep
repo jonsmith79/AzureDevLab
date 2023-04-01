@@ -390,25 +390,17 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
 }
 */
 
-// Get existing VNet
-resource getVNet 'Microsoft.Network/virtualNetworks@2022-07-01' existing = if (promoteDC1.outputs.vmDCPromoted == true) {
-  name: VNet1Name
-  scope: newRG
-}
-
 // Update vNet DNS Servers
 @description('Update vNet DNS Servers')
 module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
   name: 'update-${VNet1Name}-DNS'
   scope: newRG
   params: {
-    VNetName: getVNet.name
+    VNetName: VNet1Name
     Location: Location
     DNSServerIPs: VNet1DNSServers
-    Properties: getVNet.properties
   }
   dependsOn: [
-    getVNet
     promoteDC1
     //promoteDC2
   ]
