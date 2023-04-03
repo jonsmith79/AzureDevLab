@@ -38,7 +38,7 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
     subnets: [for (subnet, i) in Subnets: {
       name: subnet.name
       properties: {
-        addressPrefix: subnet.prefix
+        addressPrefix: subnet.subnet
         networkSecurityGroup: (subnet.name == Subnets[2].name) ? {
           id: nsgID
         } : null
@@ -51,5 +51,4 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 //=================
 // Output's section
 //=================
-output VNetID string = newVNet.id
 output VNetObject object = newVNet

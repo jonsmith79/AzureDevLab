@@ -264,19 +264,6 @@ resource newNSGADDS 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
           destinationPortRange: SourcePortRange
         }
       }
-      /*{
-        name: 'Inbound_Anything'
-        properties: {
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: '*'
-          priority: 999
-          sourceAddressPrefix: '*'
-          sourcePortRange: SourcePortRange
-          destinationAddressPrefix: DestinationAddressPrefix
-          destinationPortRange: SourcePortRange
-        }
-      }*/
     ]
   }
 }

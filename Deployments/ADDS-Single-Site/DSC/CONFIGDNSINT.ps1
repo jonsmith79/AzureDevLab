@@ -12,8 +12,8 @@
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
-    Import-DscResource -ModuleName DnsServerDsc
-    Import-DscResource -ModuleName ActiveDirectoryDsc
+    Import-DscResource -ModuleName DnsServerDsc, ActiveDirectoryDsc
+    #Import-DscResource -ModuleName ActiveDirectoryDsc
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 

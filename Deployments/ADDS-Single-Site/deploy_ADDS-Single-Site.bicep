@@ -11,8 +11,11 @@ param namingConvention string
 @description('Location 1 for Resources')
 param Location string
 
-@description('Virtual Network 1 Prefix')
-param VNet1ID string
+@description('Virtual Network 1 IP Octet 1')
+param VNet1IPOctet1 int
+
+@description('Virtual Network 1 IP Octet 2')
+param VNet1IPOctet2 int
 
 @description('TimeZone for Virtual Machines')
 param TimeZone string
@@ -78,23 +81,28 @@ var VNet1Subnets = [
   '${VNet1Name}-Subnet-T3-Web'
   '${VNet1Name}-Subnet-T4-Client'
 ] // always have [2] slot in the array where ADDS should be installed
-
-var VNet1SubnetArray = [for (subnet, i) in VNet1Subnets: {
-  name: subnet
-  prefix: '${VNet1ID}.${i}.0/24'
+var VNet1IPPrefix = '${VNet1IPOctet1}.${VNet1IPOctet2}'
+var VNet1IPPrefixReverse = '${VNet1IPOctet2}.${VNet1IPOctet1}'
+var VNet1SubnetArray = [for (name, i) in VNet1Subnets: {
+  name: name
+  subnet: '${VNet1IPPrefix}.${i}.0/24'
+  dnsForward: '${VNet1IPPrefix}.${i}'
+  dnsReverse: '${i}.${VNet1IPPrefixReverse}'
 }]
 
 // NSG Vaiables
-var nsgNameADDS = '${VNet1Subnets[2]}-NSG'
+var nsgNameADDS = '${VNet1Subnets[2]}-NSG' // Make sure this is the array object where DC's will go
 
 // Domain Variables
 var ADDSDomainName = (!empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}.${InternalTLD}' : '${InternalDomainName}.${InternalTLD}'
+var ADDSBaseDN = (!empty(SubDNSDomain)) ? 'DC=${SubDNSDomain},DC=${InternalDomainName},DC=${InternalTLD}' : 'DC=${InternalDomainName},DC=${InternalTLD}'
+var ForwardLookup1 = VNet1SubnetArray[2].dnsForward // Make sure this is the array object where DC's will go
 
 // vmDC1 Variables
 var vmDC1DataDisk1Name = 'NTDS'
 var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
-var vmDC1IP = '${VNet1ID}.2.${vmDC1LastOctet}'
+var vmDC1IP = '${ForwardLookup1}.${vmDC1LastOctet}'
 
 /*
 // vmDC2 Variables
@@ -267,7 +275,7 @@ module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
   params: {
     nsgNameADDS: nsgNameADDS
     Location: Location
-    DestinationAddressPrefix: VNet1SubnetArray[2].prefix
+    DestinationAddressPrefix: VNet1SubnetArray[2].subnet
   }
   dependsOn: [
     //AzPolAutomanageAssign
@@ -282,7 +290,7 @@ module VNet1 'modules/vnet.bicep' = {
   scope: newRG
   params: {
     VirtualNetworkName: VNet1Name
-    VirtualNetworkAddressPrefix: VNet1ID
+    VirtualNetworkAddressPrefix: VNet1IPPrefix
     Subnets: VNet1SubnetArray
     nsgID: nsgADDS_resource.outputs.nsgID
     Location: Location
@@ -422,4 +430,40 @@ module vmDC1_restart 'modules/vmRestart.bicep' = {
   ]
 }
 
+// Configure ADDS DNS settings
+module DNS_config 'modules/dnsConfig.bicep' = {
+  scope: newRG
+  name: 'configure_${vmDC1Name}_DNS'
+  params: {
+    vmName: vmDC1Name
+    NetBiosDomain: NetBiosDomain
+    InternalDomainName: ADDSDomainName
+    ReverseLookup1: VNet1IPPrefixReverse
+    ForwardLookup1: VNet1SubnetArray[2].dnsForward // Needs to be the subnet of the DC
+    dc1lastoctet:vmDC1LastOctet
+    adminUsername: adminUsername
+    adminPassword: adminPassword
+    Location: Location          
+    artifactsLocation:  artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
+  }
+  dependsOn: [
+    vmDC1_restart
+  ]
+}
 
+// Create ADDS Organisation Units
+module CreateOUs 'modules/adCreateOUs.bicep' = {
+  scope: newRG
+  name: 'create_${vmDC1Name}_OUs'
+  params: {
+    computerName: vmDC1Name
+    BaseDN: ADDSBaseDN
+    Location: Location          
+    artifactsLocation:  artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
+  }
+  dependsOn: [
+    DNS_config
+  ]
+}

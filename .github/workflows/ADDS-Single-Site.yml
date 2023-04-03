@@ -8,7 +8,8 @@ jobs:
       TimeZone: "GMT Standard Time"
       Location: "uksouth"
       namingConvention: "adl"
-      VNet1ID: "10.0"
+      VNet1IPOctet1: 10 # i.e. 10.x.x.x
+      VNet1IPOctet2: 0  # i.e.  x.0.x.x
       DeploymentDir: "ADDS-Single-Site"
       #AutoShutdownEnabled: "Yes"
       AutoShutdownTime: "2000"
@@ -22,7 +23,7 @@ jobs:
       SubDNSDomain: "adds"
       #SubDNSBaseDN: "DC=ADDS,"
       InternalDomainName: "E2D"
-      InternalTLD: "co.uk"
+      InternalTLD: "co.uk" 
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
 
@@ -56,7 +57,8 @@ jobs:
         parameters:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
-          VNet1ID="${{env.VNet1ID}}"
+          VNet1IPOctet1="${{env.VNet1IPOctet1}}"
+          Vnet1IPOctet2="${{env.VNet1IPOctet2}}"
           TimeZone="${{env.TimeZone}}"
           AutoShutdownTime="${{env.AutoShutdownTime}}"
           AutoShutdownEmail="${{env.AutoShutdownEmail}}"
