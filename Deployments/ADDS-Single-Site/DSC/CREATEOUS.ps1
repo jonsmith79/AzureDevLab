@@ -10,7 +10,7 @@
     Node localhost
     {
 
-       ADOrganizationalUnit AccountsOU
+        ADOrganizationalUnit AccountsOU
         {
             Name                            = "Accounts"
             Path                            = "$BaseDN"
@@ -18,7 +18,24 @@
             Ensure                          = 'Present'
         }
 
-       ADOrganizationalUnit GroupsOU
+        ADOrganizationalUnit ServersOU
+        {
+            Name                            = "Servers"
+            Path                            = "$BaseDN"
+            Description                     = "Servers OU"
+            Ensure                          = 'Present'
+        }
+
+
+        ADOrganizationalUnit ClientsOU
+        {
+            Name                            = "Clients"
+            Path                            = "$BaseDN"
+            Description                     = "Clients OU"
+            Ensure                          = 'Present'
+        }
+
+        ADOrganizationalUnit GroupsOU
         {
             Name                            = "Groups"
             Path                            = "$BaseDN"
@@ -26,76 +43,22 @@
             Ensure                          = 'Present'
         }
 
-       ADOrganizationalUnit AdminOU
+        ADOrganizationalUnit UsersOU
         {
-            Name                            = "Admin"
+            Name                            = "Users"
             Path                            = "OU=Accounts,$BaseDN"
-            Description                     = "Admin OU"
+            Description                     = "Users OU"
             Ensure                          = 'Present'
             DependsOn = "[ADOrganizationalUnit]AccountsOU"
         }
 
-        ADOrganizationalUnit AdminGroupsOU
+        ADOrganizationalUnit AdminsOU
         {
-            Name                            = "Admin"
-            Path                            = "OU=Groups,$BaseDN"
-            Description                     = "Admin Groups OU"
-            Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]GroupsOU"
-        }
-
-        ADOrganizationalUnit EndUserOU
-        {
-            Name                            = "End User"
+            Name                            = "Admins"
             Path                            = "OU=Accounts,$BaseDN"
-            Description                     = "End User OU"
+            Description                     = "Admins OU"
             Ensure                          = 'Present'
             DependsOn = "[ADOrganizationalUnit]AccountsOU"
-        }
-
-        ADOrganizationalUnit EndUserGroupOU
-        {
-            Name                            = "End User"
-            Path                            = "OU=Groups,$BaseDN"
-            Description                     = "End User Groups OU"
-            Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]GroupsOU"
-        }
-
-        ADOrganizationalUnit Office365OU
-        {
-            Name                            = "Office 365"
-            Path                            = "OU=End User,OU=Accounts,$BaseDN"
-            Description                     = "Office 365 OU"
-            Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]EndUserOU"
-        }
-
-        ADOrganizationalUnit Office365GroupOU
-        {
-            Name                            = "Office 365"
-            Path                            = "OU=End User,OU=Groups,$BaseDN"
-            Description                     = "Office 365 Groups OU"
-            Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]EndUserGroupOU"
-        }
-
-        ADOrganizationalUnit Sub1OU
-        {
-            Name                            = "Sub1"
-            Path                            = "OU=Office 365,OU=End User,OU=Accounts,$BaseDN"
-            Description                     = "Sub1 OU"
-            Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]Office365OU"
-        }
-
-        ADOrganizationalUnit NonOffice365OU
-        {
-            Name                            = "Non-Office 365"
-            Path                            = "OU=End User,OU=Accounts,$BaseDN"
-            Description                     = "Non-Office 365 OU"
-            Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]EndUserOU"
         }
 
         ADOrganizationalUnit ServiceOU
@@ -107,99 +70,103 @@
             DependsOn = "[ADOrganizationalUnit]AccountsOU"
         }
 
-        ADOrganizationalUnit ServersOU
+        ADOrganizationalUnit InfraOU
         {
-            Name                            = "Servers"
-            Path                            = "$BaseDN"
-            Description                     = "Servers OU"
-            Ensure                          = 'Present'
-        }
-
-        ADOrganizationalUnit Server2012R2OU
-        {
-            Name                            = "Servers2012R2"
-            Path                            = "OU=Servers,$BaseDN"
-            Description                     = "Server2012R2 OU"
+            Name                            = "Infra"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Infrastructure Servers OU"
             Ensure                          = 'Present'
             DependsOn = "[ADOrganizationalUnit]ServersOU"
         }
 
-        ADOrganizationalUnit Server2016OU
+        ADOrganizationalUnit DataOU
         {
-            Name                            = "Servers2016"
-            Path                            = "OU=Servers,$BaseDN"
-            Description                     = "Server2016 OU"
+            Name                            = "Data"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Data Servers OU"
             Ensure                          = 'Present'
             DependsOn = "[ADOrganizationalUnit]ServersOU"
         }
 
-        ADOrganizationalUnit Server2019OU
+        ADOrganizationalUnit AppsOU
         {
-            Name                            = "Servers2019"
-            Path                            = "OU=Servers,$BaseDN"
-            Description                     = "Server2019 OU"
+            Name                            = "Apps"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Application Servers OU"
             Ensure                          = 'Present'
             DependsOn = "[ADOrganizationalUnit]ServersOU"
         }
 
-        ADOrganizationalUnit Server2022OU
+        ADOrganizationalUnit WebOU
         {
-            Name                            = "Servers2022"
-            Path                            = "OU=Servers,$BaseDN"
-            Description                     = "Server2022 OU"
+            Name                            = "Web"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Web Servers OU"
             Ensure                          = 'Present'
             DependsOn = "[ADOrganizationalUnit]ServersOU"
         }
-      
-        ADOrganizationalUnit MaintenanceServersOU
+
+        ADOrganizationalUnit WindowsOU
         {
-            Name                            = "Maintenance Servers"
-            Path                            = "$BaseDN"
-            Description                     = "Maintenance Servers OU"
+            Name                            = "Windows"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Windows Clients OU"
             Ensure                          = 'Present'
+            DependsOn = "[ADOrganizationalUnit]ClientsOU"
         }
 
-        ADOrganizationalUnit MaintenanceWorkstationsOU
+        ADOrganizationalUnit iOSOU
         {
-            Name                            = "Maintenance Workstations"
-            Path                            = "$BaseDN"
-            Description                     = "Maintenance Workstations OU"
+            Name                            = "iOS"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "iOS Clients OU"
             Ensure                          = 'Present'
+            DependsOn = "[ADOrganizationalUnit]ClientsOU"
         }
 
-        ADOrganizationalUnit WorkstationsOU
+        ADOrganizationalUnit iPadOSOU
         {
-            Name                            = "Workstations"
-            Path                            = "$BaseDN"
-            Description                     = "Workstations OU"
+            Name                            = "iPadOS"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "iPadOS Clients OU"
             Ensure                          = 'Present'
+            DependsOn = "[ADOrganizationalUnit]ClientsOU"
         }
 
-        ADOrganizationalUnit Windows11OU
+        ADOrganizationalUnit AndroidOU
         {
-            Name                            = "Windows 11"
-            Path                            = "OU=Workstations,$BaseDN"
-            Description                     = "Windows 11 OU"
+            Name                            = "Android"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Android Clients OU"
             Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]WorkstationsOU"
+            DependsOn = "[ADOrganizationalUnit]ClientsOU"
         }
 
-        ADOrganizationalUnit Windows10OU
+        ADOrganizationalUnit macOSOU
         {
-            Name                            = "Windows 10"
-            Path                            = "OU=Workstations,$BaseDN"
-            Description                     = "Windows 10 OU"
+            Name                            = "macOS"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "macOS Clients OU"
             Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]WorkstationsOU"
+            DependsOn = "[ADOrganizationalUnit]ClientsOU"
         }
 
-        ADOrganizationalUnit Windows7OU
+        ADOrganizationalUnit SecurityOU
         {
-            Name                            = "Windows 7"
-            Path                            = "OU=Workstations,$BaseDN"
-            Description                     = "Workstations OU"
+            Name                            = "Security"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Security Groups OU"
             Ensure                          = 'Present'
-            DependsOn = "[ADOrganizationalUnit]WorkstationsOU"
+            DependsOn = "[ADOrganizationalUnit]GroupsOU"
+        }
+
+        ADOrganizationalUnit DistributionOU
+        {
+            Name                            = "Distribution"
+            Path                            = "OU=Accounts,$BaseDN"
+            Description                     = "Distribution Groups OU"
+            Ensure                          = 'Present'
+            DependsOn = "[ADOrganizationalUnit]GroupsOU"
         }
 
     }
