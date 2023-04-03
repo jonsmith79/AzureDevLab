@@ -21,7 +21,7 @@ param artifactsLocationSasToken string
   Variables section
 -------------------------------------------------------------------------------------------*/
 var ModulesURL = uri(artifactsLocation, 'DSC/CREATEOUS.zip${artifactsLocationSasToken}')
-var ConfigurationFunction = 'CREATEOUS.ps1\\CREATEOUS'
+var ConfigurationFunction = 'CREATEOUS.ps1\\CREATEOUs'
 
 /*-------------------------------------------------------------------------------------------
   Resources section
