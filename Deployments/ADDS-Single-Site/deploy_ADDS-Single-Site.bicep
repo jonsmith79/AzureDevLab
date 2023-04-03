@@ -97,10 +97,19 @@ var VNet1SubnetArray = [for (name, i) in VNet1Subnets: {
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG' // Make sure this is the array object where DC's will go
 
 // Domain Variables
-var ADDSDomainName = concat(((!empty(SubDNSDomain)) ? '${SubDNSDomain}.' : ''),'${InternalDomainName}.','${InternalTLD1}',((!empty(InternalTLD2)) ? '.${InternalTLD2}' : ''))
-var ADDSBaseDN = concat(((!empty(SubDNSDomain)) ? 'DC=${SubDNSDomain},' : ''),'DC=${InternalDomainName},','DC=${InternalTLD1}',((!empty(InternalTLD2)) ? ',DC=${InternalTLD2}' : ''))
 //var ADDSDomainName = (!empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}.${InternalTLD}' : '${InternalDomainName}.${InternalTLD}'
+//var ADDSDomainName = concat(((!empty(SubDNSDomain)) ? '${SubDNSDomain}.' : ''),'${InternalDomainName}.','${InternalTLD1}',((!empty(InternalTLD2)) ? '.${InternalTLD2}' : ''))
+var ADDSDomainPrefix = (!empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}' : InternalDomainName
+var ADDSDomainTLD = (!empty(InternalTLD2)) ? '.${InternalTLD1}.${InternalTLD2}' : '.${InternalTLD1}'
+var ADDSDomainName = '${ADDSDomainPrefix}${ADDSDomainTLD}'
+
 //var ADDSBaseDN = (!empty(SubDNSDomain)) ? 'DC=${SubDNSDomain},DC=${InternalDomainName},DC=${InternalTLD}' : 'DC=${InternalDomainName},DC=${InternalTLD}'
+//var ADDSBaseDN = concat(((!empty(SubDNSDomain)) ? 'DC=${SubDNSDomain},' : ''),'DC=${InternalDomainName},','DC=${InternalTLD1}',((!empty(InternalTLD2)) ? ',DC=${InternalTLD2}' : ''))
+var ADDSBaseDNPrefix = (!empty(SubDNSDomain)) ? 'DC=${SubDNSDomain},DC=${InternalDomainName}' : 'DC=${InternalDomainName}'
+var ADDSBaseDNTLD = (!empty(InternalTLD2)) ? ',DC=${InternalTLD1},DC=${InternalTLD2}' : ',DC=${InternalTLD1}'
+var ADDSBaseDN = '${ADDSBaseDNPrefix}${ADDSBaseDNTLD}'
+
+
 var ForwardLookup1 = VNet1SubnetArray[2].dnsForward // Make sure this is the array object where DC's will go
 
 // vmDC1 Variables
