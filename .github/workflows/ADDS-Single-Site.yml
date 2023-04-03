@@ -58,7 +58,7 @@ jobs:
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
           VNet1IPOctet1="${{env.VNet1IPOctet1}}"
-          Vnet1IPOctet2="${{env.VNet1IPOctet2}}"
+          VNet1IPOctet2="${{env.VNet1IPOctet2}}"
           TimeZone="${{env.TimeZone}}"
           AutoShutdownTime="${{env.AutoShutdownTime}}"
           AutoShutdownEmail="${{env.AutoShutdownEmail}}"
