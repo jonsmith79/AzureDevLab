@@ -467,3 +467,4 @@ module CreateOUs 'modules/adCreateOUs.bicep' = {
     DNS_config
   ]
 }
+
