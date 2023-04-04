@@ -27,7 +27,7 @@ configuration CreateUsers
     (
         [String]$ADDSBaseDN,
         [String]$ADDSDomain,
-        [Securestring]$ADDSUserPassword,
+        [System.Management.Automation.PSCredential]$ADDSUserPassword,
         [Array]$ADDSUsers
     )
 
@@ -49,7 +49,7 @@ configuration CreateUsers
                 Description         = $User[$i].Description
                 EmailAddress        = "$($User[$i].uname)@$($ADDSDomain)"
                 UserPrincipalName   = "$($User[$i].uname)@$($ADDSDomain)"
-                Password            = $ADDSUserPassword
+                Password            = [System.Management.Automation.PSCredential]$ADDSUserPassword
                 ThumbnailPhoto      = $User[$i].thumbnail
                 Manager             = $User[$i].manager
                 JobTitle            = $User[$i].job
