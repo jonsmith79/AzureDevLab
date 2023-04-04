@@ -38,7 +38,7 @@ configuration CreateUsers
         foreach($User in $ADDSUsers)
         {
             $i = 0
-            $Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
+            #$Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
             ADUser $User[$i].UserName
             {
                 Ensure              = 'Present'
@@ -49,7 +49,7 @@ configuration CreateUsers
                 Description         = $User[$i].Description
                 EmailAddress        = "$($User[$i].uname)@$($ADDSDomain)"
                 UserPrincipalName   = "$($User[$i].uname)@$($ADDSDomain)"
-                Password            = $Password
+                Password            = $ADDSUserPassword
                 ThumbnailPhoto      = $User[$i].thumbnail
                 Manager             = $User[$i].manager
                 JobTitle            = $User[$i].job
