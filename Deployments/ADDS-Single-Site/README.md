@@ -32,25 +32,23 @@ AD OU Structure:
 
 - [domain.com]
   - Accounts
-        - End User
-            - Office 365
-            - Non-Office 365
-        - Admin
-        - Service
+        - Admins
+        - Services
+        - Users
+  - Clients
+        - Android
+        - iOS
+        - iPadOS
+        - macOS
+        - Windows
   - Groups
-        - End User
-        - Admin
+        - Distribution
+        - Security
   - Servers
-        - Servers2012R2
-        - Serverrs2016
-        - Servers2019
-        - Servers2022
-  - MaintenanceServers
-  - MaintenanceWorkstations
-  - Workstations
-        - Windows11
-        - Windows10
-        - Windows7
+        - Apps
+        - Data
+        - Infrastructure
+        - Web
 
 Parameters that support changes
 | Parameter | Description |
@@ -71,10 +69,10 @@ Parameters that support changes
 | vmDC1VMSize | Enter a valid VM Size based on which Region the VM is deployed (i.e. 'Standard_D2s_v3'). |
 | Net Bios Domain | Enter a valid Net Bios Domain Name (Example:  'Contoso'). |
 | Sub DNS Domain | ***OPTIONALLY***, enter a valid DNS Sub Domain. (Example:  'sub1' or 'sub1.sub2'). |
-| ~~Sub DNS BaseDN~~ | ~~***OPTIONALLY***, enter a valid DNS Sub Base DN. (Example:  'DC=sub1,' or 'DC=sub1,DC=sub2,'    This entry must end with a COMMA ).~~ |
 | Internal Domain | Enter a valid Internal Domain (Exmaple:  'Contoso'). |
-| InternalTLD | Select a valid Top-Level Domain (Example: 'co.uk' or 'com'). |
-| artifactsLocation | Publically accessible location of the GitHub files for DSC (i.e. 'https://raw.githubusercontent.com/\<user\>/\<project\>/\<branch\>/\<folder\>') |
+| InternalTLD1 | Select a valid Top-Level Domain (Example: 'com', or if dual TLD such as co.uk just enter 'co'). |
+| InternalTLD2 | Select a valid Top-Level Domain second element (Example: 'uk' where TLD1 above is a dual TLD such as .co.uk). |
+| artifactsLocation | Publically accessible location of the GitHub files for DSC (i.e. 'https://raw.githubusercontent.com/user/project/branch/folder') |
 | artifactsLocationSasToken | The artifacts location SAS token to access the contents. |
 | --- | --- |
 | ~~WindowsClientLicenseType~~ | ~~Choose Windows Client License Type (Example:  Windows_Client or None).~~ |

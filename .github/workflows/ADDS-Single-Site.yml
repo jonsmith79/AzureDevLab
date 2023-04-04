@@ -21,7 +21,6 @@ jobs:
       vmDC1VMSize: "Standard_D2s_v3"
       NetBiosDomain: "E2D"
       SubDNSDomain: "adds"
-      #SubDNSBaseDN: "DC=ADDS,"
       InternalDomainName: "E2D"
       InternalTLD1: "co"
       InternalTLD2: "uk" 
