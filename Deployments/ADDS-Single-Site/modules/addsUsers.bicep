@@ -13,6 +13,9 @@ param ADDSBaseDN string
 @description('Domain Name')
 param ADDSDomain string
 
+@description('Domain NetBIOS Name')
+param ADDSNetBiosDomain string
+
 @description('User Password')
 @secure()
 param ADDSUserPassword string
@@ -229,8 +232,12 @@ resource vmName_Microsoft_PowerShell_DSC 'Microsoft.Compute/virtualMachines/exte
       Properties: {
         ADDSBaseDN: ADDSBaseDN
         ADDSDomain: ADDSDomain
+        ADDSNetBiosDomain: ADDSNetBiosDomain
         ADDSUsers: ADDSUsers
-        ADDSUserPassword: 'PrivateSettingsRef:UserPassword'
+        ADDSUserCreds: {
+          username: 'username'
+          password: 'PrivateSettingsRef:ADDSUserPassword'
+        }
       }
     }
     protectedSettings: {

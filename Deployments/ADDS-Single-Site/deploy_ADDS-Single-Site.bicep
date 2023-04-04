@@ -60,6 +60,10 @@ param InternalTLD1 string
 @description('Internal DNS Top Level Domain Name')
 param InternalTLD2 string
 
+@description('User Password for Domain Accounts')
+@secure()
+param userPassword string
+
 @description('Artifacts Location')
 param artifactsLocation string
 
@@ -484,7 +488,8 @@ module CreateUsers 'modules/addsUsers.bicep' = {
     Location: Location
     ADDSBaseDN: ADDSBaseDN
     ADDSDomain: ADDSDomainName
-    ADDSUserPassword: adminPassword          
+    ADDSNetBiosDomain: NetBiosDomain
+    ADDSUserPassword: userPassword          
     artifactsLocation:  artifactsLocation
     artifactsLocationSasToken: artifactsLocationSasToken
   }

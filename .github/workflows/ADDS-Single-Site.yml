@@ -24,6 +24,7 @@ jobs:
       InternalDomainName: "E2D"
       InternalTLD1: "co"
       InternalTLD2: "uk" 
+      userPassword: ${{ secrets.USER_PASSWORD }}
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
 
@@ -72,6 +73,7 @@ jobs:
           InternalDomainName="${{env.InternalDomainName}}"
           InternalTLD1="${{env.InternalTLD1}}"
           InternalTLD2="${{env.InternalTLD2}}"
+          userPassword="${{env.userPassword}}"
           artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
           artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
           #AutoShutdownEnabled="${{env.AutoShutdownEnabled}}"

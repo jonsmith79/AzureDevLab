@@ -57,7 +57,7 @@ resource computerName_Microsoft_Powershell_DSC 'Microsoft.Compute/virtualMachine
         TimeZone: TimeZone
         DomainName: domainName
         NetBiosDomain: NetBiosDomain
-        AdminCreds: {
+        Admincreds: {
           UserName: adminUsername
           Password: 'PrivateSettingsRef:AdminPassword'
         }

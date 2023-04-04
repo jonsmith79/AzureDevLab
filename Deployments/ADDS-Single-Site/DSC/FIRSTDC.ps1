@@ -6,23 +6,13 @@
         [String]$DomainName,
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds,
-
         [Int]$RetryCount=20,
         [Int]$RetryIntervalSec=30
     )
 
-    <#
-    Import-DscResource -ModuleName ActiveDirectoryDsc
-    Import-DscResource -ModuleName xStorage
-    Import-DscResource -ModuleName xNetworking
-    Import-DscResource -ModuleName xPendingReboot
-    Import-DscResource -ModuleName ComputerManagementDsc
-    Import-DscResource -ModuleName xPSDesiredStateConfiguration
-    Import-DscResource -ModuleName DNSServerDsc
-    #>
     Import-DscResource -ModuleName ActiveDirectoryDsc, xStorage, xNetworking, xPendingReboot, ComputerManagementDsc, xPSDesiredStateConfiguration, DNSServerDsc
 
-    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
+    [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
     $Interface=Get-NetAdapter|Where-Object Name -Like "Ethernet*"|Select-Object -First 1
     $InterfaceAlias=$($Interface.Name)
 
@@ -96,6 +86,9 @@
             DomainName = $DomainName
             Credential = $DomainCreds
             SafemodeAdministratorPassword = $DomainCreds
+            DomainNetBiosName = $NetBiosDomain
+            ForestMode = "WinThreshold"
+            DomainMode = "WinThreshold"
             DatabasePath = "N:\NTDS"
             LogPath = "N:\NTDS"
             SysvolPath = "N:\SYSVOL"

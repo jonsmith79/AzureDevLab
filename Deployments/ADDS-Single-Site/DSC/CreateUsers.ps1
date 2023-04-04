@@ -27,7 +27,8 @@ configuration CreateUsers
     (
         [String]$ADDSBaseDN,
         [String]$ADDSDomain,
-        [PSCredential]$ADDSUserPassword,
+        [String]$ADDSNetBiosDomain,
+        [System.Management.Automation.PSCredential]$ADDSUserPassword,
         [Array]$ADDSUsers
     )
 
@@ -39,7 +40,8 @@ configuration CreateUsers
         {
             $i = 0
             #$Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
-            ADUser $User[$i].UserName
+            [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($ADDSNetBiosDomain)\$($User[$i].uname)", $Admincreds.Password)
+            ADUser "$($ADDSNetBiosDomain)\$($User[$i].UserName)"
             {
                 Ensure              = 'Present'
                 UserName            = $User[$i].uname
@@ -49,12 +51,13 @@ configuration CreateUsers
                 Description         = $User[$i].Description
                 EmailAddress        = "$($User[$i].uname)@$($ADDSDomain)"
                 UserPrincipalName   = "$($User[$i].uname)@$($ADDSDomain)"
-                Password            = $ADDSUserPassword
+                Password            = $DomainCreds
                 ThumbnailPhoto      = $User[$i].thumbnail
                 Manager             = $User[$i].manager
                 JobTitle            = $User[$i].job
                 Department          = $User[$i].dept
                 PasswordNeverResets = $true
+                PasswordNeverExpires = $true
                 DomainName          = $ADDSDomain
                 Enabled             = $true
                 Path                = "OU=Users,OU=Accounts,$($ADDSBaseDN)"
