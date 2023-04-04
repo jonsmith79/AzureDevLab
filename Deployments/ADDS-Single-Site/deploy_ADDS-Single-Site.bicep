@@ -276,7 +276,7 @@ module AzPolAutomanageAssign_permissions 'modules/roleAssignment.bicep' = {
 
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
-module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
+module nsgADDS_resource 'modules/azVNetNSGADDS.bicep' = {
   name: 'deploy-${nsgNameADDS}'
   scope: newRG
   params: {
@@ -292,7 +292,7 @@ module nsgADDS_resource 'modules/vnetNSGADDS.bicep' = {
 
 // Deploy Virtual Network 1 (VNet1)
 @description('Deploy VNet1 to new resource group')
-module VNet1 'modules/vnet.bicep' = {
+module VNet1 'modules/azVNet.bicep' = {
   name: 'deploy-${VNet1Name}'
   scope: newRG
   params: {
@@ -309,7 +309,7 @@ module VNet1 'modules/vnet.bicep' = {
 
 // Deploy Bastion Host 1 (BastionHost1)
 @description('Deploy Bastion Host to VNet1')
-module BastionHost1 'modules/bastionhost.bicep' = {
+module BastionHost1 'modules/azBastion.bicep' = {
   name: 'deploy_BastionHost1'
   scope: newRG
   params: {
@@ -355,7 +355,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
 
 //Promote first domain controller to domain controller
 @description('Promote first domain controller to domain controller')
-module promoteDC1 'modules/firstdc.bicep' = {
+module promoteDC1 'modules/addsDC1.bicep' = {
   scope: newRG
   name: 'PromoteDC1'
   params: {
@@ -407,7 +407,7 @@ module vmDC2_deploy 'modules/vmDCs.bicep' = {
 
 // Update vNet DNS Servers
 @description('Update vNet DNS Servers')
-module VNet1DNS 'modules/vnetDNSUpdate.bicep' = {
+module VNet1DNS 'modules/azVNetDNS.bicep' = {
   name: 'update-${VNet1Name}-DNS'
   scope: newRG
   params: {
@@ -438,7 +438,7 @@ module vmDC1_restart 'modules/vmRestart.bicep' = {
 }
 
 // Configure ADDS DNS settings
-module DNS_config 'modules/dnsConfig.bicep' = {
+module DNS_config 'modules/addsDNS.bicep' = {
   scope: newRG
   name: 'configure_${vmDC1Name}_DNS'
   params: {
@@ -460,7 +460,7 @@ module DNS_config 'modules/dnsConfig.bicep' = {
 }
 
 // Create ADDS Organisation Units
-module CreateOUs 'modules/adCreateOUs.bicep' = {
+module CreateOUs 'modules/addsOUs.bicep' = {
   scope: newRG
   name: 'create_${vmDC1Name}_OUs'
   params: {
