@@ -27,7 +27,7 @@ configuration CreateUsers
     (
         [String]$ADDSBaseDN,
         [String]$ADDSDomain,
-        [System.Management.Automation.PSCredential]$ADDSUserPassword,
+        [Securestring]$ADDSUserPassword,
         [Array]$ADDSUsers
     )
 
