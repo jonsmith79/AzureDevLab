@@ -28,7 +28,7 @@ configuration CreateUsers
         [String]$ADDSBaseDN,
         [String]$ADDSDomain,
         [String]$ADDSNetBiosDomain,
-        [System.Management.Automation.PSCredential]$ADDSUserPassword,
+        [System.Management.Automation.PSCredential]$ADDSUserCreds,
         [Array]$ADDSUsers
     )
 
@@ -40,7 +40,7 @@ configuration CreateUsers
         {
             $i = 0
             #$Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
-            [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($ADDSNetBiosDomain)\$($User[$i].uname)", $Admincreds.Password)
+            [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($ADDSNetBiosDomain)\$($User[$i].uname)", $ADDSUserCreds.Password)
             ADUser "$($ADDSNetBiosDomain)\$($User[$i].UserName)"
             {
                 Ensure              = 'Present'

@@ -235,8 +235,8 @@ resource vmName_Microsoft_PowerShell_DSC 'Microsoft.Compute/virtualMachines/exte
         ADDSNetBiosDomain: ADDSNetBiosDomain
         ADDSUsers: ADDSUsers
         ADDSUserCreds: {
-          username: 'username'
-          password: 'PrivateSettingsRef:ADDSUserPassword'
+          UserName: 'username'
+          Password: 'PrivateSettingsRef:UserPassword'
         }
       }
     }
