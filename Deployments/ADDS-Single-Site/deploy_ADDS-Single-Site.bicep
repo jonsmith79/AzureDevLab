@@ -474,7 +474,7 @@ module CreateOUs 'modules/adCreateOUs.bicep' = {
     DNS_config
   ]
 }
-/*
+
 // Create ADDS Users
 module CreateUsers 'modules/addsUsers.bicep' = {
   scope: newRG
@@ -492,4 +492,4 @@ module CreateUsers 'modules/addsUsers.bicep' = {
     CreateOUs
   ]
 }
-*/
+
