@@ -37,27 +37,29 @@ configuration CreateUsers
     {
         foreach($User in $ADDSUsers)
         {
+            $i = 0
             $Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
-            ADUser $User.UserName
+            ADUser $User[$i].UserName
             {
                 Ensure              = 'Present'
-                UserName            = $User.uname
-                GivenName           = $User.fname
-                Surname             = $User.sname
-                DisplayName         = "$($User.fname) $($User.sname)"
-                Description         = $User.Description
-                EmailAddress        = "$($User.uname)@$($ADDSDomain)"
-                UserPrincipleName   = "$($User.uname)@$($ADDSDomain)"
+                UserName            = $User[$i].uname
+                GivenName           = $User[$i].fname
+                Surname             = $User[$i].sname
+                DisplayName         = "$($User[$i].fname) $($User[$i].sname)"
+                Description         = $User[$i].Description
+                EmailAddress        = "$($User[$i].uname)@$($ADDSDomain)"
+                UserPrincipalName   = "$($User[$i].uname)@$($ADDSDomain)"
                 Password            = $Password
-                ThumbnailPhoto      = $User.thumbnail
-                Manager             = $User.manager
-                JobTitle            = $User.job
-                Department          = $User.dept
+                ThumbnailPhoto      = $User[$i].thumbnail
+                Manager             = $User[$i].manager
+                JobTitle            = $User[$i].job
+                Department          = $User[$i].dept
                 PasswordNeverResets = $true
                 DomainName          = $ADDSDomain
                 Enabled             = $true
                 Path                = "OU=Users,OU=Accounts,$($ADDSBaseDN)"
             }
+            $i++
         }
     }
 }
