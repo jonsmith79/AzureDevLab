@@ -226,21 +226,21 @@ configuration CreateUsers
             {
                 Ensure              = 'Present'
                 UserName            = $ADDSUsers[$i].uname
-                #GivenName           = $ADDSUsers[$i].fname
-                #Surname             = $ADDSUsers[$i].sname
-                #DisplayName         = "$($ADDSUsers[$i].fname) $($ADDSUsers[$i].sname)"
-                #Description         = "Created by DSC"
-                #EmailAddress        = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
-                #UserPrincipalName   = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
+                GivenName           = $ADDSUsers[$i].fname
+                Surname             = $ADDSUsers[$i].sname
+                DisplayName         = "$($ADDSUsers[$i].fname) $($ADDSUsers[$i].sname)"
+                Description         = "Created by DSC"
+                EmailAddress        = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
+                UserPrincipalName   = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
                 Password            = $DomainCreds
-                #ThumbnailPhoto      = $ADDSUsers[$i].thumbnail
-                #Manager             = $ADDSUsers[$i].manager
-                #JobTitle            = $ADDSUsers[$i].job
-                #Department          = $ADDSUsers[$i].dept
+                ThumbnailPhoto      = $ADDSUsers[$i].thumbnail
+                Manager             = $ADDSUsers[$i].manager
+                JobTitle            = $ADDSUsers[$i].job
+                Department          = $ADDSUsers[$i].dept
                 PasswordNeverResets = $true
-                #PasswordNeverExpires = $true
+                PasswordNeverExpires = $true
                 DomainName          = $ADDSDomain
-                #Enabled             = $true
+                Enabled             = $true
                 Path                = "OU=Users,OU=Accounts,$($ADDSBaseDN)"
             }
         }
