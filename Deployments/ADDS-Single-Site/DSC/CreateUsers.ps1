@@ -222,7 +222,7 @@ configuration CreateUsers
             
             #$Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
             [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($ADDSNetBiosDomain)\$($ADDSUsers[$i].uname)", $ADDSUserCreds.Password)
-            ADUser "$($ADDSNetBiosDomain)\$($ADDSUsers[$i].UserName)"
+            ADUser "$($ADDSNetBiosDomain)\$($ADDSUsers[$i].uname)"
             {
                 Ensure              = 'Present'
                 UserName            = $ADDSUsers[$i].uname
