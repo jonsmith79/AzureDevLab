@@ -29,6 +29,7 @@ param artifactsLocationSasToken string
 /*-------------------------------------------------------------------------------------------
   Variables section
 -------------------------------------------------------------------------------------------*/
+/*
 var ADDSUsers = [
   {
     fname: 'Adele'
@@ -211,7 +212,7 @@ var ADDSUsers = [
     thumbnail: uri(artifactsLocation, 'xx_Images/avatars/Pradeep%20Gupta.jpeg${artifactsLocationSasToken}')
   }
 ]
-
+*/
 var ModulesURL = uri(artifactsLocation, 'DSC/CreateUsers.zip${artifactsLocationSasToken}')
 var ConfigurationFunction = 'CreateUsers.ps1\\CreateUsers'
 
@@ -233,7 +234,6 @@ resource vmName_Microsoft_PowerShell_DSC 'Microsoft.Compute/virtualMachines/exte
         ADDSBaseDN: ADDSBaseDN
         ADDSDomain: ADDSDomain
         ADDSNetBiosDomain: ADDSNetBiosDomain
-        ADDSUsers: ADDSUsers
         ADDSUserCreds: {
           UserName: 'username'
           Password: 'PrivateSettingsRef:UserPassword'
