@@ -20,10 +20,10 @@ jobs:
       vmDC1OSVersion: "2022-Datacenter-azure-edition"
       vmDC1VMSize: "Standard_D2s_v3"
       NetBiosDomain: "E2D"
-      SubDNSDomain: "adds"
+      SubDNSDomain: ""
       InternalDomainName: "E2D"
-      InternalTLD1: "co"
-      InternalTLD2: "uk" 
+      InternalTLD1: "uk"
+      InternalTLD2: "" 
       userPassword: ${{ secrets.USER_PASSWORD }}
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
