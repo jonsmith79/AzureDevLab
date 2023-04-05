@@ -121,9 +121,22 @@
             DependsOn = "[xDnsServerAddress]DnsServerAddress"
         }
 
+        Script IncreaseMaxEnvelopeSize
+        {
+            SetScript =
+            {
+                # Increase MaxEnvelopeSize
+                #Set-ADDomainController -Identity $using:DomainName -MaxEnvelopeSize 10485760
+                Set-Item -Path WSMan:\localhost\MaxEnvelopeSizeKb -Value 8192
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = "[Script]UpdateDNSSettings"
+        }
+
         xPendingReboot RebootAfterPromotion{
             Name = "RebootAfterPromotion"
-            DependsOn = "[Script]UpdateDNSSettings"
+            DependsOn = "[Script]IncreaseMaxEnvelopeSize"
         }
     }
 }
