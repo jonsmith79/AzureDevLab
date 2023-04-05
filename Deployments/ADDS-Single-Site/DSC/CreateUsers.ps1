@@ -36,33 +36,32 @@ configuration CreateUsers
 
     Node localhost
     {
-        foreach($User in $ADDSUsers)
+        for($i=0; $i -lt $ADDSUsers.Length; $i++)
         {
-            $i = 0
+            
             #$Password = ConvertTo-SecureString -String $ADDSUserPassword -AsPlainText -Force
-            [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($ADDSNetBiosDomain)\$($User[$i].uname)", $ADDSUserCreds.Password)
-            ADUser "$($ADDSNetBiosDomain)\$($User[$i].UserName)"
+            [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($ADDSNetBiosDomain)\$($ADDSUsers[$i].uname)", $ADDSUserCreds.Password)
+            ADUser "$($ADDSNetBiosDomain)\$($ADDSUsers[$i].UserName)"
             {
                 Ensure              = 'Present'
-                UserName            = $User[$i].uname
-                GivenName           = $User[$i].fname
-                Surname             = $User[$i].sname
-                DisplayName         = "$($User[$i].fname) $($User[$i].sname)"
-                Description         = $User[$i].Description
-                EmailAddress        = "$($User[$i].uname)@$($ADDSDomain)"
-                UserPrincipalName   = "$($User[$i].uname)@$($ADDSDomain)"
+                UserName            = $ADDSUsers[$i].uname
+                GivenName           = $ADDSUsers[$i].fname
+                Surname             = $ADDSUsers[$i].sname
+                DisplayName         = "$($ADDSUsers[$i].fname) $($ADDSUsers[$i].sname)"
+                Description         = $ADDSUsers[$i].Description
+                EmailAddress        = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
+                UserPrincipalName   = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
                 Password            = $DomainCreds
-                ThumbnailPhoto      = $User[$i].thumbnail
-                Manager             = $User[$i].manager
-                JobTitle            = $User[$i].job
-                Department          = $User[$i].dept
+                ThumbnailPhoto      = $ADDSUsers[$i].thumbnail
+                Manager             = $ADDSUsers[$i].manager
+                JobTitle            = $ADDSUsers[$i].job
+                Department          = $ADDSUsers[$i].dept
                 PasswordNeverResets = $true
                 PasswordNeverExpires = $true
                 DomainName          = $ADDSDomain
                 Enabled             = $true
                 Path                = "OU=Users,OU=Accounts,$($ADDSBaseDN)"
             }
-            $i++
         }
     }
 }
