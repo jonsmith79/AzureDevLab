@@ -138,7 +138,7 @@ var VNet1DNSServers = [
 // vmAADC Variables
 var vmAADCName = '${namingConvention}-AADC01'
 var vmAADCLastOctet = '4'
-var vmAADCIP = '${ForwardLookup1}.${vmAADCLastOctet}'
+var vmAADCIP = '${VNet1SubnetArray[5].dnsForward}.${vmAADCLastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'

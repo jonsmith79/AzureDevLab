@@ -35,23 +35,23 @@ AD OU Structure:
 [domain.com]
 
 - Accounts
-      - Admins
-      - Services
-      - Users
+  - Admins
+  - Services
+  - Users
 - Clients
-      - Android
-      - iOS
-      - iPadOS
-      - macOS
-      - Windows
+  - Android
+  - iOS
+  - iPadOS
+  - macOS
+  - Windows
 - Groups
-      - Distribution
-      - Security
+  - Distribution
+  - Security
 - Servers
-      - Apps
-      - Data
-      - Infrastructure
-      - Web
+  - Apps
+  - Data
+  - Infrastructure
+  - Web
 
 Parameters that support changes
 | Parameter | Description |
