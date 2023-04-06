@@ -31,25 +31,25 @@ The deployment leverages Desired State Configuration scripts to further customiz
 
 AD OU Structure:
 
-- [domain.com]
-  - Accounts
-        - Admins
-        - Services
-        - Users
-  - Clients
-        - Android
-        - iOS
-        - iPadOS
-        - macOS
-        - Windows
-  - Groups
-        - Distribution
-        - Security
-  - Servers
-        - Apps
-        - Data
-        - Infrastructure
-        - Web
+[domain.com]
+- Accounts
+      - Admins
+      - Services
+      - Users
+- Clients
+      - Android
+      - iOS
+      - iPadOS
+      - macOS
+      - Windows
+- Groups
+      - Distribution
+      - Security
+- Servers
+      - Apps
+      - Data
+      - Infrastructure
+      - Web
 
 Parameters that support changes
 | Parameter | Description |
