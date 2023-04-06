@@ -41,20 +41,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Create AAD Connect Hybrid Identity Administrator account with Azure CLI
-    - name: 'Create Hybrid Identity Administrator account with Azure CLI'
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.44.1
-        inlineScript: $user = az ad user create --display-name "${{env.hiaFirstname}} ${{env.hiaSurname}}" --password ${{env.adminPassword}} --user-principal-name "${{env.hiaFirstname}}.${{env.hiaSurname}}@${{env.InternalDomainName}}.${{env.InternalTLD1}}.${{env.InternalTLD2}}" --force-change-password-next-login false; az rest --method POST --uri 'https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments' --body '{"principalId":$user.id,"roleDefinitionId":"8ac3fc64-6eca-42ea-9e69-59f4c7b60eb2","directoryScopeId":"/"}'
-        
-    ## Create AAD Connect Hybrid Identity Administrator identity with Azure CLI
-    #- name: Azure CLI script
-    #  uses: azure/CLI@v1
-    #  with:
-    #    azcliversion: 2.44.1        
-    #    inlineScript: az rest --method POST --uri 'https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments' --body '{"principalId":$user.id,"roleDefinitionId":"8ac3fc64-6eca-42ea-9e69-59f4c7b60eb2","directoryScopeId":"/"}'
-
     # Create resource group with Azure CLI
     #- name: Azure CLI script
     #  uses: azure/CLI@v1
