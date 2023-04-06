@@ -64,12 +64,6 @@ param InternalTLD2 string
 @secure()
 param userPassword string
 
-@description('Domain Controller1 OS Version')
-param vmAADCOSVersion string
-
-@description('Domain Controller1 VMSize')
-param vmAADCVMSize string
-
 @description('Artifacts Location')
 param artifactsLocation string
 
@@ -121,24 +115,11 @@ var vmDC1Name = '${namingConvention}-DC01'
 var vmDC1LastOctet = '4'
 var vmDC1IP = '${ForwardLookup1}.${vmDC1LastOctet}'
 
-/*
-// vmDC2 Variables
-var vmDC2DataDisk1Name = 'NTDS'
-var vmDC2Name = '${namingConvention}-DC02'
-var vmDC2LastOctet = '5'
-var vmDC2IP = '${VNet1ID}.2.${vmDC2LastOctet}'
-*/
-
 // VNet1 DNS IPs
 var VNet1DNSServers = [
   vmDC1IP
   //vmDC2IP
 ]
-
-// vmAADC Variables
-var vmAADCName = '${namingConvention}-AADC01'
-var vmAADCLastOctet = '4'
-var vmAADCIP = '${VNet1SubnetArray[5].dnsForward}.${vmAADCLastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'
@@ -385,37 +366,6 @@ module promoteDC1 'modules/addsDC1.bicep' = {
   ]
 }
 
-/*
-// Deploy second domain controller
-@description('Deploy second domain controller to VNet1')
-module vmDC2_deploy 'modules/vmDCs.bicep' = {
-  scope: newRG
-  name: 'deploy_${vmDC2Name}'
-  params: {
-    AutoShutdownEmail: AutoShutdownEmail
-    AutoShutdownEnabled: AutoShutdownEnabled
-    AutoShutdownTime: AutoShutdownTime
-    DataDisk1Name: vmDC2DataDisk1Name
-    LicenceType: WindowsServerLicenseType
-    Location: Location
-    Offer: 'WindowsServer'
-    OSVersion: vmDC1OSVersion
-    Publisher: 'MicrosoftWindowsServer'
-    SubnetName: VNet1Subnets[2]
-    TimeZone: TimeZone
-    vmAdminPwd: adminPassword
-    vmAdminUser: adminUsername
-    vmName: vmDC2Name
-    vmNICIP: vmDC2IP
-    vmSize: vmDC1VMSize
-    VNetName: VNet1Name
-  }
-  dependsOn: [
-    BastionHost1
-  ]
-}
-*/
-
 // Update vNet DNS Servers
 @description('Update vNet DNS Servers')
 module VNet1DNS 'modules/azVNetDNS.bicep' = {
@@ -505,30 +455,3 @@ module CreateUsers 'modules/addsUsers.bicep' = {
   ]
 }
 
-// Deploy Azure AD Connect Server
-@description('Deploy fzure AD Connect Server to VNet1')
-module vmAADC_deploy 'modules/vmAADC.bicep' = {
-  scope: newRG
-  name: 'deploy_${vmAADCName}'
-  params: {
-    AutoShutdownEmail: AutoShutdownEmail
-    AutoShutdownEnabled: 'No'
-    AutoShutdownTime: AutoShutdownTime
-    LicenceType: WindowsServerLicenseType
-    Location: Location
-    Offer: 'WindowsServer'
-    OSVersion: vmAADCOSVersion
-    Publisher: 'MicrosoftWindowsServer'
-    SubnetName: VNet1Subnets[5]
-    TimeZone: TimeZone
-    vmAdminPwd: adminPassword
-    vmAdminUser: adminUsername
-    vmName: vmAADCName
-    vmNICIP: vmAADCIP
-    vmSize: vmAADCVMSize
-    VNetName: VNet1Name
-  }
-  dependsOn: [
-    CreateUsers
-  ]
-}

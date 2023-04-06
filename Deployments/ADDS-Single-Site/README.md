@@ -6,9 +6,9 @@
 
 This templates deploys:
 
-- 1 - Resource Group
-- 1 - Virtual Network
-- 5 - Subnets
+- Resource Group
+- Virtual Network
+- 7 Subnets
   - Gateway Subnet
   - Bastion Subnet
   - Tier 0 (Infrastructure) Subnet
@@ -16,17 +16,19 @@ This templates deploys:
   - Tier 2 (Apps) Subnet
   - Tier 3 (Web) Subnet
   - Tier 4 (Client) Subnet
-- 1 - NSG for ADDS traffic on Tier 0 subnet
-- 1 - Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1] [^2]
-- 1 - Azure Policy Initiative assignment of 'Configure virtual machines to be onboarded to Azure Automanage'
-- 1 - Domain Controller(s)
-- 1 - Guest Configuration Extension for the Domain Controller(s)
-- 1 - Active Directory Forest/Domain
-- 1 - Configure Primary Forward and Reverse DNS Zones
-- 1 - Create ADDS Organisational Unit structure (see below)
-- 1 - Create 20 test users in Active Directory
-- 1 - Azure AD Connect server
-- ~~1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
+- NSG for ADDS traffic on Tier 0 subnet
+- Azure Policy Initiative assignment of 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' [^1] [^2]
+- Azure Policy Initiative assignment of 'Configure virtual machines to be onboarded to Azure Automanage'
+- Domain Controller(s)
+- Guest Configuration Extension for the Domain Controller(s)
+- Active Directory Forest/Domain
+- Configure Primary Forward and Reverse DNS Zones
+- ADDS Organisational Unit structure (see below)
+- 20 test users in Active Directory
+- **In Development** An AD group Managed Service Account (gMSA) for AAD Connect cloud sync
+- **In Development** An AAD Hybrid Idetnity Administrator account for AAD Connect cloud sync
+- **In Development** Azure AD Connect cloud sync agent on the Domain Controller
+- ~~Domain Joined Windows Workstation (Windows 11/10/7)~~
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
@@ -76,8 +78,6 @@ Parameters that support changes
 | InternalTLD1 | Select a valid Top-Level Domain (Example: 'com', or if dual TLD such as co.uk just enter 'co'). |
 | InternalTLD2 | Select a valid Top-Level Domain second element (Example: 'uk' where TLD1 above is a dual TLD such as .co.uk). |
 | UserPassword | Enter the password for the AD users to be created. |
-| vmAADCOSVersion | Select gallery image for Azure AD Connect server OS version (i.e. '2022-Datacenter-azure-edition'). |
-| vmAADCVMSize | Enter a valid VM Size based on which Region the VM is deployed (i.e. 'Standard_D2s_v3'). |
 | artifactsLocation | Publically accessible location of the GitHub files for DSC (i.e. 'https://raw.githubusercontent.com/user/project/branch/folder') |
 | artifactsLocationSasToken | The artifacts location SAS token to access the contents. |
 | --- | --- |
