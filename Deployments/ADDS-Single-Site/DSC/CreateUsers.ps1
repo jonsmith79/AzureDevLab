@@ -234,7 +234,7 @@ configuration CreateUsers
                 UserPrincipalName   = "$($ADDSUsers[$i].uname)@$($ADDSDomain)"
                 Password            = $DomainCreds
                 ThumbnailPhoto      = $ADDSUsers[$i].thumbnail
-                Manager             = "CN=$($ADDSUsers[$i].manager),OU=Users,OU=Accounts,$($ADDSBaseDN)"
+                #Manager             = "CN=$($ADDSUsers[$i].manager),OU=Users,OU=Accounts,$($ADDSBaseDN)"
                 JobTitle            = $ADDSUsers[$i].job
                 Department          = $ADDSUsers[$i].dept
                 PasswordNeverResets = $true

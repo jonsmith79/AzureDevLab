@@ -64,6 +64,12 @@ param InternalTLD2 string
 @secure()
 param userPassword string
 
+@description('Domain Controller1 OS Version')
+param vmAADCOSVersion string
+
+@description('Domain Controller1 VMSize')
+param vmAADCVMSize string
+
 @description('Artifacts Location')
 param artifactsLocation string
 
@@ -128,6 +134,11 @@ var VNet1DNSServers = [
   vmDC1IP
   //vmDC2IP
 ]
+
+// vmAADC Variables
+var vmAADCName = '${namingConvention}-AADC01'
+var vmAADCLastOctet = '4'
+var vmAADCIP = '${ForwardLookup1}.${vmAADCLastOctet}'
 
 // Policy Assignment variables for 'Deploy prerequisites to enable Guest Configuration policies on virtual machines'
 var assignmentName = 'Deploy_VM_Prereqs'
@@ -203,10 +214,6 @@ var AzPolAutomanageResourceSelectors = [
     value: 'DeployIfNotExists'
   }
 }
-
-
-
-
 
 /*-------------------------------------------------------------------------------------------
   Resource section
@@ -498,3 +505,30 @@ module CreateUsers 'modules/addsUsers.bicep' = {
   ]
 }
 
+// Deploy Azure AD Connect Server
+@description('Deploy fzure AD Connect Server to VNet1')
+module vmAADC_deploy 'modules/vmAADC.bicep' = {
+  scope: newRG
+  name: 'deploy_${vmAADCName}'
+  params: {
+    AutoShutdownEmail: AutoShutdownEmail
+    AutoShutdownEnabled: 'No'
+    AutoShutdownTime: AutoShutdownTime
+    LicenceType: WindowsServerLicenseType
+    Location: Location
+    Offer: 'WindowsServer'
+    OSVersion: vmAADCOSVersion
+    Publisher: 'MicrosoftWindowsServer'
+    SubnetName: VNet1Subnets[2]
+    TimeZone: TimeZone
+    vmAdminPwd: adminPassword
+    vmAdminUser: adminUsername
+    vmName: vmAADCName
+    vmNICIP: vmAADCIP
+    vmSize: vmAADCVMSize
+    VNetName: VNet1Name
+  }
+  dependsOn: [
+    CreateUsers
+  ]
+}

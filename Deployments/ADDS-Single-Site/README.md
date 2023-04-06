@@ -24,6 +24,7 @@ This templates deploys:
 - 1 - Active Directory Forest/Domain
 - 1 - Configure Primary Forward and Reverse DNS Zones
 - 1 - Create ADDS Organisational Unit Structure (see below)
+- 1 - Create 20 test users in Active Directory
 - ~~1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
@@ -72,6 +73,9 @@ Parameters that support changes
 | Internal Domain | Enter a valid Internal Domain (Exmaple:  'Contoso'). |
 | InternalTLD1 | Select a valid Top-Level Domain (Example: 'com', or if dual TLD such as co.uk just enter 'co'). |
 | InternalTLD2 | Select a valid Top-Level Domain second element (Example: 'uk' where TLD1 above is a dual TLD such as .co.uk). |
+| UserPassword | Enter the password for the AD users to be created. |
+| vmAADCOSVersion | Select gallery image for Azure AD Connect server OS version (i.e. '2022-Datacenter-azure-edition'). |
+| vmAADCVMSize | Enter a valid VM Size based on which Region the VM is deployed (i.e. 'Standard_D2s_v3'). |
 | artifactsLocation | Publically accessible location of the GitHub files for DSC (i.e. 'https://raw.githubusercontent.com/user/project/branch/folder') |
 | artifactsLocationSasToken | The artifacts location SAS token to access the contents. |
 | --- | --- |
