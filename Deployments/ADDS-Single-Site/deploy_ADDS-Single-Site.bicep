@@ -519,7 +519,7 @@ module vmAADC_deploy 'modules/vmAADC.bicep' = {
     Offer: 'WindowsServer'
     OSVersion: vmAADCOSVersion
     Publisher: 'MicrosoftWindowsServer'
-    SubnetName: VNet1Subnets[2]
+    SubnetName: VNet1Subnets[5]
     TimeZone: TimeZone
     vmAdminPwd: adminPassword
     vmAdminUser: adminUsername

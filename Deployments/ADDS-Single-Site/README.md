@@ -23,8 +23,9 @@ This templates deploys:
 - 1 - Guest Configuration Extension for the Domain Controller(s)
 - 1 - Active Directory Forest/Domain
 - 1 - Configure Primary Forward and Reverse DNS Zones
-- 1 - Create ADDS Organisational Unit Structure (see below)
+- 1 - Create ADDS Organisational Unit structure (see below)
 - 1 - Create 20 test users in Active Directory
+- 1 - Azure AD Connect server
 - ~~1 - Domain Joined Windows Workstation (Windows 11/10/7)~~
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
@@ -32,6 +33,7 @@ The deployment leverages Desired State Configuration scripts to further customiz
 AD OU Structure:
 
 [domain.com]
+
 - Accounts
       - Admins
       - Services
