@@ -455,7 +455,7 @@ module CreateUsers 'modules/addsUsers.bicep' = {
   ]
 }
 
-// Restart first domain controller
+// Install Azure AD Connect on first domain controller
 module vmDC1_aadConnect 'modules/aadConnect.bicep' = {
   scope: newRG
   name: 'aadConnect_${vmDC1Name}'
