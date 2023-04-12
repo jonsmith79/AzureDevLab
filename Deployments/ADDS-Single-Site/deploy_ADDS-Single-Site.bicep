@@ -509,7 +509,7 @@ module nsgClients_resource 'modules/azVNetNSGClients.bicep' = {
 // Get existing subnet
 @description('Get existing subnet to update')
 resource subnetClients 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' existing = {
-  name: VNet1Subnets[6]
+  name: '${VNet1Name}/${VNet1Subnets[6]}'
   scope: newRG
 }
 
@@ -521,14 +521,11 @@ module updateSubnetClients 'modules/azSubnetUpdate.bicep' = {
   params: {
     vnetName: VNet1.outputs.VNetObject.name
     subnetName: subnetClients.name
-    subnetProperties: union(
-      subnetClients.properties,
-      {
+    subnetProperties: union(subnetClients.properties, {
         networkSecurityGroup: {
           id: nsgClients_resource.outputs.nsgClientsID
         }
-      }
-    )
+      })
   }
 }
 
