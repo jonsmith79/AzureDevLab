@@ -4,6 +4,8 @@ targetScope='subscription'
 /*-------------------------------------------------------------------------------------------
   Parameters section
 -------------------------------------------------------------------------------------------*/
+@description('Is this a new deployment or an existing one?')
+param newDeployment bool = false
 
 @description('Environment Naming Convention')
 param namingConvention string
@@ -19,10 +21,10 @@ param VNet1IPOctet2 int
 
 @description('TimeZone for Virtual Machines')
 param TimeZone string
-/*
+
 @description('Enable Auto Shutdown')
 param AutoShutdownEnabled string
-*/
+
 @description('Auto Shutdown Time')
 param AutoShutdownTime string
 
@@ -69,6 +71,23 @@ param artifactsLocation string
 
 @description('Artifacts Location Sas Token')
 param artifactsLocationSasToken string
+
+@description('End User Device (EUD) 1 VMSize')
+param eud1VMSize string
+
+@description('End User Device (EUD) 1 Operating System (OS) Publisher')
+@allowed([
+  'MicrosoftWindowsDesktop'
+  'MicrosoftWindowsServer'
+])
+param eud1OSPublisher string
+
+@description('End User Device (EUD) 1 Operating System (OS) Offer')
+param eud1OSOffer string
+
+@description('End User Device (EUD) 1 Operating System (OS) SKU')
+param eud1OSSku string
+
 
 /*-------------------------------------------------------------------------------------------
   Variables section
@@ -196,13 +215,16 @@ var AzPolAutomanageResourceSelectors = [
   }
 }
 
+// End User Device 1 variables: 
+var eud1Name = '${namingConvention}-EUD01'
+
 /*-------------------------------------------------------------------------------------------
   Resource section
 -------------------------------------------------------------------------------------------*/
 
 // Deploy new resource group if it doesn't already exist
 @description('Create new resource group')
-resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = if (newDeployment) {
   name: ResourceGroupName
   location: Location
 }
@@ -210,7 +232,7 @@ output RGID string = newRG.id
 
 // Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy initiative to the resource group
 @description('Assign the \'Deploy prerequisites to enable Guest Configuration policies on virtual machines\' policy initiative to the resource group')
-module AzPolAssign 'modules/policyAssignment.bicep' = {
+module AzPolAssign 'modules/policyAssignment.bicep' = if (newDeployment) {
   name: 'assign_${assignmentName}'
   scope: newRG
   params: {
@@ -227,7 +249,7 @@ module AzPolAssign 'modules/policyAssignment.bicep' = {
 
 // Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy to the resource group
 @description('Assign the \'Configure virtual machines to be onboarded to Azure Automanage\' policy to the resource group')
-module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
+module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = if (newDeployment) {
   name: 'assign_${AzPolAutomanageName}'
   scope: newRG
   params: {
@@ -246,7 +268,7 @@ module AzPolAutomanageAssign 'modules/policyAssignment.bicep' = {
 }
 
 // Assign the 'Deploy prerequisites to enable Guest Configuration policies on virtual machines' policy system identity subscription roles
-module AzPolAssign_permissions 'modules/roleAssignment.bicep' = {
+module AzPolAssign_permissions 'modules/roleAssignment.bicep' = if (newDeployment) {
   name: 'roleAssignment_${AzPolAssign.name}'
   scope: subscription()
   params: {
@@ -256,7 +278,7 @@ module AzPolAssign_permissions 'modules/roleAssignment.bicep' = {
 }
 
 // Assign the 'Configure virtual machines to be onboarded to Azure Automanage' policy system identity subscription roles
-module AzPolAutomanageAssign_permissions 'modules/roleAssignment.bicep' = {
+module AzPolAutomanageAssign_permissions 'modules/roleAssignment.bicep' = if (newDeployment) {
   name: 'roleAssignment_${AzPolAutomanageAssign.name}'
   scope: subscription()
   params: {
@@ -268,7 +290,7 @@ module AzPolAutomanageAssign_permissions 'modules/roleAssignment.bicep' = {
 
 // Deploy ADDS NSG
 @description('Deploy ADDS NSG onto Tier0Infra Subnet')
-module nsgADDS_resource 'modules/azVNetNSGADDS.bicep' = {
+module nsgADDS_resource 'modules/azVNetNSGADDS.bicep' = if (newDeployment) {
   name: 'deploy-${nsgNameADDS}'
   scope: newRG
   params: {
@@ -284,7 +306,7 @@ module nsgADDS_resource 'modules/azVNetNSGADDS.bicep' = {
 
 // Deploy Virtual Network 1 (VNet1)
 @description('Deploy VNet1 to new resource group')
-module VNet1 'modules/azVNet.bicep' = {
+module VNet1 'modules/azVNet.bicep' = if (newDeployment) {
   name: 'deploy-${VNet1Name}'
   scope: newRG
   params: {
@@ -301,7 +323,7 @@ module VNet1 'modules/azVNet.bicep' = {
 
 // Deploy Bastion Host 1 (BastionHost1)
 @description('Deploy Bastion Host to VNet1')
-module BastionHost1 'modules/azBastion.bicep' = {
+module BastionHost1 'modules/azBastion.bicep' = if (newDeployment) {
   name: 'deploy_BastionHost1'
   scope: newRG
   params: {
@@ -318,7 +340,7 @@ module BastionHost1 'modules/azBastion.bicep' = {
 
 // Deploy first domain controller
 @description('Deploy first domain controller to VNet1')
-module vmDC1_deploy 'modules/vmDCs.bicep' = {
+module vmDC1_deploy 'modules/vmDCs.bicep' = if (newDeployment) {
   scope: newRG
   name: 'deploy_${vmDC1Name}'
   params: {
@@ -347,7 +369,7 @@ module vmDC1_deploy 'modules/vmDCs.bicep' = {
 
 //Promote first domain controller to domain controller
 @description('Promote first domain controller to domain controller')
-module promoteDC1 'modules/addsDC1.bicep' = {
+module promoteDC1 'modules/addsDC1.bicep' = if (newDeployment) {
   scope: newRG
   name: 'PromoteDC1'
   params: {
@@ -368,7 +390,7 @@ module promoteDC1 'modules/addsDC1.bicep' = {
 
 // Update vNet DNS Servers
 @description('Update vNet DNS Servers')
-module VNet1DNS 'modules/azVNetDNS.bicep' = {
+module VNet1DNS 'modules/azVNetDNS.bicep' = if (newDeployment) {
   name: 'update-${VNet1Name}-DNS'
   scope: newRG
   params: {
@@ -384,7 +406,7 @@ module VNet1DNS 'modules/azVNetDNS.bicep' = {
 }
 
 // Restart first domain controller
-module vmDC1_restart 'modules/vmRestart.bicep' = {
+module vmDC1_restart 'modules/vmRestart.bicep' = if (newDeployment) {
   scope: newRG
   name: 'restart_${vmDC1Name}'
   params: {
@@ -399,7 +421,7 @@ module vmDC1_restart 'modules/vmRestart.bicep' = {
 }
 
 // Configure ADDS DNS settings
-module DNS_config 'modules/addsDNS.bicep' = {
+module DNS_config 'modules/addsDNS.bicep' = if (newDeployment) {
   scope: newRG
   name: 'configure_${vmDC1Name}_DNS'
   params: {
@@ -421,7 +443,7 @@ module DNS_config 'modules/addsDNS.bicep' = {
 }
 
 // Create ADDS Organisation Units
-module CreateOUs 'modules/addsOUs.bicep' = {
+module CreateOUs 'modules/addsOUs.bicep' = if (newDeployment) {
   scope: newRG
   name: 'create_${vmDC1Name}_OUs'
   params: {
@@ -437,7 +459,7 @@ module CreateOUs 'modules/addsOUs.bicep' = {
 }
 
 // Create ADDS Users
-module CreateUsers 'modules/addsUsers.bicep' = {
+module CreateUsers 'modules/addsUsers.bicep' = if (newDeployment) {
   scope: newRG
   name: 'create_${vmDC1Name}_Users'
   params: {
@@ -456,7 +478,7 @@ module CreateUsers 'modules/addsUsers.bicep' = {
 }
 
 // Install Azure AD Connect on first domain controller
-module vmDC1_aadConnect 'modules/aadConnect.bicep' = {
+module vmDC1_aadConnect 'modules/aadConnect.bicep' = if (newDeployment) {
   scope: newRG
   name: 'aadConnect_${vmDC1Name}'
   params: {
@@ -467,5 +489,77 @@ module vmDC1_aadConnect 'modules/aadConnect.bicep' = {
   }
   dependsOn: [
     CreateUsers
+  ]
+}
+
+// Deploy Client NSG which allows 3389
+@description('Deploy client NSG onto Tier4Clients Subnet')
+module nsgClients_resource 'modules/azVNetNSGClients.bicep' = {
+  name: 'deploy-${nsgNameADDS}'
+  scope: newRG
+  params: {
+    nsgNameClients: nsgNameADDS
+    Location: Location
+  }
+  dependsOn: [
+    nsgADDS_resource
+  ]
+}
+
+// Get existing subnet
+@description('Get existing subnet to update')
+resource subnetClients 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' existing = {
+  name: VNet1Subnets[6]
+  scope: newRG
+}
+
+// Update VNet client subnet with NSG
+@description('Update client subnet with new NSG to allow port 3389')
+module updateSubnetClients 'modules/azSubnetUpdate.bicep' = {
+  name: 'update-${VNet1Subnets[6]}'
+  scope: newRG
+  params: {
+    vnetName: VNet1.outputs.VNetObject.name
+    subnetName: subnetClients.name
+    subnetProperties: union(
+      subnetClients.properties,
+      {
+        networkSecurityGroup: {
+          id: nsgClients_resource.outputs.nsgClientsID
+        }
+      }
+    )
+  }
+}
+
+// Create Windows 11 admin client
+@description('Create Windows 11 admin client')
+module vmEUD1 'modules/vmEUD.bicep' = {
+  scope: newRG
+  name: 'deploy_${eud1Name}'
+  params: {
+    eudName: eud1Name
+    eudLocation: Location
+    eudTimezone: TimeZone
+    //dnsLabelPrefix:
+    //pipName:
+    //pipAllocationMethod:
+    //pipSku: 
+    eudSubnet: updateSubnetClients.outputs.subnetClientsID
+    //eudLicenseType: 'Windows_Client'
+    eudVMSize: eud1VMSize
+    eudVMPublisher: eud1OSPublisher
+    eudVMOffer: eud1OSOffer
+    eudVMSKU: eud1OSSku
+    eudAdminUsername: adminPassword
+    eudAdminPassword: adminUsername
+    eudAutoShutdownEnabled: AutoShutdownEnabled
+    eudAutoShutdownTime: AutoShutdownTime
+    eudAutoShutdownEmail: AutoShutdownEmail
+    //securityType:
+    //maaEndpoint: ''
+  }
+  dependsOn: [
+    updateSubnetClients
   ]
 }

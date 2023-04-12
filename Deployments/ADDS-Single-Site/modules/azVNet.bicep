@@ -52,3 +52,4 @@ resource newVNet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 // Output's section
 //=================
 output VNetObject object = newVNet
+output VNet1ObjectID string = newVNet.id

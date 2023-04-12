@@ -1,0 +1,53 @@
+# File: .github/workflows/ADDS-Single-Site.yml
+on: [push]
+name: ADDS-Single-Site
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      TimeZone: "GMT Standard Time"
+      Location: "uksouth"
+      namingConvention: "adl"
+      DeploymentDir: "Intune"
+      adminUsername: ${{ secrets.ADMIN_USERNAME }}
+      adminPassword: ${{ secrets.ADMIN_PASSWORD }}
+      artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
+      artifactsLocationSasToken: ""
+
+    steps:
+    # Checkout code
+    - name: Checkout
+      uses: actions/checkout@main
+
+    # Log into Azure
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Create resource group with Azure CLI
+    #- name: Azure CLI script
+    #  uses: azure/CLI@v1
+    #  with:
+    #    scope: subscription
+    #    azcliversion: 2.44.1
+    #    inlineScript: az group create --name "${{env.namingConvention}}-RG2" --location ${{env.Location}}
+
+    # Deploy Bicep file
+    - name: Intune - GitHub Action Deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: subscription
+        subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
+        region: ${{env.Location}}
+        template: ./Deployments/${{env.DeploymentDir}}/deployIntune.bicep
+        parameters:
+          Location="${{env.Location}}"
+          namingConvention="${{env.namingConvention}}"
+          TimeZone="${{env.TimeZone}}"
+          adminUsername="${{env.adminUsername}}"
+          adminPassword="${{env.adminPassword}}"
+          artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
+          artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
+
+  

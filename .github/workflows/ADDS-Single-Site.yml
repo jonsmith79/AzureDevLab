@@ -5,13 +5,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
+      newDeployment: false
       TimeZone: "GMT Standard Time"
       Location: "uksouth"
       namingConvention: "adl"
       VNet1IPOctet1: 10 # i.e. 10.x.x.x
       VNet1IPOctet2: 0  # i.e.  x.0.x.x
       DeploymentDir: "ADDS-Single-Site"
-      #AutoShutdownEnabled: "Yes"
+      AutoShutdownEnabled: "Yes"
       AutoShutdownTime: "2000"
       AutoShutdownEmail: "someone@domain.com"
       adminUsername: ${{ secrets.ADMIN_USERNAME }}
@@ -29,6 +30,11 @@ jobs:
       artifactsLocationSasToken: ""
       hiaFirstname: "Identity"
       hiaSurname: "Administrator"
+      eud1VMSize: "Standard_D2s_v3"
+      eud1OSPublisher: "MicrosoftWindowsDesktop"
+      eud1OSOffer: "Windows-11"
+      eud1OSSku: "win11-22h2-entn"
+
 
     steps:
     # Checkout code
@@ -58,6 +64,7 @@ jobs:
         region: ${{env.Location}}
         template: ./Deployments/${{env.DeploymentDir}}/deploy_ADDS-Single-Site.bicep
         parameters:
+          newDeployment="${{env.newDeployment}}"
           Location="${{env.Location}}"
           namingConvention="${{env.namingConvention}}"
           VNet1IPOctet1="${{env.VNet1IPOctet1}}"
@@ -78,6 +85,11 @@ jobs:
           userPassword="${{env.userPassword}}"
           artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
           artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
-          #AutoShutdownEnabled="${{env.AutoShutdownEnabled}}"
+          AutoShutdownEnabled="${{env.AutoShutdownEnabled}}"
+          eud1VMSize="${{env.eud1VMSize}}"
+          eud1OSPublisher="${{env.eud1OSPublisher}}"
+          eud1OSOffer="${{env.eud1OSOffer}}"
+          eud1OSSku="${{env.eud1OSSku}}"
+
 
   

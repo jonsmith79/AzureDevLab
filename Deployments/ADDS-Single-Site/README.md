@@ -58,6 +58,7 @@ AD OU Structure:
 Parameters that support changes
 | Parameter | Description |
 |-----------|-------------|
+| newDeployment | Used to specify which modules need new deployments (default = false). |
 | TimeZone | Select an appropriate Time Zone. |
 | Location | Set the location for resources. |
 | namingConvention | Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using. |
