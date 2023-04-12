@@ -217,8 +217,8 @@ resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' =
   }
 }
 
-resource eudName_AutoShutdown 'Microsoft.DevTestLab/schedules@2018-09-15' = if (eudAutoShutdownEnabled == 'Yes'){
-  name: 'deploy_${eudName}_AutoShutdown'
+resource shutdown_computevm_computerName 'Microsoft.DevTestLab/schedules@2018-09-15' = if (eudAutoShutdownEnabled == 'Yes'){
+  name: 'shutdown-computevm-${eudName}'
   location: eudLocation
   properties: {
     status: 'Enabled'

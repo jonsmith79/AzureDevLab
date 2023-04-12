@@ -495,7 +495,7 @@ module vmDC1_aadConnect 'modules/aadConnect.bicep' = if (newDeployment) {
 
 // Deploy Client NSG which allows 3389
 @description('Deploy client NSG onto Tier4Clients Subnet')
-module nsgClients_resource 'modules/azVNetNSGClients.bicep' = {
+module nsgClients_resource 'modules/azVNetNSGClients.bicep' = if (newDeployment) {
   name: 'deploy-${nsgNameClients}'
   scope: newRG
   params: {
@@ -509,14 +509,14 @@ module nsgClients_resource 'modules/azVNetNSGClients.bicep' = {
 
 // Get existing subnet
 @description('Get existing subnet to update')
-resource subnetClients 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' existing = {
+resource subnetClients 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' existing = if (newDeployment) {
   name: '${VNet1Name}/${VNet1Subnets[6]}'
   scope: newRG
 }
 
 // Update VNet client subnet with NSG
 @description('Update client subnet with new NSG to allow port 3389')
-module updateSubnetClients 'modules/azSubnetUpdate.bicep' = {
+module updateSubnetClients 'modules/azSubnetUpdate.bicep' = if (newDeployment) {
   name: 'update-${VNet1Subnets[6]}'
   scope: newRG
   params: {
