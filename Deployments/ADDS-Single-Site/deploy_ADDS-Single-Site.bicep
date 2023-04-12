@@ -520,7 +520,7 @@ module updateSubnetClients 'modules/azSubnetUpdate.bicep' = {
   name: 'update-${VNet1Subnets[6]}'
   scope: newRG
   params: {
-    vnetName: VNet1Name
+    //vnetName: VNet1Name
     subnetName: subnetClients.name
     subnetProperties: union(subnetClients.properties, {
         networkSecurityGroup: {

@@ -1,8 +1,8 @@
 /*-------------------------------------------------------------------------------------------
   Parameters section
 -------------------------------------------------------------------------------------------*/
-@description('Virtual Network to update')
-param vnetName string
+//@description('Virtual Network to update')
+//param vnetName string
 
 @description('Subnet name to update')
 param subnetName string
@@ -18,7 +18,7 @@ param subnetProperties object
   Resources section
 -------------------------------------------------------------------------------------------*/
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' = {
-  name: '${vnetName}/${subnetName}'
+  name: '${subnetName}'
   properties: subnetProperties
 }
 /*-------------------------------------------------------------------------------------------
