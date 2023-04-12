@@ -549,8 +549,8 @@ module vmEUD1 'modules/vmEUD.bicep' = {
     eudVMPublisher: eud1OSPublisher
     eudVMOffer: eud1OSOffer
     eudVMSKU: eud1OSSku
-    eudAdminUsername: adminPassword
-    eudAdminPassword: adminUsername
+    eudAdminUsername: adminUsername
+    eudAdminPassword: adminPassword
     eudAutoShutdownEnabled: AutoShutdownEnabled
     eudAutoShutdownTime: AutoShutdownTime
     eudAutoShutdownEmail: AutoShutdownEmail

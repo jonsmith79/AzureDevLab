@@ -117,7 +117,7 @@ var maaTenantName = 'GuestAttestation'
   Resources section
 -------------------------------------------------------------------------------------------*/
 resource PublicIP 'Microsoft.Network/publicIPAddresses@2022-09-01' = {
-  name: 'deploy_${pipName}'
+  name: pipName
   location: eudLocation
   sku: {
     name: pipSku
@@ -131,7 +131,7 @@ resource PublicIP 'Microsoft.Network/publicIPAddresses@2022-09-01' = {
 }
 
 resource vNIC 'Microsoft.Network/networkInterfaces@2022-09-01' = {
-  name: 'deploy_${vNICName}'
+  name: vNICName
   location: eudLocation
   properties: {
     ipConfigurations: [
@@ -154,7 +154,7 @@ resource vNIC 'Microsoft.Network/networkInterfaces@2022-09-01' = {
 }
 
 resource eudVM 'Microsoft.Compute/virtualMachines@2022-11-01'= {
-  name: 'deploy_${eudName}'
+  name: eudName
   location: eudLocation
   properties: {
     licenseType: eudLicenseType
