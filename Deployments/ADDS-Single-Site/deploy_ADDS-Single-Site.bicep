@@ -118,6 +118,7 @@ var VNet1SubnetArray = [for (name, i) in VNet1Subnets: {
 
 // NSG Vaiables
 var nsgNameADDS = '${VNet1Subnets[2]}-NSG' // Make sure this is the array object where DC's will go
+var nsgNameClients = '${VNet1Subnets[6]}-NSG' // Make sure this is the array object where Client's will go
 
 // Domain Variables
 var ADDSDomainPrefix = (!empty(SubDNSDomain)) ? '${SubDNSDomain}.${InternalDomainName}' : InternalDomainName
@@ -495,10 +496,10 @@ module vmDC1_aadConnect 'modules/aadConnect.bicep' = if (newDeployment) {
 // Deploy Client NSG which allows 3389
 @description('Deploy client NSG onto Tier4Clients Subnet')
 module nsgClients_resource 'modules/azVNetNSGClients.bicep' = {
-  name: 'deploy-${nsgNameADDS}'
+  name: 'deploy-${nsgNameClients}'
   scope: newRG
   params: {
-    nsgNameClients: nsgNameADDS
+    nsgNameClients: nsgNameClients
     Location: Location
   }
   dependsOn: [

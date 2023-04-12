@@ -1,6 +1,6 @@
-# File: .github/workflows/ADDS-Single-Site.yml
+# File: .github/workflows/Intune.yml
 on: [push]
-name: ADDS-Single-Site
+name: Intune
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
