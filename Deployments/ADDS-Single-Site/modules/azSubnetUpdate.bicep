@@ -18,7 +18,7 @@ param subnetProperties object
   Resources section
 -------------------------------------------------------------------------------------------*/
 resource updateSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' = {
-  name: '${subnetName}'
+  name: subnetName
   properties: subnetProperties
 }
 /*-------------------------------------------------------------------------------------------
