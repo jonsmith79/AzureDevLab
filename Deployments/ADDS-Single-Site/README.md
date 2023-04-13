@@ -25,10 +25,10 @@ This templates deploys:
 - Configure Primary Forward and Reverse DNS Zones
 - ADDS Organisational Unit structure (see below)
 - 20 test users in Active Directory
-- **In Development** Azure AD Connect install on the Domain Controller, ready for manual configuration
+- Azure AD Connect install on the Domain Controller, ready for manual configuration
 - **In Development** **MANUAL???** An AD group Managed Service Account (gMSA) for AAD Connect cloud sync
 - **In Development** **MANUAL???**  An AAD Hybrid Idetnity Administrator account for AAD Connect cloud sync
-- ~~Domain Joined Windows Workstation (Windows 11/10/7)~~
+- Domain Joined Windows 11 Workstation
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
