@@ -88,6 +88,9 @@ param eud1OSOffer string
 @description('End User Device (EUD) 1 Operating System (OS) SKU')
 param eud1OSSku string
 
+@description('End User Device (EUD) Timezone')
+param eudTimezone string
+
 
 /*-------------------------------------------------------------------------------------------
   Variables section
@@ -218,6 +221,7 @@ var AzPolAutomanageResourceSelectors = [
 
 // End User Device 1 variables: 
 var eud1Name = '${namingConvention}-EUD01'
+var eudOUPath = 'OU=Windows,OU=Clients,${ADDSBaseDN}'
 
 /*-------------------------------------------------------------------------------------------
   Resource section
@@ -554,10 +558,25 @@ module vmEUD1 'modules/vmEUD.bicep' = {
     eudAutoShutdownEnabled: AutoShutdownEnabled
     eudAutoShutdownTime: AutoShutdownTime
     eudAutoShutdownEmail: AutoShutdownEmail
+    eudTZ: eudTimezone
     //securityType:
     //maaEndpoint: ''
   }
   dependsOn: [
     updateSubnetClients
   ]
+}
+
+// Join Windows 11 admin client to the domain
+module eud1DomainJoin 'modules/addsDomainJoin.bicep' = {
+  name: 'DomainJoin_${eud1Name}'
+  scope: newRG
+  params: {
+    eudDomainFQDN: ADDSDomainName
+    eudDomainOU: eudOUPath
+    eudDomainPassword: adminPassword
+    eudDomainUsername: adminUsername
+    eudName: eud1Name
+    eudLocation: Location
+  }
 }

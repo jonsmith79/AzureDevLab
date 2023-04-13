@@ -34,6 +34,7 @@ jobs:
       eud1OSPublisher: "MicrosoftWindowsDesktop"
       eud1OSOffer: "Windows-11"
       eud1OSSku: "win11-22h2-entn"
+      eudTimezone: "Europe/London"
 
 
     steps:
@@ -90,6 +91,7 @@ jobs:
           eud1OSPublisher="${{env.eud1OSPublisher}}"
           eud1OSOffer="${{env.eud1OSOffer}}"
           eud1OSSku="${{env.eud1OSSku}}"
+          eudTimezone="${{env.eudTimezone}}"
 
 
   
