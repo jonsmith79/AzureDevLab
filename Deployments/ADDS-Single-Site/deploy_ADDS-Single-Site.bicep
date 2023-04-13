@@ -579,4 +579,7 @@ module eud1DomainJoin 'modules/addsDomainJoin.bicep' = {
     eudName: eud1Name
     eudLocation: Location
   }
+  dependsOn: [
+    vmEUD1
+  ]
 }
