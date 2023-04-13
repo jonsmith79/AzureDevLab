@@ -28,13 +28,10 @@ jobs:
       userPassword: ${{ secrets.USER_PASSWORD }}
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
-      hiaFirstname: "Identity"
-      hiaSurname: "Administrator"
       eud1VMSize: "Standard_D2s_v3"
       eud1OSPublisher: "MicrosoftWindowsDesktop"
       eud1OSOffer: "Windows-11"
       eud1OSSku: "win11-22h2-entn"
-      #eudTimezone: "Europe/London"
 
     steps:
     # Checkout code
@@ -90,7 +87,4 @@ jobs:
           eud1OSPublisher="${{env.eud1OSPublisher}}"
           eud1OSOffer="${{env.eud1OSOffer}}"
           eud1OSSku="${{env.eud1OSSku}}"
-          #eudTimezone="${{env.eudTimezone}}"
-
-
   

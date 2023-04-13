@@ -536,7 +536,7 @@ module updateSubnetClients 'modules/azSubnetUpdate.bicep' = if (newDeployment) {
 
 // Create Windows 11 admin client
 @description('Create Windows 11 admin client')
-module vmEUD1 'modules/vmEUD.bicep' = {
+module vmEUD1 'modules/vmEUD.bicep' = if (newDeployment) {
   scope: newRG
   name: 'deploy_${eud1Name}'
   params: {
@@ -568,7 +568,7 @@ module vmEUD1 'modules/vmEUD.bicep' = {
 }
 
 // Join Windows 11 admin client to the domain
-module eud1DomainJoin 'modules/addsDomainJoin.bicep' = {
+module eud1DomainJoin 'modules/addsDomainJoin.bicep' = if (newDeployment) {
   name: 'DomainJoin_${eud1Name}'
   scope: newRG
   params: {
