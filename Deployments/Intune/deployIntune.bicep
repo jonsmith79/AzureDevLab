@@ -1,5 +1,5 @@
 // Set target scope
-targetScope = 'tenant'
+targetScope = 'subscription'
 
 /*-------------------------------------------------------------------------------------------
   Parameters section

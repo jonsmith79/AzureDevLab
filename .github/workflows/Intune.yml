@@ -37,7 +37,7 @@ jobs:
     - name: Intune - GitHub Action Deployment
       uses: azure/arm-deploy@v1
       with:
-        scope: tenant
+        scope: subscription
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
         region: ${{env.location}}
         template: ./Deployments/${{env.DeploymentDir}}/deployIntune.bicep
