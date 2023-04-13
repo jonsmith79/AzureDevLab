@@ -189,7 +189,7 @@ resource eudVM 'Microsoft.Compute/virtualMachines@2022-11-01'= {
             passName: 'OobeSystem'
             componentName: 'Microsoft-Windows-Shell-Setup'
             settingName: 'AutoLogon'
-            content: '[concat(\'<AutoLogon><Password><Value>\',${eudAdminPassword},\'</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>\',${eudAdminUsername},\'</Username></AutoLogon>\')]'
+            content: '<AutoLogon><Password><Value>${eudAdminPassword}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${eudAdminUsername}</Username></AutoLogon>'
           }
         ]
       }
