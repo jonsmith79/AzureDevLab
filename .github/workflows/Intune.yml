@@ -5,14 +5,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      TimeZone: "GMT Standard Time"
-      Location: "uksouth"
-      namingConvention: "adl"
+      location: "uksouth"
       DeploymentDir: "Intune"
       adminUsername: ${{ secrets.ADMIN_USERNAME }}
       adminPassword: ${{ secrets.ADMIN_PASSWORD }}
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
+      azGroupPrefix: "SG"
+      azBreakGlassGroupName: "CA-BreakGlass"
 
     steps:
     # Checkout code
@@ -37,17 +37,16 @@ jobs:
     - name: Intune - GitHub Action Deployment
       uses: azure/arm-deploy@v1
       with:
-        scope: subscription
+        scope: tenant
         subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
-        region: ${{env.Location}}
+        region: ${{env.location}}
         template: ./Deployments/${{env.DeploymentDir}}/deployIntune.bicep
         parameters:
-          Location="${{env.Location}}"
-          namingConvention="${{env.namingConvention}}"
-          TimeZone="${{env.TimeZone}}"
           adminUsername="${{env.adminUsername}}"
           adminPassword="${{env.adminPassword}}"
           artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
           artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
+          azGroupPrefix="${{env.azGroupPrefix}}"
+          azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
 
   
