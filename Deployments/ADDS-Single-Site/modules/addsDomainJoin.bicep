@@ -4,6 +4,9 @@
 @description('End User Device (EUD) name')
 param eudName string
 
+@description('ADDS NetBIOS Domain Name')
+param eudNetBIOSDomain string
+
 @description('End User Device (EUD) location')
 param eudLocation string = resourceGroup().location
 
@@ -41,7 +44,7 @@ resource computerName_DomainJoin 'Microsoft.Compute/virtualMachines/extensions@2
     settings: {
       name: eudDomainFQDN
       options: domainJoinOptions
-      user: eudDomainUsername
+      user: '${eudNetBIOSDomain}\\${eudDomainUsername}'
       ouPath: eudDomainOU
       restart: true
     }

@@ -573,6 +573,7 @@ module eud1DomainJoin 'modules/addsDomainJoin.bicep' = {
   scope: newRG
   params: {
     eudDomainFQDN: ADDSDomainName
+    eudNetBIOSDomain: NetBiosDomain
     eudDomainOU: eudOUPath
     eudDomainPassword: adminPassword
     eudDomainUsername: adminUsername
