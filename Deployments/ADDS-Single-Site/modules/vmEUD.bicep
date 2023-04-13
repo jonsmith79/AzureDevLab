@@ -179,18 +179,18 @@ resource eudVM 'Microsoft.Compute/virtualMachines@2022-11-01'= {
         enableAutomaticUpdates: true
         timeZone: eudTimezone
         additionalUnattendContent: [
-          /*{
+          {
             passName: 'OobeSystem'
             componentName: 'Microsoft-Windows-Shell-Setup'
             settingName: 'FirstLogonCommands'
             content: '<FirstLogonCommands><SynchronousCommand><CommandLine>cmd /c "copy C:\\AzureData\\CustomData.bin C:\\Config.ps1"</CommandLine><Description>copy</Description><Order>1</Order></SynchronousCommand><SynchronousCommand><CommandLine>%windir%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -file C:\\Config.ps1</CommandLine><Description>script</Description><Order>2</Order></SynchronousCommand></FirstLogonCommands>'
-          }*/
-          {
+          }
+          /*{
             passName: 'OobeSystem'
             componentName: 'Microsoft-Windows-Shell-Setup'
             settingName: 'AutoLogon'
             content: '[<AutoLogon><Password><Value>${eudAdminPassword}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${eudAdminUsername}</Username></AutoLogon>)]'
-          }
+          }*/
         ]
       }
     }
