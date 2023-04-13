@@ -87,10 +87,10 @@ param eud1OSOffer string
 
 @description('End User Device (EUD) 1 Operating System (OS) SKU')
 param eud1OSSku string
-
+/*
 @description('End User Device (EUD) Timezone')
 param eudTimezone string
-
+*/
 
 /*-------------------------------------------------------------------------------------------
   Variables section
@@ -558,7 +558,7 @@ module vmEUD1 'modules/vmEUD.bicep' = {
     eudAutoShutdownEnabled: AutoShutdownEnabled
     eudAutoShutdownTime: AutoShutdownTime
     eudAutoShutdownEmail: AutoShutdownEmail
-    eudTZ: eudTimezone
+    //eudTZ: eudTimezone
     //securityType:
     //maaEndpoint: ''
   }

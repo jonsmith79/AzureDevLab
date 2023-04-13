@@ -68,14 +68,14 @@ param eudAutoShutdownTime string
 
 @description('End User Device (EUD) Auto Shutdown Email')
 param eudAutoShutdownEmail string
-
+/*
 @description('End USer Device (EUD) Timezone')
 @allowed([
   'Europe/London'
   'US/Pacific'
 ])
 param eudTZ string = 'Europe/London'
-
+*/
 @description('Security Type of the Virtual Machine.')
 @allowed([
   'Standard'
@@ -172,7 +172,6 @@ resource eudVM 'Microsoft.Compute/virtualMachines@2022-11-01'= {
       computerName: eudName
       adminUsername: eudAdminUsername
       adminPassword: eudAdminPassword
-      customData: '#cloud-config\ntimezone: ${eudTZ}'
       windowsConfiguration: {
         provisionVMAgent: true
         enableAutomaticUpdates: true
