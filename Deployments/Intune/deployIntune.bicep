@@ -17,17 +17,17 @@ param artifactsLocation string
 @description('artifacts SAS token')
 param artifactsSasToken string*/
 
-@description('Azure AD group prefix')
-param azGroupPrefix string
+// @description('Azure AD group prefix')
+// param azGroupPrefix string
 
-@description('Azure AD Break Glass group name')
-param azBreakGlassGroupName string
+// @description('Azure AD Break Glass group name')
+// param azBreakGlassGroupName string
 
 /*-------------------------------------------------------------------------------------------
   Variables section
 -------------------------------------------------------------------------------------------*/
 // Break Glass variables
-var azBreakGlassGroup = '${azGroupPrefix}-${azBreakGlassGroupName}'
+// var azBreakGlassGroup = '${azGroupPrefix}-${azBreakGlassGroupName}'
 
 /*-------------------------------------------------------------------------------------------
   Resources section
