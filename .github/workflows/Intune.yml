@@ -16,7 +16,7 @@ jobs:
       artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
       artifactsLocationSasToken: ""
       azGroupPrefix: "SG"
-      azBreakGlassGroupName: "CA-BreakGlass"
+      azBreakGlassGroupName: "SG-CA-BreakGlass"
 
     steps:
     # Checkout code
@@ -32,7 +32,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         azcliversion: 2.44.1
-        inlineScript: az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "Break Glass Group for Azure Conditional Access Policies"
+        inlineScript: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "Break Glass Group for Azure Conditional Access Policies"
 
    
     # Create resource group with Azure CLI
