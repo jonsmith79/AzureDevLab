@@ -32,17 +32,7 @@ var azBreakGlassGroup = '${azGroupPrefix}-${azBreakGlassGroupName}'
 /*-------------------------------------------------------------------------------------------
   Resources section
 -------------------------------------------------------------------------------------------*/
-resource BreakGlassGroup 'Microsoft.Graph/groups@beta' = {
-  name: 'create_${azBreakGlassGroup}'
-  properties: {
-    description: 'Break Glass Group for Conditional Access Policy Bypass'
-    displayName: azBreakGlassGroup
-    groupTypes: []
-    mailEnabled: false
-    mailNickname: azBreakGlassGroup
-    securityEnabled: true
-  }
-}
+
 /*-------------------------------------------------------------------------------------------
   Outputs section
 -------------------------------------------------------------------------------------------*/

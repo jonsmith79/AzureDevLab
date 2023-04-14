@@ -1,5 +1,9 @@
 # File: .github/workflows/Intune.yml
-on: [push]
+on:
+  push:
+    branches:
+      - main
+
 name: Intune
 jobs:
   build-and-deploy:
@@ -20,33 +24,38 @@ jobs:
       uses: actions/checkout@main
 
     # Log into Azure
-    - name: Azure Login
+    - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Create Azure Break Glass Group
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.44.1
+        inlineScript: az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "Break Glass Group for Azure Conditional Access Policies" --security-enabled true
 
+   
     # Create resource group with Azure CLI
     #- name: Azure CLI script
     #  uses: azure/CLI@v1
     #  with:
-    #    scope: subscription
     #    azcliversion: 2.44.1
     #    inlineScript: az group create --name "${{env.namingConvention}}-RG2" --location ${{env.Location}}
 
-    # Deploy Bicep file
-    - name: Intune - GitHub Action Deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: subscription
-        subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
-        region: ${{env.location}}
-        template: ./Deployments/${{env.DeploymentDir}}/deployIntune.bicep
-        parameters:
-          adminUsername="${{env.adminUsername}}"
-          adminPassword="${{env.adminPassword}}"
-          artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
-          artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
-          azGroupPrefix="${{env.azGroupPrefix}}"
-          azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
+    # # Deploy Bicep file
+    # - name: Intune - GitHub Action Deployment
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     scope: subscription
+    #     subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
+    #     region: ${{env.location}}
+    #     template: ./Deployments/${{env.DeploymentDir}}/deployIntune.bicep
+    #     parameters:
+    #       adminUsername="${{env.adminUsername}}"
+    #       adminPassword="${{env.adminPassword}}"
+    #       artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
+    #       artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
+    #       azGroupPrefix="${{env.azGroupPrefix}}"
+    #       azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
 
   
