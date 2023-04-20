@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  Windows-latest:
-    runs-on: windows-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
     env:
       location: "uksouth"
       DeploymentDir: "Intune"
@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@main
 
     # Log into Azure
-    - name: OIDC Login to Azure Public Cloud
+    - name: 'Az CLI Login'
       uses: azure/login@v1
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -39,12 +39,15 @@ jobs:
 
     
     # Create Azure AD Break Glass Group with Azure CLI
-    - name: Create Azure Break Glass Group
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.44.1
-        inlineScript: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
+    # - name: Create Azure Break Glass Group
+    #   uses: azure/CLI@v1
+    #   with:
+    #     azcliversion: 2.44.1
+    #     inlineScript: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
 
+    # Create Azure AD Break Glass Group with Azure CLI
+    - name: 'Create Azure AD Break Glass Group'
+      run: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
 
 
    
@@ -72,10 +75,10 @@ jobs:
     #       azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
 
     # Az logout and security hardening
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
-          az logout
-          az cache purge
-          az account clear  
+    # - name: Azure CLI script
+    #   uses: azure/CLI@v1
+    #   with:
+    #     inlineScript: |
+    #       az logout
+    #       az cache purge
+    #       az account clear  
