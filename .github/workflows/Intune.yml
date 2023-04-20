@@ -47,7 +47,13 @@ jobs:
 
     # Create Azure AD Break Glass Group with Azure CLI
     - name: 'Create Azure AD Break Glass Group'
-      run: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
+      run: |
+        $azBGGroupExists = az ad group list --display-name "${{env.azBreakGlassGroupName}}" | ConvertFrom-Json
+        if (!$azBGGroupExists) {
+          az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
+        } else {
+          Write-Host "Azure AD Break Glass Group already exists"
+        }
 
     # # Deploy Bicep file
     # - name: Intune - GitHub Action Deployment
@@ -66,10 +72,8 @@ jobs:
     #       azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
 
     # Az logout and security hardening
-    # - name: Azure CLI script
-    #   uses: azure/CLI@v1
-    #   with:
-    #     inlineScript: |
-    #       az logout
-    #       az cache purge
-    #       az account clear  
+    - name: 'Az logout and security hardening'
+      run: |
+        az logout
+        az cache purge
+        az account clear  
