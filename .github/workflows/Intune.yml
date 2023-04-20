@@ -25,6 +25,7 @@ jobs:
       azBreakGlassAccountDisplayName: "Break Glass"
       azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
       azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
+      azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
 
     steps:
     # Checkout code
@@ -53,7 +54,7 @@ jobs:
       run: |
         azBGGroupExists=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv)
         if [ -z "$azBGGroupExists" ]; then
-          azBGGroup=$(az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}")
+          az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
         else
           echo "Group already exists"
         fi
@@ -63,7 +64,7 @@ jobs:
       run: |
         azBGUserExists=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
         if [ -z "$azBGUserExists" ]; then
-          azBGUser=$(az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false)
+          az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false
         else
           echo "User already exists"
         fi
@@ -75,10 +76,24 @@ jobs:
         azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
         azBGAlreadyMember=$(az ad group member check --group ${azBGGroupId} --member-id ${azBGUserId} --query "value" --output tsv)
         if [ "$azBGAlreadyMember" = "false" ]; then
-          azBGAddMember=$(az ad group member add --group ${azBGGroupId} --member-id ${azBGUserId})
+          az ad group member add --group ${azBGGroupId} --member-id ${azBGUserId}
         else
-          echo "User already a member of group"
+          echo "User already a member of the group"
         fi
+
+    # Add Break Glass Account to Azure AD Built-in role 'Global Admin' with Azure CLI
+    - name: 'Add Break Glass Account to Break Glass Group'
+      run: |
+        azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
+        azBGAlreadyGA=$(az rest --method GET --uri 'https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments' --body '{"principalId": "${azBGUserId}", "roleDefinitionId": "${{env.azGARoleDefinitionId}}", "directoryScopeId": "/"}')
+        if [ "$azBGAlreadyGA" = "false" ]; then
+          az rest --method POST --uri 'https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments' --body '{"principalId": "${azBGUserId}", "roleDefinitionId": "${{env.azGARoleDefinitionId}}", "directoryScopeId": "/"}'
+        else
+          echo "User already a member of role"
+        fi
+
+        
+
         
 
     
