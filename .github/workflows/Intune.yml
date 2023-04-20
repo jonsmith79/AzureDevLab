@@ -97,14 +97,8 @@ jobs:
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
         az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
         
-        
 
         
-
-        
-
-    
-
     # # Deploy Bicep file
     # - name: Intune - GitHub Action Deployment
     #   uses: azure/arm-deploy@v1
