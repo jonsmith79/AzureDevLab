@@ -51,8 +51,8 @@ jobs:
     # Create Azure AD Break Glass Group with Azure CLI
     - name: 'Create Azure AD Break Glass Group'
       run: |
-        azBGGroup = $(az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}")
-        azBGUser = $(az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false)
+        azBGGroup=$(az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}")
+        azBGUser=$(az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false)
         az ad group member add --group $azBGGroup --member-id $azBGUser
 
     # # Create Azure AD Break Glass Account with Azure CLI
