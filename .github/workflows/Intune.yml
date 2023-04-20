@@ -95,7 +95,7 @@ jobs:
           '{principalId: $principalId, roleDefinitionId: $roleDefinitionId, directoryScopeId: $directoryScopeId}'
         )
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
-        echo "az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body $BODY"
+        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
         
         
 
