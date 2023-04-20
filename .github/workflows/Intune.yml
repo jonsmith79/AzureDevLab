@@ -1,13 +1,17 @@
 # File: .github/workflows/Intune.yml
-on:
+on: 
   push:
-    branches:
-      - main
+    branches: [ main ]
 
-name: Intune
+name: IntuneConfiguration
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  Windows-latest:
+    runs-on: windows-latest
     env:
       location: "uksouth"
       DeploymentDir: "Intune"
@@ -25,10 +29,14 @@ jobs:
       uses: actions/checkout@main
 
     # Log into Azure
-    - name: Login to Azure
+    - name: OIDC Login to Azure Public Cloud
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        #subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        allow-no-subscriptions: true
+
     
     # Create Azure AD Break Glass Group with Azure CLI
     - name: Create Azure Break Glass Group
@@ -36,6 +44,8 @@ jobs:
       with:
         azcliversion: 2.44.1
         inlineScript: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
+
+
 
    
     # Create resource group with Azure CLI
@@ -61,4 +71,11 @@ jobs:
     #       azGroupPrefix="${{env.azGroupPrefix}}"
     #       azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
 
-  
+    # Az logout and security hardening
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az logout
+          az cache purge
+          az account clear  
