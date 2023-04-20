@@ -56,12 +56,21 @@ jobs:
     # Create Azure AD Break Glass Account with Azure CLI
     - name: 'Create Azure AD Break Glass Account'
       run: |
-        azBGUser=$(az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false)
+        azBGUserExists=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
+        if [ -z "$azBGUserExists" ]; then
+          azBGUser=$(az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false)
+        else
+          echo "User already exists"
+        fi
+#        azBGUser=$(az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false)
 
     # Add Break Glass Account to Break Glass Group with Azure CLI
     - name: 'Add Break Glass Account to Break Glass Group'
       run: |
-        az ad group member add --group (az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv) --member-id (az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
+        azBGGroupId=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv)
+        azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
+        az ad group member add --group ${azBGGroupId} --member-id ${azBGUserId}
+#        az ad group member add --group (az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv) --member-id (az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
         
 
     
