@@ -87,8 +87,8 @@ jobs:
         azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].objectId" --output tsv)
         echo ${azBGUserId}
         URI=$(echo "https://graph.microsoft.com/beta/directoryRoles")
-        user_role="Global Administrator"
-        roleDefinitionId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg displayName "$user_role" '.value[] | select(.displayName | contains($user_role))' | jq '.id' -r)
+        user_role=$("Global Administrator")
+        roleDefinitionId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg displayName "$user_role" '.value[] | select(.displayName | contains($displayName))' | jq '.id' -r)
         BODY=$( jq -n \
           --arg principalId "$azBGUserId" \
           --arg roleDefinitionId "$roleDefinitionId" \
