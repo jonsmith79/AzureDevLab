@@ -17,7 +17,7 @@ Parameters that support changes
 | azBreakGlassGroupName | A name for the Break Glass group to that will be used for Conditional Access exclusions (e.g. "CA-BreakGlass"). |
 | azBreakGlassGroupDescription | A brief description for the group (e.g. "Break Glass Group for Azure Conditional Access Policies"). |
 | azBreakGlassAccountDisplayName | The display name for the Break Glass account (e.g. "Break Glass"). |
-| azBreakGlassAccountUPN | The UPN for the Break Glass Acount, note the domain is **not** dynamic (e.g. "Break.Glass@e2d.co.uk"). |
+| azBreakGlassAccountUPN | The UPN for the Break Glass Acount, note the domain is **not** dynamic (e.g. "Break.Glass@domain.com"). |
 | azBreakGlassAccountPwd | The password for the Break Glass admin, ideally pulled from secrets (e.g. ${{ secrets.ADMIN_PASSWORD }}). |
 
 ToDo list:
