@@ -86,7 +86,7 @@ jobs:
       run: |
         azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
         echo "UserID: $azBGUserId"
-        URI=$("https://graph.microsoft.com/beta/directoryRoles")
+        URI=$(echo "https://graph.microsoft.com/beta/directoryRoles")
         echo "URI: $URI"
         user_role=$("Global Administrator")
         echo "Role: $user_role"
