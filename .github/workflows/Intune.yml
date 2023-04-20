@@ -85,22 +85,17 @@ jobs:
     - name: 'Add Break Glass Account to Azure AD Built-in role Global Admin role'
       run: |
         azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
-        echo "UserID: $azBGUserId"
         URI=$(echo "https://graph.microsoft.com/beta/directoryRoles")
-        echo "URI: $URI"
         user_role=$(echo "Global Administrator")
-        echo "Role: $user_role"
         roleDefinitionId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg displayName "$user_role" '.value[] | select(.displayName | contains($displayName))' | jq '.id' -r)
-        echo "Role Definition ID: $roleDefinitionId"
         BODY=$( jq -n \
           --arg principalId "$azBGUserId" \
           --arg roleDefinitionId "$roleDefinitionId" \
           --arg directoryScopeId "/" \
           '{principalId: $principalId, roleDefinitionId: $roleDefinitionId, directoryScopeId: $directoryScopeId}'
         )
-        echo $BODY
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
-        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
+        echo 'az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"'
         
         
 
