@@ -100,7 +100,7 @@ jobs:
         )
         echo $BODY
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
-        az rest --method POST --uri $uriRoleAssignment --body "$BODY" --header Content-Type=application/json
+        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
         
         
 
