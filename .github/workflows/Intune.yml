@@ -61,7 +61,7 @@ jobs:
     # Add Break Glass Account to Break Glass Group with Azure CLI
     - name: 'Add Break Glass Account to Break Glass Group'
       run: |
-        az ad group member add --group $(azBGGroup.id) --member-id $(azBGUser.id) 
+        az ad group member add --group $(azBGGroup) --member-id $(azBGUser) 
 
     
 
