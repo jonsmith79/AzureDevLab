@@ -54,7 +54,7 @@ jobs:
 
     # Create Azure AD Break Glass Account with Azure CLI
     - name: 'Create Azure AD Break Glass Account'
-      run: az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-login false
+      run: az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false
 
     
 

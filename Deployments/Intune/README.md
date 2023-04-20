@@ -7,7 +7,7 @@
 
 This template deploys:
 
-- ***Nothing yet!***
+- A Break Glass group (e.g. SG-CA-BreakGlass)
 
 Parameters that support changes
 | Parameter | Description |
@@ -15,8 +15,8 @@ Parameters that support changes
 
 ToDo list:
 
-- [ ] Manually setup Azure login with OpenID Connect (OIDC) as per [https://github.com/marketplace/actions/azure-login](https://github.com/marketplace/actions/azure-login) and [https://learn.microsoft.com/en-us/azure/active-directory/workload-identities/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#github-actions](https://learn.microsoft.com/en-us/azure/active-directory/workload-identities/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#github-actions)
-- [ ] Create a Break Glass group (SG-CA-BreakGlass)
+- [x] Manually setup Azure login with OpenID Connect (OIDC) as per [https://github.com/marketplace/actions/azure-login](https://github.com/marketplace/actions/azure-login) and [https://learn.microsoft.com/en-us/azure/active-directory/workload-identities/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#github-actions](https://learn.microsoft.com/en-us/azure/active-directory/workload-identities/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#github-actions)
+- [x] Create a Break Glass group (SG-CA-BreakGlass)
 - [ ] Create a Break Glass account (Break Glass / break.glass@domain.com)
   - [ ] Assign the Break Glass account to the Azure AD Global Admin built-in role
   - [ ] Add Break Glass account into the Break Glass group
