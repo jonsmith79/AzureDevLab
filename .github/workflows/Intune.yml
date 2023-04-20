@@ -84,14 +84,21 @@ jobs:
     # Add Break Glass Account to Azure AD Built-in role 'Global Admin' role with Azure CLI
     - name: 'Add Break Glass Account to Azure AD Built-in role Global Admin role'
       run: |
-        azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
+        azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].objectId" --output tsv)
         echo ${azBGUserId}
-        azBGAlreadyGA=$(az rest --method GET --uri "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments?$filter=principalId eq $[azBGUserId] and roleDefinitionId eq ${{env.azGARoleDefinitionId}}")
-        if [ "$azBGAlreadyGA" = "false" ]; then
-          az rest --method POST --uri 'https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments' --body '{"principalId": "$[azBGUserId]", "roleDefinitionId": "${{env.azGARoleDefinitionId}}", "directoryScopeId": "/"}'
-        else
-          echo "User already a member of role"
-        fi
+        URI=$(echo "https://graph.microsoft.com/beta/directoryRoles")
+        user_role="Global Administrator"
+        roleDefinitionId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg displayName "${user_role}" '.value[] | select(.displayName | contains($displayName))' | jq '.id' -r)
+        BODY=$( jq -n \
+          --arg principalId "$azBGUserId" \
+          --arg roleDefinitionId "$roleDefinitionId" \
+          --arg directoryScopeId "/" \
+          '{principalId: $principalId, roleDefinitionId: $roleDefinitionId, directoryScopeId: $directoryScopeId}'
+        )
+        echo $BODY
+        uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
+        az rest --method POST --uri $uriRoleAssignment --body "$BODY" --header Content-Type=application/json
+        
         
 
         
