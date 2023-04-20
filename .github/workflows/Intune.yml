@@ -88,7 +88,7 @@ jobs:
         echo "UserID: $azBGUserId"
         URI=$(echo "https://graph.microsoft.com/beta/directoryRoles")
         echo "URI: $URI"
-        user_role=$("Global Administrator")
+        user_role=$(echo "Global Administrator")
         echo "Role: $user_role"
         roleDefinitionId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg displayName "$user_role" '.value[] | select(.displayName | contains($displayName))' | jq '.id' -r)
         echo "Role Definition ID: $roleDefinitionId"
