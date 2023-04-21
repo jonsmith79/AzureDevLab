@@ -98,8 +98,9 @@ jobs:
         az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
         
 
-        
 
+
+        
 
 
 
