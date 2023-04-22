@@ -26,7 +26,6 @@ jobs:
       azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
       azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
-      #azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
 
     steps:
     # Checkout code
@@ -42,16 +41,8 @@ jobs:
         #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
         allow-no-subscriptions: true
 
-    
     # Create Azure AD Break Glass Group with Azure CLI
-    # - name: Create Azure Break Glass Group
-    #   uses: azure/CLI@v1
-    #   with:
-    #     azcliversion: 2.44.1
-    #     inlineScript: az ad group create --display-name "${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
-
-    # Create Azure AD Break Glass Group with Azure CLI
-    - name: 'Create Azure AD Break Glass Group'
+    - name: 'Break Glass Group'
       run: |
         azBGGroupExists=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv)
         if [ -z "$azBGGroupExists" ]; then
@@ -61,7 +52,7 @@ jobs:
         fi
 
     # Create Azure AD Break Glass Account with Azure CLI
-    - name: 'Create Azure AD Break Glass Account'
+    - name: 'Break Glass Account'
       run: |
         azBGUserExists=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
         if [ -z "$azBGUserExists" ]; then
@@ -71,7 +62,7 @@ jobs:
         fi
 
     # Add Break Glass Account to Break Glass Group with Azure CLI
-    - name: 'Add Break Glass Account to Break Glass Group'
+    - name: 'Break Glass Account into Break Glass Group'
       run: |
         azBGGroupId=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv)
         azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
@@ -83,14 +74,12 @@ jobs:
         fi
 
     # Add Break Glass Account to Azure AD Built-in role 'Global Admin' role with Azure CLI
-    - name: 'Add Break Glass Account to Azure AD Built-in role Global Admin role'
+    - name: 'Break Glass Account assign Global Admin role'
       run: |
         azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
-        echo "UserID: $azBGUserId"
         URI=$(echo "https://graph.microsoft.com/beta/directoryRoles")
         user_role=$(echo "Global Administrator")
         roleDefinitionId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg displayName "$user_role" '.value[] | select(.displayName | contains($displayName))' | jq '.id' -r)
-        echo "RoleDefID: $roleDefinitionId"
         BODY=$( jq -n \
           --arg principalId "$azBGUserId" \
           --arg roleDefinitionId "$roleDefinitionId" \
@@ -99,39 +88,16 @@ jobs:
         )
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
         azBGAlreadyGA=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
-        echo "azBGAlreadyGA: $azBGAlreadyGA"
-        echo "RUN: az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r"
         if [ -z "$azBGAlreadyGA" ]; then
           az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
         else
           echo "User already a Global Admin"
         fi
   
+
+
+
         
-
-
-
-
-
-
-
-
-    # # Deploy Bicep file
-    # - name: Intune - GitHub Action Deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: subscription
-    #     subscriptionId: ${{ secrets.AZURE_ADL_SUBID }}
-    #     region: ${{env.location}}
-    #     template: ./Deployments/${{env.DeploymentDir}}/deployIntune.bicep
-    #     parameters:
-    #       adminUsername="${{env.adminUsername}}"
-    #       adminPassword="${{env.adminPassword}}"
-    #       artifactsLocation="${{env.artifactsLocation}}/${{env.DeploymentDir}}/"
-    #       artifactsLocationSasToken="${{env.artifactsLocationSasToken}}"
-    #       azGroupPrefix="${{env.azGroupPrefix}}"
-    #       azBreakGlassGroupName="${{env.azBreakGlassGroupName}}"
-
     # Az logout and security hardening
     - name: 'Az logout and security hardening'
       run: |
