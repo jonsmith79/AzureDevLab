@@ -11,6 +11,7 @@ This template deploys:
 - A Break Glass account (e.g. Break Glass / break.glass@domain.com)
   - Adds the Break Glass account into the Break Glass group
   - Assign the Break Glass account to the Global Admin role
+- A Secure Admins froup (e.g. SG-SecureAdmins-All)
 
 Parameters that support changes
 | Parameter | Description |
@@ -30,7 +31,7 @@ ToDo list:
 - [x] Create a Break Glass account (Break Glass / break.glass@domain.com)
   - [x] Assign the Break Glass account to the Azure AD Global Admin built-in role
   - [x] Add Break Glass account into the Break Glass group
-- [ ] Create a group for highly secured administrative users (SG-Admins-All)
+- [x] Create a group for highly secured administrative users (SG-Admins-All)
   - [ ] Add default Azure AD admin account to he highly secured administrative users group
 - [ ] Create an M365 GBL group (SG-M365-E5) [?Dynamic/Static?]
   - [ ] Assign the M365 licenses to the GBL group
