@@ -26,7 +26,7 @@ jobs:
       azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
       azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
-      #azGARoleDefinitionId: "74ef975b-6605-40af-a5d2-b9539d836353"
+      #azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
 
     steps:
     # Checkout code
@@ -100,7 +100,7 @@ jobs:
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
         azBGAlreadyGA=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "$roleDefinitionId" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
         echo "azBGAlreadyGA: $azBGAlreadyGA"
-        echo "RUN: az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "$roleDefinitionId" '.value[] | select(.principalId | contains("$principalId")) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r"
+        echo "RUN: az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r"
         if [ -z "$azBGAlreadyGA" ]; then
           az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
         else
