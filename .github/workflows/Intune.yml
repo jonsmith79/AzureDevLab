@@ -98,7 +98,7 @@ jobs:
           '{principalId: $principalId, roleDefinitionId: $roleDefinitionId, directoryScopeId: $directoryScopeId}'
         )
         uriRoleAssignment=$(echo "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments")
-        azBGAlreadyGA=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "$roleDefinitionId" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
+        azBGAlreadyGA=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
         echo "azBGAlreadyGA: $azBGAlreadyGA"
         echo "RUN: az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg principalId "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r"
         if [ -z "$azBGAlreadyGA" ]; then
