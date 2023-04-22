@@ -11,18 +11,18 @@ This template deploys:
 - A Break Glass account (e.g. Break Glass / break.glass@domain.com)
   - Adds the Break Glass account into the Break Glass group
   - Assign the Break Glass account to the Global Admin role
-- A Secure Admins froup (e.g. SG-SecureAdmins-All)
+- A Secure Admins group (e.g. SG-SecureAdmins-All)
 
 Parameters that support changes
 | Parameter | Description |
 |-----------|-------------|
-| azGroupPrefix | A group prefix for any group, (e.g. "SG" for 'SG-GroupName'). |
-| azBreakGlassGroupName | A name for the Break Glass group to that will be used for Conditional Access exclusions (e.g. "CA-BreakGlass"). |
-| azBreakGlassGroupDescription | A brief description for the group (e.g. "Break Glass Group for Azure Conditional Access Policies"). |
-| azBreakGlassAccountDisplayName | The display name for the Break Glass account (e.g. "Break Glass"). |
-| azBreakGlassAccountUPN | The UPN for the Break Glass Acount, note the domain is **not** dynamic (e.g. "Break.Glass@domain.com"). |
-| azBreakGlassAccountPwd | The password for the Break Glass admin, ideally pulled from secrets (e.g. ${{ secrets.ADMIN_PASSWORD }}). |
-| azGARoleDefinitionId | Role definition ID to assign to Break Glass (e.g. Global Admin = "62e90394-69f5-4237-9190-012177145e10"). |
+| `azGroupPrefix` | A group prefix for any group, (e.g. "SG" for 'SG-GroupName'). |
+| `azBreakGlassGroupName` | A name for the Break Glass group to that will be used for Conditional Access exclusions (e.g. "CA-BreakGlass"). |
+| `azBreakGlassGroupDescription` | A brief description for the group (e.g. "Break Glass Group for Azure Conditional Access Policies"). |
+| `azBreakGlassAccountDisplayName` | The display name for the Break Glass account (e.g. "Break Glass"). |
+| `azBreakGlassAccountUPN` | The UPN for the Break Glass Acount, note the domain is **not** dynamic (e.g. "Break.Glass@domain.com"). |
+| `azBreakGlassAccountPwd` | The password for the Break Glass admin, ideally pulled from secrets (e.g. ${{ secrets.ADMIN_PASSWORD }}). |
+| `azGARoleDefinitionId` | Role definition ID to assign to Break Glass (e.g. Global Admin = "62e90394-69f5-4237-9190-012177145e10"). |
 
 ToDo list:
 
