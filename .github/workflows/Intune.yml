@@ -28,11 +28,12 @@ jobs:
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
       azSecureAdminsGroupName: "CA-SecureAdmins-All"
       azSecureAdminsGroupDescription: "Highly Secured Admins Group"
-      azGroupsArray: |
+      azGroupsArray: 
         - name: "CA-Group1"
           description: "Group 1"
         - name: "CA-Group2"
           description: "Group 2"
+        
 
     steps:
     # Checkout code
