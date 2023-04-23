@@ -23,6 +23,8 @@ Parameters that support changes
 | `azBreakGlassAccountUPN` | The UPN for the Break Glass Acount, note the domain is **not** dynamic (e.g. "Break.Glass@domain.com"). |
 | `azBreakGlassAccountPwd` | The password for the Break Glass admin, ideally pulled from secrets (e.g. ${{ secrets.ADMIN_PASSWORD }}). |
 | `azGARoleDefinitionId` | Role definition ID to assign to Break Glass (e.g. Global Admin = "62e90394-69f5-4237-9190-012177145e10"). |
+| `azSecureAdminsGroupName` | A name for the highly privilaged administrators of the tenant (e.g. "CA-SecureAdmins-All"). |
+| `azSecureAdminsGroupDescription` | A description for the highly privilaged administrators group (e.g. "Highly Secured Admins Group"). |
 
 ToDo list:
 
