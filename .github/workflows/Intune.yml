@@ -26,8 +26,13 @@ jobs:
       azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
       azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
-      azSecureAdminsGroupName: "SecureAdmins-All"
+      azSecureAdminsGroupName: "CA-SecureAdmins-All"
       azSecureAdminsGroupDescription: "Highly Secured Admins Group"
+      azGroupsArray: |
+        - name: "CA-Group1"
+          description: "Group 1"
+        - name: "CA-Group2"
+          description: "Group 2"
 
     steps:
     # Checkout code
@@ -106,7 +111,18 @@ jobs:
           echo "Group already exists"
         fi
 
-
+  
+    # Loop through Groups array with Azure CLI and create where they don't already exist.
+    - name: 'All Groups'
+      run: |
+        for i in ${{env.azGroupsArray}}; do
+          azGroup${i}Exists=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azGroupsArray}}[${i}].name" --query "[].id" --output tsv)
+          if [ -z "$azGroupExists" ]; then
+            az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azGroupsArray}}[${i}].name" --mail-nickname "${{env.azGroupPrefix}}-${{env.azGroupsArray}}[${i}].name" --description "${{env.azGroupPrefix}}-${{env.azGroupsArray}}[${i}].description"
+          else
+            echo "Group${i} already exists"
+          fi
+        done
 
 
     # Az logout and security hardening
