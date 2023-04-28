@@ -28,7 +28,7 @@ jobs:
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
       azSecureAdminsGroupName: "CA-SecureAdmins-All"
       azSecureAdminsGroupDescription: "Highly Secured Admins Group"
-      azSecureAdminUPN: "admin@4gl47p.onmicrosoft.com"
+      azSecureAdminUPN: "admin@MngEnvMCAP899878.onmicrosoft.com"
       azGBLGroupName: "GBL-M365-E5"
       azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"       
 
