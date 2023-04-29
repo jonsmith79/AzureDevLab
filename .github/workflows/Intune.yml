@@ -139,7 +139,7 @@ jobs:
         URI=$(echo "https://graph.microsoft.com/beta/subscribedSkus")
         licenseSkuId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg skuPartNumber "${{env.azGBLSku}}" '.value[] | select(.skuPartNumber | contains($skuPartNumber))' | jq '.skuId' -r)
         BODY=$( jq -n \
-          --arg skuId "$licenseSkuId" \
+          --arg licenseSkuId "$licenseSkuId" \
           --arg disabledPlans "0feaeb32-d00e-4d66-bd5a-43b5b83db82c" \
           '{skuId: $licenseSkuId, disabledPlans: ["0feaeb32-d00e-4d66-bd5a-43b5b83db82c"]}'
         )
