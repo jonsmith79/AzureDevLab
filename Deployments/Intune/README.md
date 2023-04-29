@@ -20,14 +20,14 @@ Parameters that support changes
 |-----------|-------------|
 | `azGroupPrefix` | A group prefix for any group, (e.g. "*SG*" for '*SG-GroupName*'). |
 | `azBreakGlassGroupName` | A name for the Break Glass group to that will be used for Conditional Access exclusions (e.g. "*CA-BreakGlass*"). |
-| `azBreakGlassGroupDescription` | A brief description for the group (e.g. "Break Glass Group for Azure Conditional Access Policies"). |
+| `azBreakGlassGroupDescription` | A brief description for the group (e.g. "*Break Glass Group for Azure Conditional Access Policies*"). |
 | `azBreakGlassAccountDisplayName` | The display name for the Break Glass account (e.g. "*Break Glass*"). |
 | `azBreakGlassAccountUPN` | The UPN for the Break Glass Acount, note the domain is **not** dynamic (e.g. "*Break.Glass@domain.com*"). |
 | `azBreakGlassAccountPwd` | The password for the Break Glass admin, ideally pulled from secrets (e.g. *${{secrets.ADMIN_PASSWORD}}*). |
 | `azGARoleDefinitionId` | Role definition ID to assign to Break Glass (e.g. Global Admin = "*62e90394-69f5-4237-9190-012177145e10*"). |
 | `azSecureAdminsGroupName` | A name for the highly privilaged administrators of the tenant (e.g. "*CA-SecureAdmins-All*"). |
 | `azSecureAdminsGroupDescription` | A description for the highly privilaged administrators group (e.g. "*Highly Secured Admins Group*"). |
-| `azSecureAdminUPN` | UPN of the default global admin account (e.g. "*admin@domain.onmicrosoft.com*"). |
+| `azGAUPN` | UPN of the default global admin account (e.g. "*admin@domain.onmicrosoft.com*"). |
 | `azGBLGroupName` | A name for the GBL group that will assign licenses to users (e.g. "*GBL-M365-E5*"). |
 | `azGBLGroupDescription` | A description for the GBL group (e.g. "*Group Based License to assign the M365 E5 licenses*"). |
 

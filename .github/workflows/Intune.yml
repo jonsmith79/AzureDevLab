@@ -28,9 +28,10 @@ jobs:
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
       azSecureAdminsGroupName: "CA-SecureAdmins-All"
       azSecureAdminsGroupDescription: "Highly Secured Admins Group"
-      azSecureAdminUPN: "admin@MngEnvMCAP899878.onmicrosoft.com"
+      azGAUPN: "admin@MngEnvMCAP899878.onmicrosoft.com"
       azGBLGroupName: "GBL-M365-E5"
-      azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"       
+      azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"
+      azGBLSku: "SPE_E5"     
 
     steps:
     # Checkout code
@@ -112,7 +113,7 @@ jobs:
     # Add Global Admin account to the Azure AD highly secure Admin Grroup above with Azure CLI
     - name: 'Add Global Admin to Secured Admins Group'
       run: |
-        azSAUserId=$(az ad user list --upn "${{env.azSecureAdminUPN}}" --query "[].id" --output tsv)
+        azSAUserId=$(az ad user list --upn "${{env.azGAUPN}}" --query "[].id" --output tsv)
         azSAGroupId=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azSecureAdminsGroupName}}" --query "[].id" --output tsv)
         azSAAlreadyMember=$(az ad group member check --group ${azSAGroupId} --member-id ${azSAUserId} --query "value" --output tsv)
         if [ "$azSAAlreadyMember" = "false" ]; then
@@ -131,6 +132,25 @@ jobs:
           echo "Group already exists"
         fi
 
+    # Assign licenses to GBL with Azure CLI
+    - name: 'Assign GBL Licenses'
+      run: |
+        azGBLGroupId=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azGBLGroupName}}" --query "[].id" --output tsv)
+        URI=$(echo "https://graph.microsoft.com/beta/subscribedSkus")
+        licenseSkuId=$(az rest --method GET --uri $URI --header Content-Type=application/json | jq --arg skuPartNumber "${{env.azGBLSku}}" '.value[] | select(.skuPartNumber | contains($skuPartNumber))' | jq '.skuId' -r)
+        BODY=$( jq -n \
+          --arg skuId "$licenseSkuId" \
+          --arg disabledPlans "0feaeb32-d00e-4d66-bd5a-43b5b83db82c" \
+          '{skuId: $licenseSkuId, disabledPlans: ["0feaeb32-d00e-4d66-bd5a-43b5b83db82c"]}'
+        )
+        uriLicenseAssignment=$(echo "https://graph.microsoft.com/beta/groups/${azGBLGroupId}/assignLicense")
+        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
+#        azGBLAlreadyAssigned=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg addLicences "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
+#        if [ -z "$azBGAlreadyGA" ]; then
+#          az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
+#        else
+#          echo "User already a Global Admin"
+#        fi
 
 
 
