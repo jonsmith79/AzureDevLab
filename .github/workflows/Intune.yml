@@ -31,7 +31,11 @@ jobs:
       azGAUPN: "admin@MngEnvMCAP899878.onmicrosoft.com"
       azGBLGroupName: "GBL-M365-E5"
       azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"
-      azGBLSku: "SPE_E5"     
+      azGBLSku: "SPE_E5"
+      azArray: |
+        - "GBL-M365-E5"
+        - "GBL-M365-E3"
+        - "GBL-M365-F1"     
 
     steps:
     # Checkout code
@@ -144,7 +148,7 @@ jobs:
           '{skuId: $licenseSkuId, disabledPlans: ["0feaeb32-d00e-4d66-bd5a-43b5b83db82c"]}'
         )
         uriLicenseAssignment=$(echo "https://graph.microsoft.com/beta/groups/${azGBLGroupId}/assignLicense")
-        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
+#        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
 #        azGBLAlreadyAssigned=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg addLicences "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
 #        if [ -z "$azBGAlreadyGA" ]; then
 #          az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
@@ -152,7 +156,10 @@ jobs:
 #          echo "User already a Global Admin"
 #        fi
 
-
+    # Echo Array with Azure CLI
+    - name: 'Echo Array'
+      run: |
+        echo "${{env.azArray}}"
 
 
 
