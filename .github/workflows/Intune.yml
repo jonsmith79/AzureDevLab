@@ -33,9 +33,12 @@ jobs:
       azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"
       azGBLSku: "SPE_E5"
       azArray: |
-        - "GBL-M365-E5"
-        - "GBL-M365-E3"
-        - "GBL-M365-F1"     
+        - "name": "GBL-M365-E5"
+          "desc": "M365 E5 Group"
+        - "name": "GBL-M365-E3"
+          "desc": "M365 E3 Group"
+        - "name": "GBL-M365-F1"
+          "desc": "M365 F1 Group"     
 
     steps:
     # Checkout code
