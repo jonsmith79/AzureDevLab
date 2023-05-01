@@ -162,7 +162,7 @@ jobs:
     # Echo Array with Azure CLI
     - name: 'Echo Array'
       run: |
-        echo "${{env.azArray}}"
+        echo "Group: ${{env.azArray}}"
 
 
 
