@@ -1,0 +1,152 @@
+
+$InternalDomainName = "Hades"
+$InternalTLD1 = "e2d"
+$InternalTLD2 = "it"
+
+$BaseDN = "DC=$($InternalDomainName),DC=$($InternalTLD1),DC=$($InternalTLD2)"
+
+$OUs = @{}
+
+$OUs[1] = @{
+        Name                            = "Accounts"
+        Path                            = "$($BaseDN)"
+        Description                     = "Accounts OU"
+        Ensure                          = 'Present'
+        }
+
+$OUs[2] = @{
+        Name                            = "Servers"
+        Path                            = "$($BaseDN)"
+        Description                     = "Servers OU"
+        Ensure                          = 'Present'
+        }
+
+$OUs[3] = @{
+        Name                            = "Clients"
+        Path                            = "$($BaseDN)"
+        Description                     = "Clients OU"
+        Ensure                          = 'Present'
+        }
+
+$OUs[4] = @{
+    Name                            = "Groups"
+    Path                            = "$($BaseDN)"
+    Description                     = "Groups OU"
+    Ensure                          = 'Present'
+    }
+
+$OUs[5] = @{
+    Name                            = "Users"
+    Path                            = "OU=Accounts,$BaseDN"
+    Description                     = "Users OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]AccountsOU"
+    }
+
+$OUs[6] = @{
+    Name                            = "Admins"
+    Path                            = "OU=Accounts,$BaseDN"
+    Description                     = "Admins OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]AccountsOU"
+    }
+
+$OUs[7] = @{
+    Name                            = "Service"
+    Path                            = "OU=Accounts,$BaseDN"
+    Description                     = "Service OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]AccountsOU"
+    }
+
+$OUs[8] = @{
+    Name                            = "Infra"
+    Path                            = "OU=Servers,$BaseDN"
+    Description                     = "Infrastructure Servers OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ServersOU"
+    }
+
+$OUs[9] = @{
+    Name                            = "Data"
+    Path                            = "OU=Servers,$BaseDN"
+    Description                     = "Data Servers OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ServersOU"
+    }
+
+$OUs[10] = @{
+    Name                            = "Apps"
+    Path                            = "OU=Servers,$BaseDN"
+    Description                     = "Application Servers OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ServersOU"
+    }
+
+$OUs[11] = @{
+    Name                            = "Web"
+    Path                            = "OU=Servers,$BaseDN"
+    Description                     = "Web Servers OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ServersOU"
+    }
+
+$OUs[12] = @{
+    Name                            = "Windows"
+    Path                            = "OU=Clients,$BaseDN"
+    Description                     = "Windows Clients OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ClientsOU"
+    }
+
+$OUs[13] = @{
+    Name                            = "iOS"
+    Path                            = "OU=Clients,$BaseDN"
+    Description                     = "iOS Clients OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ClientsOU"
+    }
+
+$OUs[14] = @{
+    Name                            = "iPadOS"
+    Path                            = "OU=Clients,$BaseDN"
+    Description                     = "iPadOS Clients OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ClientsOU"
+    }
+
+$OUs[15] = @{
+    Name                            = "Android"
+    Path                            = "OU=Clients,$BaseDN"
+    Description                     = "Android Clients OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ClientsOU"
+    }
+
+$OUs[16] = @{
+    Name                            = "macOS"
+    Path                            = "OU=Clients,$BaseDN"
+    Description                     = "macOS Clients OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]ClientsOU"
+    }
+
+ $OUs[17] = @{
+    Name                            = "Security"
+    Path                            = "OU=Groups,$BaseDN"
+    Description                     = "Security Groups OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]GroupsOU"
+    }
+
+$OUs[18] = @{
+    Name                            = "Distribution"
+    Path                            = "OU=Groups,$BaseDN"
+    Description                     = "Distribution Groups OU"
+    Ensure                          = 'Present'
+    DependsOn = "[ADOrganizationalUnit]GroupsOU"
+    }
+
+for($i = 1; $i -le $OUs.Count; $i++){
+    New-ADOrganizationalUnit -Name $OUs[$i].Name -Description $OUs[$i].Description -Path $OUs[$i].Path
+}
