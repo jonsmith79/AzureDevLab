@@ -10,30 +10,35 @@ permissions:
     contents: read
   
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
-        env:
-            azGroups: |
-                - "SG-Intune-Test-Group1"
-                - "SG-Intune-Test-Group2"
-                - "SG-Intune-Test-Group3"     
+  prereqs:
+    name: Prereqs
+    runs-on: ubuntu-latest
+    env:
+      azGroups: |
+        - "SG-Intune-Test-Group1"
+        - "SG-Intune-Test-Group2"
+        - "SG-Intune-Test-Group3"
 
-        steps:
-        # Checkout code
-        - name: Checkout
-          uses: actions/checkout@main
+  build-and-deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: prereqs
+    steps:
+      # Checkout code
+      - name: Checkout
+        uses: actions/checkout@main
 
-        # Log into Azure
-        - name: 'Az CLI Login'
-          uses: azure/login@v1
-          with:
-            client-id: ${{secrets.AZURE_CLIENT_ID}}
-            tenant-id: ${{secrets.AZURE_TENANT_ID}}
-            #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-            allow-no-subscriptions: true
+      # Log into Azure
+      - name: 'Az CLI Login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{secrets.AZURE_CLIENT_ID}}
+          tenant-id: ${{secrets.AZURE_TENANT_ID}}
+          #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+          allow-no-subscriptions: true
 
-        # Create Groups in azGroups
-        - name: 'Create azGroups'
-          each: group in azGroups
-          run: |
-            az ad group create --display-name $group --mail-nickname $group --query objectId -o tsv
+      # Create Resource Group
+      - name: 'Create Resource Group'
+        each: group in $prereqs.env.azGroups
+        run: |
+          echo $group
