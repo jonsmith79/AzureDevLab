@@ -65,7 +65,12 @@ jobs:
 
       # Echo from testArray3
       - name: 'Echo testArray3 from current job'
-        run: echo "${{ env.TestArray3 }}"
+        run: |
+          $i=0
+          for item in ${{ env.TestArray3 }}; do
+            echo "Item $i: $item"
+            i=$((i+1))
+          done
 
 
 
