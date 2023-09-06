@@ -3,11 +3,11 @@ on:
     push:
       branches: [ main ]
   
-name: TestIntuneConfiguration
+name: TestIntuneConfig
   
 permissions:
-    id-token: write
-    contents: read
+    id-token: write # This is required for requesting the OIDC token (JWT) from Azure AD
+    contents: read # This is required for actions/checkout
   
 jobs:
   prereqs:
@@ -18,13 +18,8 @@ jobs:
         - "SG-Intune-Test-Group1"
         - "SG-Intune-Test-Group2"
         - "SG-Intune-Test-Group3"
-
-  build-and-deploy:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: prereqs
     steps:
-      # Checkout code
+      # Do something
       - name: Checkout
         uses: actions/checkout@main
 
@@ -37,8 +32,28 @@ jobs:
           #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
           allow-no-subscriptions: true
 
+  build-and-deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: prereqs
+    steps:
+
+
       # Create Resource Group
       - name: 'Create Resource Group'
-        each: group in $prereqs.env.azGroups
+        #each: group in $prereqs.env.azGroups
         run: |
-          echo $group
+          echo $prereqs.env.azGroups
+
+
+
+
+      # Logout of Azure session
+      - name: Azure CLI Logout
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az logout
+            az cache purge
+            az account clear
