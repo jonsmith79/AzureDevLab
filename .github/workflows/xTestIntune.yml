@@ -10,16 +10,14 @@ permissions:
     contents: read # This is required for actions/checkout
   
 jobs:
-  prereqs:
-    name: Prereqs
+  build-and-deploy:
+    name: Build
     runs-on: ubuntu-latest
     env:
-      azGroups: |
-        - "SG-Intune-Test-Group1"
-        - "SG-Intune-Test-Group2"
-        - "SG-Intune-Test-Group3"
-      azEcho: "Echoing from env"
+      azEcho1: "Echoing from current job"
+      testArray: "1,2,3,4,5"
 
+      
     steps:
       # Do something
       - name: Checkout
@@ -34,29 +32,16 @@ jobs:
           #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
           allow-no-subscriptions: true
 
-  build-and-deploy:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: prereqs
-    env:
-      azEcho1: "Echoing from variables"
-    steps:
-      # Echo from prereqs
-      - name: 'Echo azGroups variable'
-        #each: group in $prereqs.env.azGroups
-        run: |
-          echo $azGroups
-
       # Echo from current job
       - name: 'Echo azEcho1 from current job'
         run: |
           echo ${{ env.azEcho1 }}
-          echo ${{ needs.prereqs.env.azEcho }}
 
-      # Echo from prereqs job
-      - name: 'Echo azEcho from prereqs job'
+      # Echo from testArray
+      - name: 'Echo testArray from current job'
         run: |
-          echo ${{ needs.prereqs.env.azEcho }}
+          echo ${{ env.testArray }}
+
 
 
 
