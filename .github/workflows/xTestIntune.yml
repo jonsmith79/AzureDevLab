@@ -38,6 +38,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: prereqs
+    env:
+      azEcho1: "Echoing from variables"
     steps:
       # Echo from prereqs
       - name: 'Echo azGroups variable'
@@ -45,11 +47,16 @@ jobs:
         run: |
           echo $azGroups
 
-      # Echo from prereqs
-      - name: 'Echo azEcho variable'
+      # Echo from current job
+      - name: 'Echo azEcho1 from current job'
         run: |
-          echo 'Hello world! $azEcho'
+          echo ${{ env.azEcho1 }}
+          echo ${{ needs.prereqs.env.azEcho }}
 
+      # Echo from prereqs job
+      - name: 'Echo azEcho from prereqs job'
+        run: |
+          echo ${{ needs.prereqs.env.azEcho }}
 
 
 
