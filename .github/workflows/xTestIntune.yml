@@ -18,6 +18,8 @@ jobs:
         - "SG-Intune-Test-Group1"
         - "SG-Intune-Test-Group2"
         - "SG-Intune-Test-Group3"
+      azEcho: "Echoing from env"
+
     steps:
       # Do something
       - name: Checkout
@@ -37,11 +39,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: prereqs
     steps:
-      # Create Resource Group
+      # Echo from prereqs
       - name: 'Echo azGroups variable'
         #each: group in $prereqs.env.azGroups
         run: |
-          echo ${{ prereqs.env.azGroups }}
+          echo $azGroups
+
+      # Echo from prereqs
+      - name: 'Echo azEcho variable'
+        run: |
+          echo $azEcho
 
 
 
