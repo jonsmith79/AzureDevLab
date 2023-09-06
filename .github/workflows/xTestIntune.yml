@@ -37,11 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: prereqs
     steps:
-
-
       # Create Resource Group
       - name: 'Echo azGroups variable'
-        #each: group in $prereqs.env.azGroups
+        each: group in $prereqs.env.azGroups
         run: |
           echo $prereqs.env.azGroups
 
