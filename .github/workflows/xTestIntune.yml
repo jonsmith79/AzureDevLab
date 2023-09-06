@@ -17,11 +17,11 @@ jobs:
       azEcho1: "Echoing from current job"
       testArray: "1,2,3,4,5"
       testArray2: |
-        1
-        2
-        3
-        4
-        5
+        "SG-Intune-Test-Group-1"
+        "SG-Intune-Test-Group-2"
+        "SG-Intune-Test-Group-3"
+        "SG-Intune-Test-Group-4"
+        "SG-Intune-Test-Group-5"
 
       
     steps:
@@ -50,7 +50,7 @@ jobs:
 
       # Echo from testArray2
       - name: 'Echo testArray2 from current job'
-        run: echo "${{ join(env.testArray2, ';') }}"
+        run: echo "${{ env.testArray2 }}"
 
 
 
