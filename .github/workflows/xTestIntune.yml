@@ -40,7 +40,7 @@ jobs:
 
 
       # Create Resource Group
-      - name: 'Create Resource Group'
+      - name: 'Echo azGroups variable'
         #each: group in $prereqs.env.azGroups
         run: |
           echo $prereqs.env.azGroups
@@ -54,6 +54,5 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az logout
             az cache purge
             az account clear
