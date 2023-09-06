@@ -22,7 +22,18 @@ jobs:
         "SG-Intune-Test-Group-3"
         "SG-Intune-Test-Group-4"
         "SG-Intune-Test-Group-5"
-
+      TestArray3: |
+        - name: "SG-Intune-Test-Group-1"
+          desc: "SG-Intune-Test-Group-1"
+        - name: "SG-Intune-Test-Group-2"
+          desc: "SG-Intune-Test-Group-2"
+        - name: "SG-Intune-Test-Group-3"
+          desc: "SG-Intune-Test-Group-3"
+        - name: "SG-Intune-Test-Group-4"
+          desc: "SG-Intune-Test-Group-4"
+        - name: "SG-Intune-Test-Group-5"
+          desc: "SG-Intune-Test-Group-5"
+          
       
     steps:
       # Do something
@@ -51,6 +62,10 @@ jobs:
       # Echo from testArray2
       - name: 'Echo testArray2 from current job'
         run: echo "${{ env.testArray2 }}"
+
+      # Echo from testArray3
+      - name: 'Echo testArray3 from current job'
+        run: echo "${{ env.TestArray3 }}"
 
 
 
