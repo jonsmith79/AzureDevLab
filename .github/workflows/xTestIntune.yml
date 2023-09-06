@@ -16,6 +16,12 @@ jobs:
     env:
       azEcho1: "Echoing from current job"
       testArray: "1,2,3,4,5"
+      testArray2: |
+        1
+        2
+        3
+        4
+        5
 
       
     steps:
@@ -42,6 +48,9 @@ jobs:
         run: |
           echo ${{ env.testArray }}
 
+      # Echo from testArray2
+      - name: 'Echo testArray2 from current job'
+        run: echo "${{ join(env.testArray2, ';') }}"
 
 
 
