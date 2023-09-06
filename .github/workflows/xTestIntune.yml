@@ -39,9 +39,9 @@ jobs:
     steps:
       # Create Resource Group
       - name: 'Echo azGroups variable'
-        each: group in $prereqs.env.azGroups
+        #each: group in $prereqs.env.azGroups
         run: |
-          echo $prereqs.env.azGroups
+          echo ${{ prereqs.env.azGroups }}
 
 
 
