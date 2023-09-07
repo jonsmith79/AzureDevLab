@@ -37,6 +37,7 @@ jobs:
         shell: pwsh
         run: |
           $JsonArray = $env:testArray3 | ConvertFrom-Json
+          Install-Module -Name Az.Resources -Force -AllowClobber -Verbose
           foreach ($item in $JsonArray) {
             New-AzADGroup -DisplayName $($item.name) -Description "$($item.description)" -MailEnabled $false -SecurityEnabled $true -MailNickName $($item.name) -GroupType Security -Verbose
           }
