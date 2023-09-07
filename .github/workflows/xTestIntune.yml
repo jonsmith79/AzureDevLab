@@ -38,7 +38,7 @@ jobs:
         run: |
           $JsonArray = $env:testArray3 | ConvertFrom-Json
           foreach ($item in $JsonArray) {
-            Write-Host "New-AzADGroup -DisplayName $($item.name) -Description $($item.description) -MailEnabled $false -SecurityEnabled $true -MailNickName $($item.name) -GroupType Security -Verbose"
+            New-AzADGroup -DisplayName $($item.name) -Description "$($item.description)" -MailEnabled $false -SecurityEnabled $true -MailNickName $($item.name) -GroupType Security -Verbose
           }
 
 
