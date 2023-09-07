@@ -39,6 +39,11 @@ jobs:
           allow-no-subscriptions: true
           #enable-AzPSSession: true
 
+      # Install JQ to loop through JSON arrays with Bash
+      - name: Setup jq
+        uses: chrisdickinson/setup-jq@v1
+
+
       # Echo from current job
       - name: 'Echo azEcho1 from current job'
         run: |
@@ -62,6 +67,9 @@ jobs:
             echo $group
           done
 
+      # Use JQ to loop through JSON array
+      - name: Pass env array to jq
+        run: echo '${{ fromJSON(env.testArray3).length }}'
 
 
       # Logout of Azure session
