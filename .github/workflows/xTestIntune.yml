@@ -14,14 +14,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      azEcho1: "Echoing from current job"
-      testArray: "1,2,3,4,5"
-      testArray2: |
-        "SG-Intune-Test-Group-1"
-        "SG-Intune-Test-Group-2"
-        "SG-Intune-Test-Group-3"
-        "SG-Intune-Test-Group-4"
-        "SG-Intune-Test-Group-5"
       testArray3: '[{"name":"Test-Group1","description":"Test Group 1 from a GitHub Actions array"},{"name":"Test-Group2","description":"Test Group 2 from a GitHub Actions array"},{"name":"Test-Group3","description":"Test Group 3 from a GitHub Actions array"},{"name":"Test-Group4","description":"Test Group 4 from a GitHub Actions array"},{"name":"Test-Group5","description":"Test Group 5 from a GitHub Actions array"}]'
       
     steps:
@@ -40,37 +32,13 @@ jobs:
           enable-AzPSSession: true
 
 
-      # Echo from current job
-      - name: 'Echo azEcho1 from current job'
-        run: |
-          echo ${{ env.azEcho1 }}
-
-      # Echo from testArray
-      - name: 'Echo testArray from current job'
-        run: |
-          echo ${{ env.testArray }}
-
-      # Echo from testArray3
-      - name: 'Echo testArray3 from current job'
-        run: echo ${{ fromJson(env.testArray3) }}
-
-      # Echo from testArray3
-      - name: 'Echo testArray3 from current job'
-        run: |
-          for group in ${{ fromJSON(env.testArray3) }}; do
-            echo "Name: $group.name"
-            echo "Description: $group.description"
-            echo $group
-          done
-
       # Use PowerShell to loop through JSON array
       - name: Powershell Pass
         shell: pwsh
         run: |
           $JsonArray = $env:testArray3 | ConvertFrom-Json
           foreach ($item in $JsonArray) {
-            Write-Host "Name: $($item.name)"
-            Write-Host "Age: $($item.description)"
+            Write-Host "New-AzADGroup -DisplayName $($item.name) -Description $($item.description) -MailEnabled $false -SecurityEnabled $true -MailNickName $($item.name) -GroupType Security -Verbose"
           }
 
 
