@@ -22,7 +22,7 @@ jobs:
         "SG-Intune-Test-Group-3"
         "SG-Intune-Test-Group-4"
         "SG-Intune-Test-Group-5"
-      TestArray3: '[{"name":"Test-Group1","description":"Test Group 1 from a GitHub Actions array"},{"name":"Test-Group2","description":"Test Group 2 from a GitHub Actions array"},{"name":"Test-Group3","description":"Test Group 3 from a GitHub Actions array"},{"name":"Test-Group4","description":"Test Group 4 from a GitHub Actions array"},{"name":"Test-Group5","description":"Test Group 5 from a GitHub Actions array"}]'
+      testArray3: '[{"name":"Test-Group1","description":"Test Group 1 from a GitHub Actions array"},{"name":"Test-Group2","description":"Test Group 2 from a GitHub Actions array"},{"name":"Test-Group3","description":"Test Group 3 from a GitHub Actions array"},{"name":"Test-Group4","description":"Test Group 4 from a GitHub Actions array"},{"name":"Test-Group5","description":"Test Group 5 from a GitHub Actions array"}]'
       
     steps:
       # Do something
@@ -55,9 +55,17 @@ jobs:
       # Echo from testArray3
       - name: 'Echo testArray3 from current job'
         run: |
-          for group in ${{ fromJSON(env.TestArray3) }}; do
-            echo "Name: ${{ group.name }}"
-            echo "Description: ${{ group.description }}"
+          for group in ${{ fromJSON(env.testArray3) }}; do
+            - name: 'Loop over testArray3'
+              run: |
+                for group in ${{ fromJSON(env.testArray3) }}; do
+                  name=${group.name}
+                  description=${group.description}
+                  echo "Name: $name"
+                  echo "Description: $description"
+                done
+            echo "Name: $name"
+            echo "Description: $description"
           done
 
 
