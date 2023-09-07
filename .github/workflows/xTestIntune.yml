@@ -37,11 +37,7 @@ jobs:
           tenant-id: ${{secrets.AZURE_TENANT_ID}}
           #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
           allow-no-subscriptions: true
-          #enable-AzPSSession: true
-
-      # Install JQ to loop through JSON arrays with Bash
-      - name: Setup jq
-        uses: chrisdickinson/setup-jq@v1
+          enable-AzPSSession: true
 
 
       # Echo from current job
@@ -67,9 +63,15 @@ jobs:
             echo $group
           done
 
-      # Use JQ to loop through JSON array
-      - name: Pass env array to jq
-        run: echo '${{ fromJSON(env.testArray3).length }}'
+      # Use PowerShell to loop through JSON array
+      - name: Powershell Pass
+        shell: pwsh
+        run: |
+          $JsonArray = $env:testArray3 | ConvertFrom-Json
+          foreach ($item in $JsonArray) {
+            Write-Host "Name: $($item.name)"
+            Write-Host "Age: $($item.description)"
+          }
 
 
       # Logout of Azure session
