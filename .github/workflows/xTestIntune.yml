@@ -56,16 +56,8 @@ jobs:
       - name: 'Echo testArray3 from current job'
         run: |
           for group in ${{ fromJSON(env.testArray3) }}; do
-            - name: 'Loop over testArray3'
-              run: |
-                for group in ${{ fromJSON(env.testArray3) }}; do
-                  name=${group.name}
-                  description=${group.description}
-                  echo "Name: $name"
-                  echo "Description: $description"
-                done
-            echo "Name: $name"
-            echo "Description: $description"
+            echo "Name: ${{ group.name }}"
+            echo "Description: ${{ group.description }}"
           done
 
 
