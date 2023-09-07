@@ -68,7 +68,7 @@ jobs:
         run: |
           i=0
           for item in ${{ env.TestArray3 }}; do
-            echo "Item $i: $item"
+            echo "Name: $item[$i].name"
             i=$((i+1))
           done
 
