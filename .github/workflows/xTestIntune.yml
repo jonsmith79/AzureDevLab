@@ -37,7 +37,7 @@ jobs:
           tenant-id: ${{secrets.AZURE_TENANT_ID}}
           #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
           allow-no-subscriptions: true
-          enable-AzPSSession: true
+          #enable-AzPSSession: true
 
       # Echo from current job
       - name: 'Echo azEcho1 from current job'
@@ -50,15 +50,16 @@ jobs:
           echo ${{ env.testArray }}
 
       # Echo from testArray3
-      - name: 'Echo testArray2 from current job'
-        run: echo "${{ fromJson(env.testArray3) }}"
+      - name: 'Echo testArray3 from current job'
+        run: echo ${{ fromJson(env.testArray3) }}
 
       # Echo from testArray3
       - name: 'Echo testArray3 from current job'
         run: |
           for group in ${{ fromJSON(env.testArray3) }}; do
-            echo "Name: $group[0].name"
-            echo "Description: $group[0].description"
+            echo "Name: $group.name"
+            echo "Description: $group.description"
+            echo $group
           done
 
 
