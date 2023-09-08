@@ -37,7 +37,8 @@ jobs:
           echo $testArray3 | jq -r '.[] | @base64' | while read item; do
             checkGroupExists=$(az ad group list --display-name $(echo $item | base64 --decode | jq -r '.name') --query "[].id" --output tsv)
             if [ -z "$checkGroupExists" ]; then
-              az ad group create --display-name $(echo $item | base64 --decode | jq -r '.name') --description "$(echo $item | base64 --decode | jq -r '.description')" --mail-nickname $(echo $item | base64 --decode | jq -r '.name')
+              az ad group create --display-name $(echo $item | base64 --decode | jq -r '.name') --description "$(echo $item | base64 --decode | jq -r '.description')" --mail-nickname $(echo $item | base64 --decode | jq -r '.name') --output none
+              echo "Group $(echo $item | base64 --decode | jq -r '.name') created"
             else
               echo "Group $(echo $item | base64 --decode | jq -r '.name') already exists"
             fi
