@@ -14,25 +14,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      testArray3: |
-        '[
-          {
-            "name":"Test-Group1",
-            "description":"Test Group 1 from a GitHub Actions array"
-          },{
-            "name":"Test-Group2",
-            "description":"Test Group 2 from a GitHub Actions array"
-          },{
-            "name":"Test-Group3",
-            "description":"Test Group 3 from a GitHub Actions array"
-          },{
-            "name":"Test-Group4",
-            "description":"Test Group 4 from a GitHub Actions array"
-          },{
-            "name":"Test-Group5",
-            "description":"Test Group 5 from a GitHub Actions array"
-          }
-        ]'
+      testArray3: '[{"name":"Test-Group1","description":"Test Group 1 from a GitHub Actions array"},{"name":"Test-Group2","description":"Test Group 2 from a GitHub Actions array"},{"name":"Test-Group3","description":"Test Group 3 from a GitHub Actions array"},{"name":"Test-Group4","description":"Test Group 4 from a GitHub Actions array"},{"name":"Test-Group5","description":"Test Group 5 from a GitHub Actions array"}]'
       
     steps:
       # Do something
