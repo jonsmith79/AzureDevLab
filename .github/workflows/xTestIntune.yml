@@ -29,19 +29,29 @@ jobs:
           tenant-id: ${{secrets.AZURE_TENANT_ID}}
           #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
           allow-no-subscriptions: true
-          enable-AzPSSession: true
+          #enable-AzPSSession: true
 
 
       # Use PowerShell to loop through JSON array
-      - name: Powershell Pass
-        shell: pwsh
-        run: |
-          $JsonArray = $env:testArray3 | ConvertFrom-Json
-          Install-Module -Name Az.Resources -Force -AllowClobber
-          foreach ($item in $JsonArray) {
-            New-AzADGroup -DisplayName $($item.name) -Description "$($item.description)" -MailNickName $($item.name)
-          }
+      # - name: Powershell Pass
+      #   shell: pwsh
+      #   run: |
+      #     $JsonArray = $env:testArray3 | ConvertFrom-Json
+      #     Install-Module -Name Az.Resources -Force -AllowClobber
+      #     foreach ($item in $JsonArray) {
+      #       New-AzADGroup -DisplayName $($item.name) -Description "$($item.description)" -MailNickName $($item.name)
+      #     }
 
+      # Use BASH to loop through JSON array
+      - name: Bash Pass
+        shell: bash
+        run: |
+          echo $testArray3
+          echo $testArray3 | jq -r '.[] | @base64'
+          echo $testArray3 | jq -r '.[] | @base64' | while read item; do
+            echo $item | base64 --decode | jq -r '.name'
+            echo $item | base64 --decode | jq -r '.description'
+          done
 
       # Logout of Azure session
       - name: Azure CLI Logout
