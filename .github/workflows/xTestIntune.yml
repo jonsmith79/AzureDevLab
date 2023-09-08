@@ -51,7 +51,16 @@ jobs:
           echo $testArray3 | jq -r '.[] | @base64' | while read item; do
             echo $item | base64 --decode | jq -r '.name'
             echo $item | base64 --decode | jq -r '.description'
+            echo "az ad group create --display-name $(echo $item | base64 --decode | jq -r '.name') --description $(echo $item | base64 --decode | jq -r '.description') --mail-nickname $(echo $item | base64 --decode | jq -r '.name')"
           done
+
+
+
+
+
+
+
+
 
       # Logout of Azure session
       - name: Azure CLI Logout
