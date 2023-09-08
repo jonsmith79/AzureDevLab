@@ -31,8 +31,6 @@ jobs:
           allow-no-subscriptions: true
           #enable-AzPSSession: true
 
-
-
       # Use BASH to loop through JSON array of groups and create group if it does not exist
       - name: Create groups
         run: |
@@ -44,9 +42,6 @@ jobs:
               echo "Group $(echo $item | base64 --decode | jq -r '.name') already exists"
             fi
           done
-
-
-
 
 
 
