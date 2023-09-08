@@ -14,7 +14,25 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      testArray3: '[{"name":"Test-Group1","description":"Test Group 1 from a GitHub Actions array"},{"name":"Test-Group2","description":"Test Group 2 from a GitHub Actions array"},{"name":"Test-Group3","description":"Test Group 3 from a GitHub Actions array"},{"name":"Test-Group4","description":"Test Group 4 from a GitHub Actions array"},{"name":"Test-Group5","description":"Test Group 5 from a GitHub Actions array"}]'
+      testArray3: |
+        '[
+          {
+            "name":"Test-Group1",
+            "description":"Test Group 1 from a GitHub Actions array"
+          },{
+            "name":"Test-Group2",
+            "description":"Test Group 2 from a GitHub Actions array"
+          },{
+            "name":"Test-Group3",
+            "description":"Test Group 3 from a GitHub Actions array"
+          },{
+            "name":"Test-Group4",
+            "description":"Test Group 4 from a GitHub Actions array"
+          },{
+            "name":"Test-Group5",
+            "description":"Test Group 5 from a GitHub Actions array"
+          }
+        ]'
       
     steps:
       # Do something
@@ -32,32 +50,9 @@ jobs:
           #enable-AzPSSession: true
 
 
-      # Use PowerShell to loop through JSON array
-      # - name: Powershell Pass
-      #   shell: pwsh
-      #   run: |
-      #     $JsonArray = $env:testArray3 | ConvertFrom-Json
-      #     Install-Module -Name Az.Resources -Force -AllowClobber
-      #     foreach ($item in $JsonArray) {
-      #       New-AzADGroup -DisplayName $($item.name) -Description "$($item.description)" -MailNickName $($item.name)
-      #     }
 
-      # Use BASH to loop through JSON array
-      # - name: Bash Pass
-      #   shell: bash
-      #   run: |
-      #     echo $testArray3
-      #     echo $testArray3 | jq -r '.[] | @base64'
-      #     echo $testArray3 | jq -r '.[] | @base64' | while read item; do
-      #       echo $item | base64 --decode | jq -r '.name'
-      #       echo $item | base64 --decode | jq -r '.description'
-      #       echo "az ad group create --display-name $(echo $item | base64 --decode | jq -r '.name') --description "$(echo $item | base64 --decode | jq -r '.description')" --mail-nickname $(echo $item | base64 --decode | jq -r '.name')"
-      #     done
-
-
-      # Use BASH to loop through JSON array
-      - name: Bash Pass
-        shell: bash
+      # Use BASH to loop through JSON array of groups and create group if it does not exist
+      - name: Create groups
         run: |
           echo $testArray3 | jq -r '.[] | @base64' | while read item; do
             az ad group create --display-name $(echo $item | base64 --decode | jq -r '.name') --description "$(echo $item | base64 --decode | jq -r '.description')" --mail-nickname $(echo $item | base64 --decode | jq -r '.name')
