@@ -13,32 +13,32 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      #location: "uksouth"
-      #DeploymentDir: "Intune"
-      #adminUsername: ${{ secrets.ADMIN_USERNAME }}
-      #adminPassword: ${{ secrets.ADMIN_PASSWORD }}
-      #artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
-      #artifactsLocationSasToken: ""
-      azGroupPrefix: "SG"
-      azBreakGlassGroupName: "CA-BreakGlass"
-      azBreakGlassGroupDescription: "Break Glass Group for Azure Conditional Access Policies"
+      ##location: "uksouth"
+      ##DeploymentDir: "Intune"
+      ##adminUsername: ${{ secrets.ADMIN_USERNAME }}
+      ##adminPassword: ${{ secrets.ADMIN_PASSWORD }}
+      ##artifactsLocation: "https://raw.githubusercontent.com/jonsmith79/AzureDevLab/main/Deployments"
+      ##artifactsLocationSasToken: ""
+      #azGroupPrefix: "SG"
+      #azBreakGlassGroupName: "CA-BreakGlass"
+      #azBreakGlassGroupDescription: "Break Glass Group for Azure Conditional Access Policies"
       azBreakGlassAccountDisplayName: "Break Glass"
       azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
       azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
-      azSecureAdminsGroupName: "CA-SecureAdmins-All"
-      azSecureAdminsGroupDescription: "Highly Secured Admins Group"
+      #azSecureAdminsGroupName: "CA-SecureAdmins-All"
+      #azSecureAdminsGroupDescription: "Highly Secured Admins Group"
       azGAUPN: ${{ secrets.AzureGA_Username }}
-      azGBLGroupName: "GBL-M365-E5"
-      azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"
+      #azGBLGroupName: "GBL-M365-E5"
+      #azGBLGroupDescription: "Group Based License to assign the M365 E5 licenses"
       azGBLSku: "SPE_E5"
-      azArray: |
-        - "name": "GBL-M365-E5"
-          "desc": "M365 E5 Group"
-        - "name": "GBL-M365-E3"
-          "desc": "M365 E3 Group"
-        - "name": "GBL-M365-F1"
-          "desc": "M365 F1 Group"     
+      # azArray: |
+      #   - "name": "GBL-M365-E5"
+      #     "desc": "M365 E5 Group"
+      #   - "name": "GBL-M365-E3"
+      #     "desc": "M365 E3 Group"
+      #   - "name": "GBL-M365-F1"
+      #     "desc": "M365 F1 Group"     
 
     steps:
     # Checkout code
@@ -54,15 +54,6 @@ jobs:
         #subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
         allow-no-subscriptions: true
 
-    # Create Azure AD Break Glass Group with Azure CLI
-    - name: 'Break Glass Group'
-      run: |
-        azBGGroupExists=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv)
-        if [ -z "$azBGGroupExists" ]; then
-          az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --description "${{env.azBreakGlassGroupDescription}}"
-        else
-          echo "Group already exists"
-        fi
 
     # Create Azure AD Break Glass Account with Azure CLI
     - name: 'Break Glass Account'
@@ -107,15 +98,6 @@ jobs:
           echo "User already a Global Admin"
         fi
   
-    # Create Azure AD highly secure Admin Group with Azure CLI
-    - name: 'Secured Admins Group'
-      run: |
-        azSAGroupExists=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azSecureAdminsGroupName}}" --query "[].id" --output tsv)
-        if [ -z "$azSAGroupExists" ]; then
-          az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azSecureAdminsGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azSecureAdminsGroupName}}" --description "${{env.azSecureAdminsGroupDescription}}"
-        else
-          echo "Group already exists"
-        fi
 
     # Add Global Admin account to the Azure AD highly secure Admin Grroup above with Azure CLI
     - name: 'Add Global Admin to Secured Admins Group'
@@ -127,16 +109,6 @@ jobs:
           az ad group member add --group ${azSAGroupId} --member-id ${azSAUserId}
         else
           echo "User already a member of the group"
-        fi
-
-    # Create a Group Based License (GBL) group to assign the required liceses with Azure CLI
-    - name: 'M365 E5 GBL Group'
-      run: |
-        azGBLGroupExists=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azGBLGroupName}}" --query "[].id" --output tsv)
-        if [ -z "$azGBLGroupExists" ]; then
-          az ad group create --display-name "${{env.azGroupPrefix}}-${{env.azGBLGroupName}}" --mail-nickname "${{env.azGroupPrefix}}-${{env.azGBLGroupName}}" --description "${{env.azGBLGroupDescription}}"
-        else
-          echo "Group already exists"
         fi
 
     # Assign licenses to GBL with Azure CLI
@@ -151,19 +123,13 @@ jobs:
           '{skuId: $licenseSkuId, disabledPlans: ["0feaeb32-d00e-4d66-bd5a-43b5b83db82c"]}'
         )
         uriLicenseAssignment=$(echo "https://graph.microsoft.com/beta/groups/${azGBLGroupId}/assignLicense")
-#        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
-#        azGBLAlreadyAssigned=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg addLicences "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
-#        if [ -z "$azBGAlreadyGA" ]; then
-#          az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
-#        else
-#          echo "User already a Global Admin"
-#        fi
-
-    # Echo Array with Azure CLI
-    - name: 'Echo Array'
-      run: |
-        echo "Group: ${{env.azArray}}"
-
+        az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
+        azGBLAlreadyAssigned=$(az rest --method GET --uri $uriRoleAssignment --header Content-Type=application/json | jq --arg addLicences "$azBGUserId" --arg roleDefinitionId "${{env.azGARoleDefinitionId}}" '.value[] | select(.principalId | contains($principalId)) | select(.roleDefinitionId | contains($roleDefinitionId))' | jq '.id' -r)
+        if [ -z "$azBGAlreadyGA" ]; then
+          az rest --method POST --uri $uriRoleAssignment --header Content-Type=application/json --body "$BODY"
+        else
+          echo "User already a Global Admin"
+        fi
 
 
 

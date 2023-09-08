@@ -3,7 +3,7 @@ on:
     push:
       branches: [ main ]
   
-name: TestIntuneConfig
+name: IntuneConfig
   
 permissions:
     id-token: write # This is required for requesting the OIDC token (JWT) from Azure AD
@@ -14,15 +14,17 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      testArray3: '[{"name":"Test-Group1","description":"Test Group 1 from a GitHub Actions array"},{"name":"Test-Group2","description":"Test Group 2 from a GitHub Actions array"},{"name":"Test-Group3","description":"Test Group 3 from a GitHub Actions array"},{"name":"Test-Group4","description":"Test Group 4 from a GitHub Actions array"},{"name":"Test-Group5","description":"Test Group 5 from a GitHub Actions array"}]'
-      
+      azDomain: "e2d.co.uk"
+      azGroups: '[{"name":"SG-CA-BreakGlass","description":"Break Glass Group for Azure Conditional Access Policies"},{"name":"SG-CA-SecureAdmins-All","description":"Highly Secured Admins Group for Azure Conditional Access"},{"name":"SG-GBL-M365-E5","description":"Group Based License group to assign the Microsoft 365 E5 licenses"},{"name":"SG-GBL-M365-E3","description":"Group Based License group to assign the Microsoft 365 E3 licenses"}]'
+      azCloudOnlyUsers: '[{"fname":"John","sname":"Wick"},{"fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
+
     steps:
-      # Do something
+      # Checkout the repo
       - name: Checkout
         uses: actions/checkout@main
 
       # Log into Azure
-      - name: 'Az CLI Login'
+      - name: Az CLI Login
         uses: azure/login@v1
         with:
           client-id: ${{secrets.AZURE_CLIENT_ID}}
@@ -32,9 +34,9 @@ jobs:
           #enable-AzPSSession: true
 
       # Use BASH to loop through JSON array of groups and create group if it does not exist
-      - name: Create groups
+      - name: Create Groups with BASH loop
         run: |
-          echo $testArray3 | jq -r '.[] | @base64' | while read item; do
+          echo $azGroups | jq -r '.[] | @base64' | while read item; do
             checkGroupExists=$(az ad group list --display-name $(echo $item | base64 --decode | jq -r '.name') --query "[].id" --output tsv)
             if [ -z "$checkGroupExists" ]; then
               az ad group create --display-name $(echo $item | base64 --decode | jq -r '.name') --description "$(echo $item | base64 --decode | jq -r '.description')" --mail-nickname $(echo $item | base64 --decode | jq -r '.name') --output none
@@ -44,8 +46,19 @@ jobs:
             fi
           done
 
-
-
+      # Use BASH to loop through JSON array of users and create user if it does not exist
+      - name: Create Cloud Only Users with BASH loop
+        run: |
+          echo $azCloudOnlyUsers | jq -r '.[] | @base64' | while read item; do
+            checkUserExists=$(az ad user list --upn "$(echo $item | base64 --decode | jq -r '.fname').$(echo $item | base64 --decode | jq -r '.sname')@${{env.azDomain}}" --query "[].id" --output tsv)
+            if [ -z "$checkUserExists" ]; then
+              az ad user create --display-name "$(echo $item | base64 --decode | jq -r '.fname') $(echo $item | base64 --decode | jq -r '.sname')" --password "${{secrets.ADMIN_PASSWORD}}" --user-principal-name "$(echo $item | base64 --decode | jq -r '.fname').$(echo $item | base64 --decode | jq -r '.sname')@${{env.azDomain}}" --force-change-password-next-sign-in false --output none
+              echo "User $(echo $item | base64 --decode | jq -r '.fame') $(echo $item | base64 --decode | jq -r '.sname') created"
+            else
+              echo "User $(echo $item | base64 --decode | jq -r '.fame') $(echo $item | base64 --decode | jq -r '.sname') already exists"
+            fi
+          done          
+        
 
 
       # Logout of Azure session
