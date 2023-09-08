@@ -22,9 +22,9 @@ jobs:
       #azGroupPrefix: "SG"
       #azBreakGlassGroupName: "CA-BreakGlass"
       #azBreakGlassGroupDescription: "Break Glass Group for Azure Conditional Access Policies"
-      azBreakGlassAccountDisplayName: "Break Glass"
-      azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
-      azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
+      # azBreakGlassAccountDisplayName: "Break Glass"
+      # azBreakGlassAccountUPN: "Break.Glass@e2d.co.uk"
+      # azBreakGlassAccountPwd: ${{ secrets.ADMIN_PASSWORD }}
       azGARoleDefinitionId: "62e90394-69f5-4237-9190-012177145e10"
       #azSecureAdminsGroupName: "CA-SecureAdmins-All"
       #azSecureAdminsGroupDescription: "Highly Secured Admins Group"
@@ -55,15 +55,7 @@ jobs:
         allow-no-subscriptions: true
 
 
-    # Create Azure AD Break Glass Account with Azure CLI
-    - name: 'Break Glass Account'
-      run: |
-        azBGUserExists=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
-        if [ -z "$azBGUserExists" ]; then
-          az ad user create --display-name "${{env.azBreakGlassAccountDisplayName}}" --password "${{env.azBreakGlassAccountPwd}}" --user-principal-name "${{env.azBreakGlassAccountUPN}}" --force-change-password-next-sign-in false
-        else
-          echo "User already exists"
-        fi
+
 
     # Add Break Glass Account to Break Glass Group with Azure CLI
     - name: 'Break Glass Account into Break Glass Group'

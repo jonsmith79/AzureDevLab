@@ -53,14 +53,16 @@ jobs:
             checkUserExists=$(az ad user list --upn "$(echo $item | base64 --decode | jq -r '.fname').$(echo $item | base64 --decode | jq -r '.sname')@${{env.azDomain}}" --query "[].id" --output tsv)
             if [ -z "$checkUserExists" ]; then
               az ad user create --display-name "$(echo $item | base64 --decode | jq -r '.fname') $(echo $item | base64 --decode | jq -r '.sname')" --password "${{secrets.ADMIN_PASSWORD}}" --user-principal-name "$(echo $item | base64 --decode | jq -r '.fname').$(echo $item | base64 --decode | jq -r '.sname')@${{env.azDomain}}" --force-change-password-next-sign-in false --output none
-              echo "User $(echo $item | base64 --decode | jq -r '.fame') $(echo $item | base64 --decode | jq -r '.sname') created"
+              echo "User $(echo $item | base64 --decode | jq -r '.fname') $(echo $item | base64 --decode | jq -r '.sname') created"
             else
-              echo "User $(echo $item | base64 --decode | jq -r '.fame') $(echo $item | base64 --decode | jq -r '.sname') already exists"
+              echo "User $(echo $item | base64 --decode | jq -r '.fname') $(echo $item | base64 --decode | jq -r '.sname') already exists"
             fi
           done          
         
 
 
+
+          
       # Logout of Azure session
       - name: Azure CLI Logout
         uses: azure/CLI@v1
