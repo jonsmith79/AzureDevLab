@@ -81,13 +81,13 @@ jobs:
         run: |
           echo $azRoleAssignments | jq -r '.[] | @base64' | while read item; do
             azUserId=$(az ad user list --upn "$(echo $item | base64 --decode | jq -r '.fname').$(echo $item | base64 --decode | jq -r '.sname')@${{env.azDomain}}" --query "[].id" --output tsv)
-            echo "UserID: $azUserId"
+            # echo "UserID: $azUserId"
             azRoleId=$(az rest --method GET --uri "https://graph.microsoft.com/beta/directoryRoles" --header Content-Type=application/json | jq --arg displayName "$(echo $item | base64 --decode | jq -r '.role')" '.value[] | select(.displayName | contains($displayName))' | jq '.id' -r)
-            echo "RoleID: $azRoleId"
-            echo "AlreadyAssigned command: az rest --method GET --uri "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments" --header Content-Type=application/json | jq --arg principalId $azUserId --arg roleDefinitionId $azRoleId '.value[] | select(.principalId | contains($azUserId)) | select(.roleDefinitionId | contains($azRoleId))' | jq '.id' -r"
+            # echo "RoleID: $azRoleId"
+            # echo "AlreadyAssigned command: az rest --method GET --uri "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments" --header Content-Type=application/json | jq --arg principalId $azUserId --arg roleDefinitionId $azRoleId '.value[] | select(.principalId | contains($azUserId)) | select(.roleDefinitionId | contains($azRoleId))' | jq '.id' -r"
             azAlreadyAssigned=$(az rest --method GET --uri "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments" --header Content-Type=application/json | jq --arg principalId "$azUserId" --arg roleDefinitionId "$azRoleId" '.value[] | select(.principalId | contains($azUserId)) | select(.roleDefinitionId | contains($azRoleId))' | jq '.id' -r)
-            echo "AlreadyMember: $azAlreadyAssigned"
-            if [ -z $(az rest --method GET --uri "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments" --header Content-Type=application/json | jq --arg principalId "$azUserId" --arg roleDefinitionId "$azRoleId" '.value[] | select(.principalId | contains($azUserId)) | select(.roleDefinitionId | contains($azRoleId))' | jq '.id' -r) ]; then
+            # echo "AlreadyMember: $azAlreadyAssigned"
+            if [ -z "$azAlreadyAssigned" ]; then
               az rest --method POST --uri "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments" --header Content-Type=application/json --body "{\"principalId\": \"$azUserId\", \"roleDefinitionId\": \"$azRoleId\", \"directoryScopeId\": \"/\"}"
               echo "User $(echo $item | base64 --decode | jq -r '.fname') $(echo $item | base64 --decode | jq -r '.sname') assigned role $(echo $item | base64 --decode | jq -r '.role')"
             else
