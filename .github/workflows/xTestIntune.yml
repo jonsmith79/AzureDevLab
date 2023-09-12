@@ -17,7 +17,7 @@ jobs:
       azDomain: "e2d.co.uk"
       azGroups: '[{"name":"SG-CA-BreakGlass","description":"Break Glass Group for Azure Conditional Access Policies"},{"name":"SG-CA-SecureAdmins-All","description":"Highly Secured Admins Group for Azure Conditional Access"},{"name":"SG-GBL-M365-E5","description":"Group Based License group to assign the Microsoft 365 E5 licenses"},{"name":"SG-GBL-M365-E3","description":"Group Based License group to assign the Microsoft 365 E3 licenses"}]'
       azCloudOnlyUsers: '[{"fname":"John","sname":"Wick"},{"fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
-      azGroupMemberships: '[{"group":"SG-CA-Breakglass","upn":"${{secrets.AZURE_BGFNAME}}.${{secrets.AZURE_BGSNAME}}@$azDomain"}]'
+      azGroupMemberships: '[{"group":"SG-CA-Breakglass","upn":"${{secrets.AZURE_BGFNAME}}.${{secrets.AZURE_BGSNAME}}@e2d.co.uk"},{"group":"SG-CA-Breakglass","upn":"${{secrets.AZURE_GAUPN}}"}]' # Currently need to hard code the UPN domain name as you can't reference another env.variable
       azRoleAssignments: '[{"role":"Global Administrator","fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
 
     steps:
