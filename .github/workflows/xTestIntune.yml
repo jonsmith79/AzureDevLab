@@ -17,7 +17,7 @@ jobs:
       azDomain: "e2d.co.uk"
       azGroups: '[{"name":"SG-CA-BreakGlass","description":"Break Glass Group for Azure Conditional Access Policies"},{"name":"SG-CA-SecureAdmins-All","description":"Highly Secured Admins Group for Azure Conditional Access"},{"name":"SG-GBL-M365-E5","description":"Group Based License group to assign the Microsoft 365 E5 licenses"},{"name":"SG-GBL-M365-E3","description":"Group Based License group to assign the Microsoft 365 E3 licenses"}]'
       azCloudOnlyUsers: '[{"fname":"John","sname":"Wick"},{"fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
-      azGroupMemberships: '[{"group":"SG-CA-Breakglass","fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"},{"group":"SG-CA-SecureAdmins-All","fname":"System","sname":"Administrator"}]'
+      azGroupMemberships: '[{"group":"SG-CA-Breakglass","upn":"${{secrets.AZURE_BGFNAME}}.${{secrets.AZURE_BGSNAME}}@${azDomain}"}]'
       azRoleAssignments: '[{"role":"Global Administrator","fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
 
     steps:
@@ -66,7 +66,7 @@ jobs:
         run: |
           echo $azGroupMemberships | jq -r '.[] | @base64' | while read item; do
             azGroupId=$(az ad group list --display-name $(echo $item | base64 --decode | jq -r '.group') --query "[].id" --output tsv)
-            azUserId=$(az ad user list --upn "$(echo $item | base64 --decode | jq -r '.fname').$(echo $item | base64 --decode | jq -r '.sname')@${{env.azDomain}}" --query "[].id" --output tsv)
+            azUserId=$(az ad user list --upn "$(echo $item | base64 --decode | jq -r '.upn')" --query "[].id" --output tsv)
             azAlreadyMember=$(az ad group member check --group ${azGroupId} --member-id ${azUserId} --query "value" --output tsv)
             if [ "$azAlreadyMember" = "false" ]; then
               az ad group member add --group ${azGroupId} --member-id ${azUserId}
