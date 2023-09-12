@@ -65,8 +65,11 @@ jobs:
         run: |
           echo $azGroupMemberships | jq -r '.[] | @base64' | while read item; do
             azGroupId=$(az ad group list --display-name $(echo $item | base64 --decode | jq -r '.group') --query "[].id" --output tsv)
+            echo "Group ID: $azGroupId"
             azUserId=$(az ad user list --upn "$(echo $item | base64 --decode | jq -r '.member')@${{env.azDomain}}" --query "[].id" --output tsv)
+            echo "User ID: $azUserId"
             azAlreadyMember=$(az ad group member check --group ${azGroupId} --member-id ${azUserId} --query "value" --output tsv)
+            echo "Already a member: $azAlreadyMember"
             if [ "$azAlreadyMember" = "false" ]; then
               az ad group member add --group ${azGroupId} --member-id ${azUserId}
               echo "User $(echo $item | base64 --decode | jq -r '.member') added to group $(echo $item | base64 --decode | jq -r '.group')"
