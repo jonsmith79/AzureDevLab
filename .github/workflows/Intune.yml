@@ -56,19 +56,6 @@ jobs:
 
 
 
-
-    # Add Break Glass Account to Break Glass Group with Azure CLI
-    - name: 'Break Glass Account into Break Glass Group'
-      run: |
-        azBGGroupId=$(az ad group list --display-name "${{env.azGroupPrefix}}-${{env.azBreakGlassGroupName}}" --query "[].id" --output tsv)
-        azBGUserId=$(az ad user list --upn "${{env.azBreakGlassAccountUPN}}" --query "[].id" --output tsv)
-        azBGAlreadyMember=$(az ad group member check --group ${azBGGroupId} --member-id ${azBGUserId} --query "value" --output tsv)
-        if [ "$azBGAlreadyMember" = "false" ]; then
-          az ad group member add --group ${azBGGroupId} --member-id ${azBGUserId}
-        else
-          echo "User already a member of the group"
-        fi
-
     # Add Break Glass Account to Azure AD Built-in role 'Global Admin' role with Azure CLI
     - name: 'Break Glass Account assign Global Admin role'
       run: |
@@ -91,7 +78,7 @@ jobs:
         fi
   
 
-    # Add Global Admin account to the Azure AD highly secure Admin Grroup above with Azure CLI
+    # Add Global Admin account to the Azure AD highly secure Admin Group above with Azure CLI
     - name: 'Add Global Admin to Secured Admins Group'
       run: |
         azSAUserId=$(az ad user list --upn "${{env.azGAUPN}}" --query "[].id" --output tsv)
