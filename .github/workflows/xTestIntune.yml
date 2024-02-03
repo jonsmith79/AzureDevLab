@@ -15,7 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     env:
       azDomain: "e2d.co.uk"
-      azGroups: '[{"name":"SG-CA-BreakGlass","description":"Break Glass Group for Azure Conditional Access Policies"},{"name":"SG-CA-SecureAdmins-All","description":"Highly Secured Admins Group for Azure Conditional Access"},{"name":"SG-GBL-M365-E5","description":"Group Based License group to assign the Microsoft 365 E5 licenses"},{"name":"SG-GBL-M365-E3","description":"Group Based License group to assign the Microsoft 365 E3 licenses"}]'
+      azGroups: '[
+        {"name":"SG-CA-BreakGlass","description":"Break Glass Group for Azure Conditional Access Policies"},
+        {"name":"SG-CA-SecureAdmins-All","description":"Highly Secured Admins Group for Azure Conditional Access"},
+        {"name":"SG-GBL-M365-E5","description":"Group Based License group to assign the Microsoft 365 E5 licenses"},
+        {"name":"SG-GBL-M365-E3","description":"Group Based License group to assign the Microsoft 365 E3 licenses"},
+        {"name":"CIS-Global-DCP-L1-BL-NG-Include","description":"Device Configuration Profile for all `"CIS L1 + BL + NG`" Policies Include Group"},
+        {"name":"CIS-Global-DCP-BL-18.10.09-Exclude","description":"Device Configuration Profile for `"CIS BL 18.10.09 BitLocker Drive Encryption`" Exclude Group"},
+        {"name":"CIS-Global-DCP-BL-18.09.07-34-Exclude","description":"Device Configuration Profile for `"CIS BL 18.09.07-34 Device Installation, DMA & Sleep`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-01.00-Exclude","description":"Device Configuration Profile for `"CIS L1 01.00 Account Policies (Device Restrictions`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-17.00-Exclude","description":"Device Configuration Profile for `"CIS L1 17.00 Advanced Audit Policy Configuration`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-18.00-09-Exclude","description":"Device Configuration Profile for `"CIS L1 18.00-09 Computer Administrative Templates`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-18.10-Exclude","description":"Device Configuration Profile for `"CIS L1 18.10 Windows Components`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-18.10.43.04-Exclude","description":"Device Configuration Profile for `"CIS L1 18.10.43.04 Defender Exploit Guard`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-19.00-Exclude","description":"Device Configuration Profile for `"CIS L1 19.00 User Administrative Templates`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-02.00-Exclude","description":"Device Configuration Profile for `"CIS L1 02.00 Local Policies`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-02.03-Exclude","description":"Device Configuration Profile for `"CIS L1 02.03 Security Options`" Exclude Group"},
+        {"name":"CIS-Global-DCP-L1-05.00-Exclude","description":"Device Configuration Profile for `"CIS L1 05.00 System Services`" Exclude Group"},
+        {"name":"CIS-Global-DCP-NG-18.10.44.01-Exclude","description":"Device Configuration Profile for `"CIS NG 18.10.44.01 Audit Application Guard`" Exclude Group"},
+        {"name":"CIS-Global-DCP-NG-18.09.05-Exclude","description":"Device Configuration Profile for `"CIS NG 18.09.05 Device Guard`" Exclude Group"},
+        ]'
       azCloudOnlyUsers: '[{"fname":"John","sname":"Wick"},{"fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
       azGroupMemberships: '[{"group":"SG-CA-Breakglass","upn":"${{secrets.AZURE_BGFNAME}}.${{secrets.AZURE_BGSNAME}}@e2d.co.uk"},{"group":"SG-CA-Breakglass","upn":"${{secrets.AZURE_GAUPN}}"}]' # Currently need to hard code the UPN domain name as you can't reference another env.variable
       azRoleAssignments: '[{"role":"Global Administrator","fname":"${{secrets.AZURE_BGFNAME}}","sname":"${{secrets.AZURE_BGSNAME}}"}]'
