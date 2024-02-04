@@ -86,6 +86,10 @@ resource vmNICName_resource 'Microsoft.Network/networkInterfaces@2022-07-01' = {
 resource vmName_resource 'Microsoft.Compute/virtualMachines@2022-08-01' = {
   name: vmName
   location: Location
+  tags: {
+    'CostControl': 'Ignore'
+    // Add more tags as needed
+  }
   properties: {
     licenseType: LicenceType
     hardwareProfile: {
