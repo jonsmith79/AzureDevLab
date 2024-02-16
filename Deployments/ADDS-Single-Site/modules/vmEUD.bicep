@@ -165,8 +165,7 @@ resource eudVM 'Microsoft.Compute/virtualMachines@2022-11-01'= {
   name: eudName
   location: eudLocation
   tags: {
-    'CostControl': 'Ignore'
-    // Add more tags as needed
+    'CostControl': 'Ignore' // Add more tags as needed
   }
   properties: {
     licenseType: eudLicenseType
